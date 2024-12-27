@@ -1,0 +1,45 @@
+<!-- <app-navbar></app-navbar> -->
+
+<div class="section-full p-t60 p-b60 mt-5 site-bg-gray">
+    <div class="container bg-white">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    @for(item of assessmentList; track $index){
+                        <div class="col-md-12">
+                            <div class="can_stage mt-3 rounded">
+                                <p><b>Paper Name:</b> {{item.title}}</p>
+                                <p><b>Category: </b>
+                                    @for(cat of item.category; track $index){
+                                        <span>{{cat.name}}</span>,
+                                    }
+                                </p>
+                                <p class="mb-5"><b>Total Questions:</b> {{item.no_of_questions}} Nos.</p>
+                                
+                                @for(question of item.questions; track $index){
+                                    <p><b>Question:</b> {{question.question}}</p>
+                                    @if(question.question_type != "MCQ"){
+                                        <p><b>Weightage:</b> {{question.weightage}}</p>
+                                    }
+                                    <p><b>Question Type:</b> {{question.question_type}}</p>
+                                    @if(question.question_type == "MCQ"){
+                                        @for(answer of question.answers; track $index){
+                                            <p>{{'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[$index]}}: {{answer.answer}}</p>
+                                            <p><b>Weightage:</b> {{answer.weightage}}</p>
+                                        }
+                                    }
+                                    @if(question.question_type == "LTA" || question.question_type == "STA" || question.question_type == "NA"){
+                                        <input type="text" class="form-control" placeholder="Enter your answer">
+                                    }
+                                    <hr>
+                                }
+                            </div>
+                        </div>
+                    }
+                    
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>

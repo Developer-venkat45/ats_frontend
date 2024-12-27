@@ -1,0 +1,265 @@
+<div class="section-full p-t60 mt-5 p-b60">
+    <div class="container">
+        <div class=" container col-md-12">
+            <div class="breadcrumb nav">
+                <span class="breadcrumb-item">
+                    <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+                </span>
+                <span class="breadcrumb-item">
+                    <a class="breadcrumb-link" [routerLink]="['/client']">Client</a>
+                </span>
+                <span class="breadcrumb-item">
+                    <a class="breadcrumb-link">Client Details</a>
+                </span>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-12" style="margin-bottom: -10px;">
+                <div class="client-data rounded">
+                    <div class="client-logo ">
+                        <img src="{{baseAPIURL}}{{clientList?.clientLogo}}" class="logoImage rounded" loading="lazy">
+                    </div>
+                    <div class="client-details">
+                        <h5 class="client-title">{{clientList?.name}}</h5>
+                        <!-- <p class="client-sub-title"><i class="fa-solid fa-location-dot"></i> {{item.location_taxonomy}}</p>
+                        <p class="client-sub-title"><i class="fa-solid fa-briefcase"></i> {{item.sector}}</p> -->
+                        <p class="client-indent"><i class="fa-solid fa-suitcase"></i> {{clientList?.indentCount}} Indents</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+                <div class="nav-align-top mb-4">
+                    <ul class="nav nav-tabs nav-fill" role="tablist" style="background-color: #f0f8ff;">
+                        <li class="nav-item" role="presentation">
+                            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-home" aria-controls="navs-justified-home" aria-selected="true"><i class="tf-icons bx bx-home me-1"></i> Overview</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-profile" aria-controls="navs-justified-profile" aria-selected="false" tabindex="-1"><i class="tf-icons bx bx-user me-1"></i>Indents</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show" id="navs-justified-home" role="tabpanel">
+                            <h5 class="text-danger mb-3">Basic Information</h5>
+                            <div class="card card-action mb-4">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-xl-7 col-12">
+                                            <dl class="row mb-0">
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Name:</dt>
+                                                <dd class="col-sm-8">{{clientList?.name}}</dd>
+                                
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Firm Name:</dt>
+                                                <dd class="col-sm-8">{{clientList?.firmName}}</dd>
+                                
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">State:</dt>
+                                                <dd class="col-sm-8">{{clientList?.state}}</dd>
+                                
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">City:</dt>
+                                                <dd class="col-sm-8">{{clientList?.city}}</dd>
+                                
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Address:</dt>
+                                                <dd class="col-sm-8">{{clientList?.address}}</dd>
+                                            </dl>
+                                        </div>
+                                        <div class="col-xl-5 col-12">
+                                            <dl class="row mb-0">
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Location:</dt>
+                                                <dd class="col-sm-8">{{clientList?.location}}</dd>
+                                
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Sector:</dt>
+                                                <dd class="col-sm-8">{{clientList?.sector}}</dd>
+                                
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Industry:</dt>
+                                                <dd class="col-sm-8">{{clientList?.industry}}</dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <h5 class="text-danger mb-3">Client Certifications</h5>
+                            <div class="card card-action mb-4">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-xl-7 col-12">
+                                            <dl class="row mb-0">
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">PAN card Number:</dt>
+                                                <dd class="col-sm-8">{{clientList?.pancard || '---'}}</dd>
+                                
+                                                @if(clientList?.pancardImage){
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">PAN card Image:</dt>
+                                                <dd class="col-sm-8"><a href="{{baseAPIURL}}{{clientList?.pancardImage}}" target="_blank"><img src="{{pancardImageUrl}}" class="logoImage rounded" loading="lazy"></a></dd>
+                                                }
+                                            </dl>
+                                        </div>
+                                        <div class="col-xl-5 col-12">
+                                            <dl class="row mb-0">
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">GSTIN:</dt>
+                                                <dd class="col-sm-8">{{clientList?.gstin ? 'Yes' : 'NA'}}</dd>
+                                
+                                                @if(clientList?.gstin){
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">GST Number:</dt>
+                                                <dd class="col-sm-8">{{clientList?.gistinNumber}}</dd>
+                                
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">GSTIN Image:</dt>
+                                                <dd class="col-sm-8"><a href="{{baseAPIURL}}{{clientList?.gstinImage}}" target="_blank"><img src="{{gstImageUrl}}" class="logoImage rounded" loading="lazy"></a></dd>
+                                                }
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h5 class="text-danger mb-3">Description</h5>
+                            <p class="mb-5">{{clientList?.description}}</p>
+
+
+                            <h5 class="text-danger mb-3">Client SPOC</h5>
+                            <div class="row mb-4">
+                                @if(clientList?.spocCount){
+                                    @for(spoc of clientList?.spoc; track $index){
+                                        <div class="col-md-4">
+                                            <div class="spoc-card rounded">
+                                                <div class="spoc-img">
+                                                    @if(spoc?.image != null && spoc?.image != ''){
+                                                        <img src="{{baseAPIURL}}{{spoc.image}}" alt="user-avatar" class="d-block rounded">
+                                                    }@else{
+                                                        <img src="../../../assets/images/user.jpg" alt="user-avatar" class="d-block rounded">
+                                                    }
+                                                </div>
+                                                <div class="spoc-details">
+                                                    <p class="mb-0"><i class="fa-solid fa-user text-danger"></i> {{spoc.name}}</p>
+                                                    <p class="mb-0"><i class="fa-solid fa-envelope text-danger"></i> {{spoc.email}}</p>
+                                                    <p class="mb-0"><i class="fa-solid fa-phone text-danger"></i> {{spoc.mobile}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }@else{
+                                    <p>Client SPOC is not added, <a class="link-primary" [routerLink]="['/users']">Add SPOC</a></p>
+                                }
+                            </div>
+                              
+                            <!-- <h5 class="text-danger mb-3">TMI SPOC</h5>
+                            <div class="row mb-4">
+                                <div class="col-md-4">
+                                    <div class="spoc-card rounded">
+                                        <p><i class="fa-solid fa-user text-danger"></i> {{clientList?.tmi_spoc?.name}}</p>
+                                        <p><i class="fa-solid fa-envelope text-danger"></i> {{clientList?.tmi_spoc?.email}}</p>
+                                        <p><i class="fa-solid fa-phone text-danger"></i> {{clientList?.tmi_spoc?.mobile}}</p>
+                                    </div>
+                                </div>
+                            </div> -->
+
+
+                        </div>
+
+                        <div class="tab-pane fade indentcomponent" id="navs-justified-profile" role="tabpanel">
+                            @for(iteam of indentList; track $index){
+                            <div class="tmi-jobs-list-wrap">
+                                <ul>
+                                    <li>
+                                        <div class="srp-jobtuple-wrapper" data-job-id="141220500637">
+                                            <div class="cust-job-tuple layout-wrapper lay-2 sjw__tuple rounded" style="background-color: #f7f7f7;">
+                                                <div class=" row1">
+                                                    @if(iteam.client[0]){
+                                                        <a  [routerLink]="['/job_details', iteam?._id]"><p class="comp-name mw-25" tooltipPosition="top" pTooltip="Client Name" style="margin-right: 15px;" class= "title"><i class="fa-solid fa-building-ngo"></i> {{iteam.indentStep1.jobTitle}}</p></a>
+                                                    }
+                                                </div>
+                                                <div class=" row3">
+                                                    <div class="job-details ">
+                                                        <span class="exp-wrap">
+                                                            <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-experience exp">
+                                                                <span tooltipPosition="top" pTooltip="Experience" class="expwdth"><i class="fa-solid fa-briefcase"></i>{{iteam.indentStep2.minExperience}} - {{iteam.indentStep2.maxExperience}} Yrs </span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="sal-wrap ver-line">
+                                                            <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-rupee sal">
+                                                                <span tooltipPosition="top" pTooltip="Salary" class=""><i class="fa-solid fa-indian-rupee-sign"></i>{{iteam.indentStep2.minSalary | currency:'INR' : '' : '1.0-0'}} - {{iteam.indentStep2.maxSalary | currency:'INR':'':'1.0-0'}} Per {{iteam.indentStep2.salaryUnit}}</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="loc-wrap ver-line">
+                                                            <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                                                <span tooltipPosition="top" pTooltip="Vacancies" class="locWdth"><i class="fa-solid fa-suitcase"></i>{{iteam.indentStep2.vacancies}}</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="loc-wrap ver-line">
+                                                            <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                                                <span tooltipPosition="top" pTooltip="Job Location" class="locWdth"><i class="fa-solid fa-location-dot"></i>{{iteam.indentStep2.advLocation}}</span>
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="skills">
+                                                    <ul class="list-inline">
+                                                        @for(skill of iteam.indentStep2.skilsList; track $index){
+                                                            <li class="list-inline-item" tooltipPosition="top" pTooltip="Skills">{{skill}}</li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                                <div class="row6">  
+                                                    <span tooltipPosition="left" pTooltip="Posted On" class="job-post-day"><i class="fa-regular fa-clock"></i> {{iteam.posted_on}} || {{iteam.created_at | date: 'dd MMM, yyyy'}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    <!-- <li>
+                                        <div class="srp-jobtuple-wrapper" data-job-id="141220500637">
+                                            <div class="cust-job-tuple layout-wrapper lay-2 sjw__tuple rounded" style="background-color: #f7f7f7;">
+                                                <div class=" row1">
+                                                    <a tooltipPosition="top" pTooltip="Indent Title" class="title" [routerLink]="['/job_details']">Test Job 2</a>
+                                                </div>
+                                                <div class=" row3">
+                                                    <div class="job-details ">
+                                                        <span class="exp-wrap">
+                                                            <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-experience exp">
+                                                                <span tooltipPosition="top" pTooltip="Experience" class="expwdth"><i class="fa-solid fa-briefcase"></i>  0 - 10 Yrs</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="sal-wrap ver-line">
+                                                            <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-rupee sal">
+                                                                <span tooltipPosition="top" pTooltip="Salary" class=""><i class="fa-solid fa-indian-rupee-sign"></i> 50000 - 60000 Per Month</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="loc-wrap ver-line">
+                                                            <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                                                <span tooltipPosition="top" pTooltip="Vacancies" class="locWdth"><i class="fa-solid fa-suitcase"></i>  10 Nos.</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="loc-wrap ver-line">
+                                                            <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                                                <span tooltipPosition="top" pTooltip="Job Location" class="locWdth"><i class="fa-solid fa-location-dot"></i> Anantapur,Cuttack</span>
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="skills">
+                                                    <ul class="list-inline">
+                                                        
+                                                            <li class="list-inline-item" tooltipPosition="top" pTooltip="Skills">PHP</li>
+                                                        
+                                                    </ul>
+                                                </div>
+                                                <div class="row6">  
+                                                    <span tooltipPosition="left" pTooltip="Posted On" class="job-post-day"><i class="fa-regular fa-clock"></i> 3 Days ago</span>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </li> -->
+                                </ul>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

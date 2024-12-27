@@ -1,0 +1,46 @@
+
+.step-form .form-group{
+    margin-bottom: 18px;
+}
+
+.step-form .form-group label.control-label{
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.step-form .form-group .form-control{
+    border-radius: 6px;
+}
+
+
+.form-control {
+    appearance: auto;
+    color: #808385;
+}
+
+::placeholder {
+    color: #808385;
+  }
+
+
+  
+.panel-header{
+    background: #ecf0f5;
+    padding: 10px 0 10px 15px;
+    border-radius: 5px 5px 0 0;
+}
+.step-form{
+    border: 1px solid #ecf0f5;
+    padding: 15px;
+    border-radius: 0 0 5px 5px;
+}
+.step3panel{
+    border: 1px solid #ecf0f5;
+    padding: 15px;
+    border-radius: 0 0 5px 5px;
+}
+
+.error{
+    font-size: 12px;
+    font-style: italic;
+}

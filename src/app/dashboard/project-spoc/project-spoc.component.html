@@ -1,0 +1,37 @@
+
+<div class="section-full p-5 mt-5 site-bg-gray">
+    <div class="container vh-100 mb-5">
+        @if(loader){
+            <div class="fb-item py-5" style="height: 600px;">
+                <div class="first-section-wrapper">
+                    <div class="gravatar-title">
+                        <div>
+                            <ngx-skeleton-loader [theme]="{width: '80vw', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                        </div>
+                    </div>
+                </div>
+                <div class="second-section-wrapper" style="margin-top: -30px;">
+                    <div class="wrapper">
+                        <ngx-skeleton-loader count="1" appearance="circle" [theme]="{ width: '95%', height: '430px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                    </div>
+                </div>
+            </div>
+        }
+        @else{
+        <div class="filter-heading">
+            <div class="breadcrumb nav">
+                <span class="breadcrumb-item">
+                    <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+                </span>
+                <span class="breadcrumb-item">
+                    <a class="breadcrumb-link" [routerLink]="['/projectspoc']">Project SPOC</a>
+                </span>
+            </div>
+        </div>
+        <iframe src="https://www.jotform.com/table/243238273484057"
+        frameborder="0" style="width: 100%; height: 100%; min-height: 500px; border:none;" scrolling="auto">
+        </iframe>
+    }
+    </div>
+</div>
+

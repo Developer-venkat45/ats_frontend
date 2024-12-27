@@ -1,0 +1,83 @@
+
+   <!-- CONTENT START -->
+   <div class="page-content">
+      <div class="section-full site-bg-white">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-xl-8 col-lg-6 col-md-5 tmi-log-reg-media-wrap">
+                  <div class="tmi-log-reg-media">
+                     <div class="tmi-l-media">
+                        <img src="../../assets/images/login-bg.png" alt="">
+                     </div>
+                  </div>
+               </div>
+               <div class="col-xl-4 col-lg-6 col-md-7 tmi-log-reg-media-wrap-right">
+                  <div class="tmi-log-reg-form-wrap tmi-log-reg-media" style="padding: 20px 0px;">
+                     <div class="tmi-log-reg-inner">
+                        <div class="tmi-log-reg-head mb-4">
+                           <a href="/">
+                              <div class="tmi-log-reg-logo">
+                                 <img src="https://tminetwork.com/wp-content/themes/tminetwork-theme/assets/images/TMI_Network.png" style="width: 120px; height: auto; margin-bottom: 50px;">
+                                 <span class="log-reg-form-title">Log In</span>
+                              </div>
+                           </a>
+                        </div>
+                        <div class="step-form">
+                           <form [formGroup]="loginForm">
+                              <div class="row">
+                                 <div class="col-md-12">
+                                    <div class="form-group">
+                                       <label class="control-label">Email Id or Username <span class="text-danger">*</span></label>
+                                       <input type="text" class="form-control" placeholder="Enter your Email Id or Username" formControlName="username">
+                                       <div class="text-danger pt-2 error" *ngIf="loginForm.controls.username.invalid && (loginForm.controls.username.touched || loginForm.controls.username.dirty || isFormSubmited)" >
+                                          <span *ngIf="loginForm.controls.username.errors?.['required']">* This field is required</span>
+                                       </div>
+                                    </div>
+                                 </div>
+
+                                 <div class="col-md-12">
+                                    <div class="form-group" style="position: relative;">
+                                       <label class="control-label">Password <span class="text-danger">*</span></label>
+                                       <input [type]="passwordFieldType" class="form-control" placeholder="Enter your Password" formControlName="password">
+                                       <span class="eyeicon" (click)="togglePasswordVisibility()"><i [class]="passwordFieldIcon"></i></span>
+                                       <div class="text-danger pt-2 error" *ngIf="loginForm.controls.password.invalid && (loginForm.controls.password.touched || loginForm.controls.password.dirty || isFormSubmited)" >
+                                          <span *ngIf="loginForm.controls.password.errors?.['required']">* This field is required</span>
+                                       </div>
+                                    </div>
+                                 </div>
+
+                                 <!-- {{registerForm.value | json}} -->
+                                 <p class="text-info">{{apiMessage}}</p>
+                                 <div class="col-md-12">
+                                    <div class="form-group">
+                                       @if(isLoading){
+                                          <button class="btn btn-primary postjob-btn w-100" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                                       }@else{
+                                          <button class="btn site-button w-100" type="button" (click)="login()">Login</button>
+                                       }
+                                       <p class="mt-2"><a [routerLink]="['/forgot-password']" class="site-text-primary">Forgot Password</a></p>
+                                    </div>
+                                 </div>
+
+                                 <div class="col-lg-12">
+                                    <div class="tmi-forgot-wrap">
+                                       <div class="form-group mb-3">
+                                          <p>Don't have an account? <a [routerLink]="['/register']" class="site-text-primary">Register</a> as a Candidate</p>
+                                          <p>Already Registered? <a [routerLink]="['/send-token']" class="site-text-primary">Verify Email</a> now</p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- CONTENT END -->
+
+<!-- </div> -->
+<p-toast />

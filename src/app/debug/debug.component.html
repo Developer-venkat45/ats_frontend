@@ -1,0 +1,29 @@
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+      <div class=" container col-md-12">
+            <div class="breadcrumb nav">
+                  <span class="breadcrumb-item">
+                        <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+                  </span>
+            </div>
+      </div>
+     <div class="container">
+        <div class="row">
+              <div class="col-md-9">
+                 <div class="step-form-rounded">
+                        <form [formGroup]="routeForm">
+                              <div class="row">
+                                    <div class="col-md-6">
+                                          <div class="form-group">
+                                                <label class="control-label">Route <span class="text-danger">*</span></label>
+                                                <select class="form-control" formControlName="route">
+                                                      <option value="">Select Route</option>
+                                                </select>
+                                          </div>
+                                    </div>
+                              </div>
+                        </form>
+                 </div>
+              </div>
+        </div>
+     </div>
+</div>

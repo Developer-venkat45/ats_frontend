@@ -1,0 +1,137 @@
+
+tr>td:nth-child(2),input[type="radio"],label{
+  cursor: pointer;
+}
+
+.full-screen-form {
+    height: calc(100vh - 4rem) !important; /* Adjust according to header and footer heights */
+    overflow-y: auto;
+  }
+  
+  .full-screen-form .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .full-screen-form .form-check-inline {
+    margin-right: 1rem;
+  }
+  
+  .full-screen-form .submit-btn {
+    text-align: right;
+    margin-top: 1rem;
+  }
+  
+  .full-screen-form .btn.postjob-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+  }
+  
+  .full-screen-form .btn.postjob-btn:hover {
+    background-color: #0056b3;
+  }
+
+
+
+.step-form{
+    background-color: #FFF;
+    padding: 15px;
+}
+.step-form .form-group{
+    margin-bottom: 18px;
+}
+
+.step-form .form-group label.control-label{
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.step-form .form-group .form-control{
+    border-radius: 6px;
+}
+
+
+.form-control {
+    appearance: auto;
+    color: #808385;
+}
+::placeholder {
+    color: #808385;
+}
+
+.error{
+    font-size: 12px;
+    font-style: italic;
+}
+
+.option-group{
+    background-color: #F0f0f0;
+    padding: 15px;
+}
+
+
+.step-boder{
+    height: 600px;
+    overflow: hidden;
+    overflow-y: overlay;
+}
+
+.crossbtn{
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.ngx-editor-toolbar .ngx-editor-button.color {
+  color: #333;
+  background: transparent;
+  border: none;
+}
+
+.ngx-editor-toolbar .ngx-editor-button.color .color-picker {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ddd;
+  margin: 2px;
+  cursor: pointer;
+}
+
+.ul{
+  display: flex;
+  margin-bottom: -7px;
+  margin-top: 5px;
+  flex-wrap: wrap;
+}
+
+.li{
+  list-style-type: none;
+  font-size: 14px;
+  color: rgb(60, 60, 60);
+  background-color: rgb(229, 231, 235);
+  border-radius: 5px;
+  padding: 2px 8px;
+  margin: 2px 5px;
+}
+
+.hover-text:hover{
+  color:#0d9354;
+  cursor: pointer;
+}
+
+#selectedBox{
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  z-index: 10;
+  color: white;
+  background-color: #343a40;
+  padding:3px 9px;
+  border-radius:6px;
+  opacity: 0.8;
+  line-height: 25px;
+}

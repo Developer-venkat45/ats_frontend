@@ -1,0 +1,250 @@
+<!-- OUR BLOG START -->
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class="container">
+        <div class="row">
+            <!-- <div class="col-lg-3 col-md-12 rightSidebar">
+                <div class="side-bar bg-white p-3 rounded" style="margin-top: 46px;">
+                    <div class="sidebar-elements search-bx">
+                                
+                        <div class="form-group mb-4">
+                            <h4 class="section-head-small mb-2"><i class="fa-solid fa-filter"></i> All Filters</h4>
+                            <h4 class="section-head-small reset-filter mb-2" tooltipPosition="top" pTooltip="Reset Filters" (click)="resetFilter()"><i class="fa-solid fa-retweet"></i></h4>
+                            <hr class="hr"/>
+                        </div>
+                        
+                        <div class="form-group mb-4">
+                            <h4 class="section-head-small mb-2">Category</h4>
+                            <select class="wt-select-bar-large selectpicker" [(ngModel)]="searchCategory" (change)="getCategory($event)">
+                                <option value="">Select Category</option>
+                                @for(iteam of categoryData; track $index){
+                                    <option>{{iteam.name}}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <hr class="hr"/>
+                        <div class="form-group mb-4">
+                            <h4 class="section-head-small mb-2">Keyword</h4>
+                            <div class="input-group">
+                                <input type="text" name="query" class="form-control" [(ngModel)]="searchTerm" (blur)="searchQuery()" placeholder="Job Title or Keyword">
+                            </div>
+                        </div>
+
+                        <hr class="hr"/>
+                        <div class="form-group mb-4">
+                            <h4 class="section-head-small mb-2">Location</h4>
+                            <div class="input-group">
+                                <input type="text" name="location" class="form-control" [(ngModel)]="searchLocationData" (blur)="searchLocation()" placeholder="Search Location">
+                            </div>
+                        </div>
+
+                        <hr class="hr"/>
+                        <div class="form-group mb-4">
+                            <h4 class="section-head-small mb-2">Indent Type</h4>
+                            <select class="wt-select-bar-large selectpicker" [(ngModel)]="searchIndentType" (change)="getIndentTypeJob($event)">
+                                <option value="">Select Indent Type</option>
+                                @for(job of jobTypeData; track $index){
+                                    <option>{{job}}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <hr class="hr"/>
+                        <div class="tmi-sidebar-ele-filter">
+                            <div class="form-group mb-4">
+                            <h4 class="section-head-small mb-2">Date Posted</h4>
+                            <ul>
+                                <li>
+                                    <div class="form-check">
+                                        <input type="radio" class="form-check-input" name="timePeriod" (change)="onRadioChange('last hour')">
+                                        <label class="form-check-label" for="exampleradio1">Last hour</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-check">
+                                        <input type="radio" class="form-check-input" name="timePeriod" (change)="onRadioChange('last 24 hours')">
+                                        <label class="form-check-label" for="exampleradio2">Last 24 hours</label>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="form-check">
+                                        <input type="radio" class="form-check-input" name="timePeriod" (change)="onRadioChange('last 7 days')">
+                                        <label class="form-check-label" for="exampleradio3">Last 7 days</label>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="form-check">
+                                        <input type="radio" class="form-check-input" name="timePeriod" (change)="onRadioChange('last 14 days')">
+                                        <label class="form-check-label" for="exampleradio4">Last 14 days</label>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="form-check">
+                                        <input type="radio" class="form-check-input" name="timePeriod" (change)="onRadioChange('last 30 days')">
+                                        <label class="form-check-label" for="exampleradio5">Last 30 days</label>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="form-check">
+                                        <input type="radio" class="form-check-input" name="timePeriod" (change)="onRadioChange('all')">
+                                        <label class="form-check-label" for="exampleradio6">All</label>
+                                    </div>
+                                </li>
+                
+                            </ul>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="col-lg-9 col-md-12">
+
+
+                <div class="product-filter-wrap d-flex justify-content-between align-items-center m-b20">
+                    <span class="">Showing {{totalRecord}} Applied Jobs</span>
+                    <form class="woocommerce-ordering tmi-filter-select" method="get">
+                        <!-- <span class="woocommerce-result-count">Show </span> -->
+                        <select class="wt-select-bar-2 selectpicker" (change)="onSelectChange($event)">
+                            <option value="10">Show 10</option>
+                            <option value="20">Show 20</option>
+                            <option value="30">Show 30</option>
+                            <option value="40">Show 40</option>
+                            <option value="50">Show 50</option>
+                            <option value="60">Show 60</option>
+                        </select>
+                    </form>
+                </div>
+                
+                @if(loader){
+                    @for(iteam of getNumberArray(loaderCount); track $index){
+                    <div class="fb-item">
+                        <div class="first-section-wrapper">
+                            <div class="gravatar-title">
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{ width: '170px', 'border-radius': '0', height: '15px' }"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                            <div class="gravatar">
+                                <ngx-skeleton-loader appearance="circle" [theme]="{ width: '80px', height: '80px' }"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                        <div class="second-section-wrapper">
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{width: '80%','border-radius': '0',height: '10px','margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '90%','border-radius': '0',height: '10px','margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{width: '60%','border-radius': '0',height: '10px','margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader count="4" appearance="circle" [theme]="{width: '20%',height: '70px','border-radius': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                }
+                @else{
+                <div class="tmi-jobs-list-wrap">
+                    @if(totalRecord > 0){
+                    <ul>
+                        @for(iteam of indentList; track $index){
+                        <li>
+                            <div class="srp-jobtuple-wrapper" data-job-id="141220500637">
+                                <div class="cust-job-tuple layout-wrapper lay-2 sjw__tuple rounded">
+                                    <div class=" row1">
+                                        @if(detailsLink){
+                                            <a tooltipPosition="top" pTooltip="Indent Title" class="title" routerLink="/applieddetails/{{iteam.indent_id}}">{{iteam.indent.indentStep1.jobTitle}}</a>
+                                        }@else{
+                                            <a tooltipPosition="top" pTooltip="Indent Title" class="title" routerLink="/job_details/{{iteam.indent_id}}">{{iteam.indent.indentStep1.jobTitle}}</a>
+                                        }
+                                    </div>
+                                    @if(iteam.indent.indentStep1.hideClient == false){
+                                        @if(iteam.indent.clientDetails){
+                                            <div class=" row2">
+                                                <span class="comp-dtls-wrap">
+                                                    <p class="comp-name mw-25" tooltipPosition="top" pTooltip="Client Name">{{iteam.indent.clientDetails.name}}</p>
+                                                </span>
+                                            </div>
+                                        }
+                                    }
+                                    <div class=" row3">
+                                        <div class="job-details ">
+                                            <span class="exp-wrap">
+                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-experience exp">
+                                                    <span tooltipPosition="top" pTooltip="Experience" class="expwdth"><i class="fa-solid fa-briefcase"></i> {{iteam.indent.indentStep2.minExperience}} - {{iteam.indent.indentStep2.maxExperience}} Yrs</span>
+                                                </span>
+                                            </span>
+                                            <span class="sal-wrap ver-line">
+                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-rupee sal">
+                                                    <span tooltipPosition="top" pTooltip="Salary" class=""><i class="fa-solid fa-indian-rupee-sign"></i> {{iteam.indent.indentStep2.minSalary}} - {{iteam.indent.indentStep2.maxSalary}} Per {{iteam.indent.indentStep2.salaryUnit}}</span>
+                                                </span>
+                                            </span>
+                                            <span class="loc-wrap ver-line">
+                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                                    <span tooltipPosition="top" pTooltip="Vacancies" class="locWdth"><i class="fa-solid fa-suitcase"></i> {{iteam.indent.indentStep2.vacancies}} Nos.</span>
+                                                </span>
+                                            </span>
+                                            <span class="loc-wrap ver-line">
+                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                                    <span tooltipPosition="top" pTooltip="Job Location" class="locWdth"><i class="fa-solid fa-location-dot"></i> {{iteam.indent.indentStep2.advLocation}}</span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="skills">
+                                        <ul class="list-inline">
+                                            @for(skill of iteam.indent.skilsList; track $index){
+                                                <li class="list-inline-item" tooltipPosition="top" pTooltip="Skills">{{skill}}</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="row6">  
+                                                <span tooltipPosition="left" pTooltip="Posted On" class="job-post-day"><i class="fa-regular fa-clock"></i> {{iteam.indent.posted_on}} || {{iteam.indent.created_at | date: 'dd MMM, yyyy'}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p class="mb-0" ><b>Applied On: </b> <span >{{iteam.created_at |  date: 'dd MMM, yyyy'}}</span></p> 
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p class="mb-0" ><b>Current Stage: </b> <span class="parentStage">{{iteam.stage | titlecase}}</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        }
+                    </ul>
+                    }@else{
+                        <div class="col-md-12">
+                            <div class="empty_state rounded">
+                                <i class="fa-solid fa-face-surprise"></i>
+                                <h3 class="">No records</h3>
+                                <p>There are no records found</p>
+                            </div>
+                        </div>
+                    }
+                
+                </div>
+                }
+                
+                
+
+
+            </div>
+        </div>
+    </div>
+</div>   
+<!-- OUR BLOG END -->          

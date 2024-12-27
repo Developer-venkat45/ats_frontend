@@ -1,0 +1,695 @@
+@if(allIndentDataShow){
+    
+    <div class="product-filter-wrap d-flex justify-content-between align-items-center m-b20">
+        <span class="">Showing {{fetchedRecord}} Indents</span>
+        <form class="woocommerce-ordering tmi-filter-select" method="get">
+            <select class="wt-select-bar-2 selectpicker" (change)="onSelectChange($event)">
+                <option value="10">Show 10</option>
+                <option value="20">Show 20</option>
+                <option value="30">Show 30</option>
+                <option value="40">Show 40</option>
+                <option value="50">Show 50</option>
+                <option value="60">Show 60</option>
+            </select>
+        </form>
+    </div>
+
+    @if(loader){
+        @for(iteam of getNumberArray(loaderCount); track $index){
+            <div class="fb-item">
+                <div class="first-section-wrapper">
+                    <div class="gravatar-title">
+                        <div><ngx-skeleton-loader [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader></div>
+                        <div><ngx-skeleton-loader [theme]="{ width: '170px', 'border-radius': '0', height: '15px' }"></ngx-skeleton-loader></div>
+                    </div>
+                    <div class="gravatar">
+                        <ngx-skeleton-loader appearance="circle" [theme]="{ width: '80px', height: '80px' }"></ngx-skeleton-loader>
+                    </div>
+                </div>
+                <div class="second-section-wrapper">
+                    <div class="wrapper">
+                        <ngx-skeleton-loader [theme]="{width: '80%','border-radius': '0',height: '10px','margin-bottom': '10px'}"></ngx-skeleton-loader>
+                    </div>
+                    <div class="wrapper">
+                        <ngx-skeleton-loader [theme]="{ width: '90%','border-radius': '0',height: '10px','margin-bottom': '10px'}"></ngx-skeleton-loader>
+                    </div>
+                    <div class="wrapper">
+                        <ngx-skeleton-loader [theme]="{width: '60%','border-radius': '0',height: '10px','margin-bottom': '10px'}"></ngx-skeleton-loader>
+                    </div>
+                    <div class="wrapper">
+                        <ngx-skeleton-loader count="4" appearance="circle" [theme]="{width: '20%',height: '70px','border-radius': '10px'}"></ngx-skeleton-loader>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    @else{
+        <div class="tmi-jobs-list-wrap">
+            <ul>
+                @if(totalRecord > 0){
+                    @if(loginUserRole == 'Partner SPOC - Manager' && partnerExpired == true){
+                        <div class="alert alert-warning" role="alert">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Your agreement has been expired on {{partnerList.aggrementExpirationdate | date: 'dd MMM, yyyy' }}.
+                        </div>
+                    }
+                    @if(loginUserRole == 'Candidate' && isAllow == false){
+                        <div class="alert alert-danger" role="alert">
+                            <p class="mb-0"><i class="fa-solid fa-triangle-exclamation"></i> Please complete your <span><a routerLink="/myaccount" class="text-primary">profile</a></span> to apply for the Jobs.</p>
+                        </div>
+                    }
+
+                    @for(iteam of indentList; track $index){
+                        <li>
+                            <div class="srp-jobtuple-wrapper" data-job-id="141220500637">
+                                <div class="cust-job-tuple layout-wrapper lay-2 sjw__tuple rounded">
+                                    <div class=" row1">
+                                        <a tooltipPosition="top" pTooltip="Indent Title" class="title" routerLink="/job_details/{{iteam._id}}">{{iteam.indentStep1.jobTitle}}</a>
+
+                                        @if(isLoggedIn){
+                                            @if(isShown2){
+                                                @if(iteam.indent_status === 'Open'){
+                                                    @if(loginUserRole == 'Partner SPOC - Manager'){
+                                                        @if(partnerExpired == false){
+                                                        <span class="indent_status rounded" (click)="op2.toggle($event)" tooltipPosition="top" pTooltip="Change Indent Status"><i class="fa-solid fa-gear"></i> Action</span>
+                                                        }
+                                                    }@else{
+                                                        <span class="indent_status rounded" (click)="op2.toggle($event)" tooltipPosition="top" pTooltip="Change Indent Status"><i class="fa-solid fa-gear"></i> Action</span>
+                                                    }
+                                                }
+                                                <div class="card flex justify-content-center ml-2">
+                                                    <p-overlayPanel #op2>
+                                                        <div class="flex flex-column gap-3 w-25rem">
+                                                            <!-- <p><a [routerLink]="['/jobpopup']" [queryParams]="{ jobid: iteam._id }" class="text-primary">Recruit</a></p> -->
+                                                            
+                                                            <p><a [routerLink]="['/cvupload', iteam._id]" class="text-primary">Upload CV</a></p>
+                                                            
+                                                            
+                                                            @if(loginUserRole == 'Super Admin' || loginUserRole == 'Recruiter' || loginUserRole =='BU Head' || loginUserRole =='Project Manager' || loginUserRole =='CRCM' || loginUserRole=='Partner Admin - Internal' || loginUserRole=='Partner SPOC - Manager'){
+                                                                <p class="text-primary" routerLink="/candidates" [queryParams]="{ indentid: iteam._id}" style="cursor: pointer;">Assign Existing Candidate</p>
+                                                            }
+                                                            @if(loginUserRole == 'Super Admin' || loginUserRole == 'Recruiter' || loginUserRole =='BU Head' || loginUserRole =='Project Manager' || loginUserRole =='CRCM' || loginUserRole=='Partner Admin - Internal'){
+                                                                @if(iteam.indentStep1.businessUnit == 'BFSI' || iteam.indentStep1.businessUnit == 'Non-BFSI'){
+                                                                    <p class="text-primary" (click)="updatePartner(iteam)" style="cursor: pointer;">Assign/Reassign Partner</p>
+                                                                }
+                                                            }
+                                                            @if(loginUserRole == 'Super Admin' || loginUserRole == 'CRCM' || loginUserRole =='BU Head' || loginUserRole =='Project Manager' || loginUserRole =='CRCM' || loginUserRole=='Partner Admin - Internal'){
+                                                                <p class="text-primary" (click)="updateRecruiter(iteam)" style="cursor: pointer;">Assign/Reassign Recruiter</p>
+                                                            }
+                                                            @if(loginUserRole == 'Super Admin' || loginUserRole == 'CRCM' || loginUserRole =='BU Head' || loginUserRole =='Project Manager'){
+                                                                <p class="text-primary" (click)="manageLocation(iteam.indentStep2.advLocation, iteam._id)" style="cursor: pointer;">Manage Indent Location</p>
+                                                            }
+
+                                                            @if(isShown4 && isShown3){
+                                                                <!-- <p><a [routerLink]="['/addcandidate']" [queryParams]="{ indentId: iteam._id }" class="text-primary">Add Manual Candidate</a></p> -->
+                                                                <!-- <p><a routerLink="['/jobpopup']" [queryParams]="{ jobid: iteam._id }" class="text-primary">Edit Indent</a></p> -->
+                                                                
+                                                                <!-- @if(iteam.screening == 0 && iteam.interview == 0 && iteam.offer == 0 && iteam.hire == 0){
+                                                                    <p class="text-primary" routerLink="/editindent/{{iteam._id}}" style="cursor: pointer;">Edit Indent</p>
+                                                                }@else{
+                                                                    @if(isSuperAdmin){
+                                                                        <p class="text-primary" routerLink="/editindent/{{iteam._id}}" style="cursor: pointer;">Edit Indent</p>
+                                                                    }
+                                                                } -->
+
+                                                                <p class="text-primary" routerLink="/editindent/{{iteam._id}}" style="cursor: pointer;">Edit Indent</p>
+                                                            }
+                                                            
+                                                        </div>
+                                                    </p-overlayPanel>
+                                                </div>
+                                            }@else{
+                                                @if(iteam.applied ?? null){
+                                                    <a routerLink="/applieddetails/{{iteam._id}}" class="btn appaly_btn ml-2 postjob-btn"><i class="fa-solid fa-paper-plane"></i> Applied</a>
+                                                }@else{
+                                                    <a [ngClass]="{'disabled': isAllow == false}" class="btn appaly_btn ml-2 postjob-btn" routerLink="/enaditest/{{iteam._id}}/{{iteam.indentStep4.eandiId}}/{{candidateId}}"><i class="fa-solid fa-paper-plane"></i> Apply</a>
+                                                }
+                                            }
+                                        }@else{
+                                            <a class="btn appaly_btn ml-2 postjob-btn" routerLink="/login"><i class="fa-solid fa-paper-plane"></i> Apply</a>
+                                        }
+
+                                        @if(isLoggedIn){
+                                            @if(isShown){
+                                                @if(isShown2 && isShown3){
+                                                    <button class="btn client_status rounded ml-2" (click)="indentStatusModalPop(iteam.indent_status, iteam._id)"><i [ngClass]="{'fa-eye': iteam.indent_status === 'Open', 'fa-eye-slash': iteam.indent_status != 'Open'}" class="fa"></i> {{iteam.indent_status}}</button>
+                                                }
+                                                <a [routerLink]="['/candidate']" [queryParams]="{ indentId: iteam?._id}"  class="btn applied_status rounded ml-2"><i class="fa fa-paper-plane"></i> Applied</a>
+                                            }
+                                        }
+
+                                    </div>
+                
+                                    <div class=" row2">
+                                        <span class="comp-dtls-wrap">
+                                            
+                                            @if(isLoggedIn){
+                                                @if(loginUserRole == 'Candidate'){
+                                                    @if(iteam.indentStep1.hideClient == false){
+                                                        @if(iteam.client[0]){
+                                                            <p class="comp-name mw-25" tooltipPosition="top" pTooltip="Client Name" style="margin-right: 15px;"><i class="fa-solid fa-building-ngo"></i> {{iteam.client[0].name}}</p>
+                                                        }
+                                                    }
+                                                }@else{
+                                                    <p class="comp-name mw-25" tooltipPosition="top" pTooltip="Client Name" style="margin-right: 15px;"><i class="fa-solid fa-building-ngo"></i> {{iteam.client[0].name}}</p>
+                                                }
+                                            }
+                                            @else{
+                                                @if(iteam.indentStep1.hideClient == false){
+                                                    @if(iteam.client[0]){
+                                                        <p class="comp-name mw-25" tooltipPosition="top" pTooltip="Client Name" style="margin-right: 15px;"><i class="fa-solid fa-building-ngo"></i> {{iteam.client[0].name}}</p>
+                                                    }
+                                                }
+                                            }
+                                            <p class="comp-name mw-25" tooltipPosition="top" pTooltip="Job Code" style="margin-right: 15px;"><i class="fa-solid fa-file"></i> {{iteam.indentStep1.jobCode}}</p>
+                                            <p class="comp-name mw-25" tooltipPosition="top" pTooltip="Indent Type"><i class="fa-solid fa-briefcase"></i> {{iteam.indentStep1.jobType}}</p>
+                                        </span>
+                                    </div>
+
+                                    <div class=" row3">
+                                        <div class="job-details ">
+                                            <span class="exp-wrap">
+                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-experience exp">
+                                                    <span tooltipPosition="top" pTooltip="Experience" class="expwdth"><i class="fa-solid fa-calendar"></i> {{iteam.indentStep2.minExperience}} - {{iteam.indentStep2.maxExperience}} Yrs</span>
+                                                </span>
+                                            </span>
+                                            <span class="sal-wrap ver-line">
+                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-rupee sal">
+                                                    <span tooltipPosition="top" pTooltip="Salary" class=""><i class="fa-solid fa-indian-rupee-sign"></i> {{iteam.indentStep2.minSalary | currency:'INR' : '' : '1.0-0'}} - {{iteam.indentStep2.maxSalary | currency:'INR':'':'1.0-0'}} Per {{iteam.indentStep2.salaryUnit}}</span>
+                                                </span>
+                                            </span>
+                                            <span class="loc-wrap ver-line">
+                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                                    <span tooltipPosition="top" pTooltip="Vacancies" class="locWdth"><i class="fa-solid fa-user"></i> {{iteam.indentStep2.vacancies}}</span>
+                                                </span>
+                                            </span>
+                                            <span class="loc-wrap ver-line">
+                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                                    <span tooltipPosition="top" pTooltip="Job Location" class="locWdth"><i class="fa-solid fa-location-dot"></i>
+                                                    <!-- @for(location of iteam.indentStep2.advLocation; track $index){
+                                                    {{location}}, 
+                                                    } -->
+                                                    @for(locationObj of iteam.indentStep2.jobLocations; track $index){
+                                                        @if(locationObj.status.toLowerCase()==="open"){
+                                                            {{locationObj.location}},
+                                                        }
+                                                    }
+                                                </span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="skills">
+                                        <ul class="list-inline">
+                                            @for(skill of iteam.indentStep2.skilsList; track $index){
+                                                <li class="list-inline-item" tooltipPosition="top" pTooltip="Skills">{{skill}}</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                    <div class="row6">  
+                                        <span tooltipPosition="left" pTooltip="Posted On" class="job-post-day"><i class="fa-regular fa-clock"></i> {{iteam.posted_on}} || {{iteam.created_at | date: 'dd MMM, yyyy'}}</span>
+                                    </div>
+                                    @if(isLoggedIn){
+                                        @if(isShown2 && isShown5){
+                                            <!-- <hr> -->
+                                            <!-- <div class="row7">
+                                                <div class="cand-stages">
+                                                    <div class="row">
+                                                        
+                                                        <div class="col-md-3">
+                                                            
+                                                            <div class="candidate-stage">
+                                                                <div class="screening-icon" (click)="op.toggle($event)" style="cursor: pointer;">
+                                                                    <img src="../../../assets/images/candidate_screen.png" >
+                                                                </div>
+                                                                <a [routerLink]="['/candidate']" [queryParams]="{ indentId: iteam._id, stage: 'screening' }">
+                                                                <div class="candidate-stage-details">
+                                                                    <h4>{{iteam.screening || 0}}</h4>
+                                                                    <h5>Screening</h5>
+                                                                </div>
+                                                                </a>
+                                                            </div>
+                                                            
+
+                                                            <div class="card flex justify-content-center">
+                                                                <p-overlayPanel #op>
+                                                                    <div class="flex flex-column gap-3 w-25rem">
+                                                                        @for(stages of iteam.newstage[0].details; track $index){
+                                                                            @if(stages.status){
+                                                                                @if(stages.displayName == "E And I Done"){
+                                                                                    <a [routerLink]="['/candidate']" [queryParams]="{ indentId: iteam._id, stage: 'screening', substage: 'EandIdone' }">
+                                                                                        <div class="resume rounded">
+                                                                                            <p class="mb-0" style="cursor: pointer;">{{stages.displayName}}: &nbsp; <span class="applied-indent-count">{{iteam.stage_count.screening.EandIdone}}</span></p>
+                                                                                        </div>
+                                                                                    </a>
+                                                                                }@else{
+                                                                                    <a [routerLink]="['/candidate']" [queryParams]="{ indentId: iteam._id, stage: 'screening', substage: stages.displayName }">
+                                                                                    <div class="resume rounded">
+                                                                                        <p class="mb-0" style="cursor: pointer;">{{stages.displayName}}: &nbsp; <span class="applied-indent-count">{{iteam.stage_count.screening[stages?.displayName]}}</span></p>
+                                                                                    </div>
+                                                                                </a>
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    </div>
+                                                                </p-overlayPanel>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-3">
+                                                            <div class="candidate-stage">
+                                                                <div class="screening-icon" (click)="op3.toggle($event)" style="cursor: pointer;">
+                                                                    <img src="../../../assets/images/interview.png" >
+                                                                </div>
+                                                                <a [routerLink]="['/candidate']" [queryParams]="{ indentId: iteam._id, stage: 'interview' }">
+                                                                    <div class="candidate-stage-details">
+                                                                        <h4>{{iteam.interview || 0}}</h4>
+                                                                        <h5>Interview</h5>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+
+                                                            <div class="card flex justify-content-center">
+                                                                <p-overlayPanel #op3>
+                                                                    <div class="flex flex-column gap-3 w-25rem">
+                                                                        @for(stages of iteam.newstage[1].details; track $index){
+                                                                            @if(stages.status){
+                                                                                <div class="resume rounded">
+                                                                                    <p class="mb-0" style="cursor: pointer;">{{stages.displayName}}: &nbsp; <span class="applied-indent-count">{{iteam.stage_count.interview[stages?.displayName]}}</span></p>
+                                                                                </div>
+                                                                            }
+                                                                        }
+                                                                    </div>
+                                                                </p-overlayPanel>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-3">
+                                                            
+                                                            <div class="candidate-stage">
+                                                                <div class="screening-icon" (click)="op4.toggle($event)" style="cursor: pointer;">
+                                                                    <img src="../../../assets/images/job-offer.png" >
+                                                                </div>
+                                                                <a [routerLink]="['/candidate']" [queryParams]="{ indentId: iteam._id, stage: 'offer' }">
+                                                                    <div class="candidate-stage-details">
+                                                                        <h4>{{iteam.offer || 0}}</h4>
+                                                                        <h5>Offer</h5>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+
+                                                            <div class="card flex justify-content-center">
+                                                                <p-overlayPanel #op4>
+                                                                    <div class="flex flex-column gap-3 w-25rem">
+                                                                        @for(stages of iteam.newstage[2].details; track $index){
+                                                                            @if(stages.status){
+                                                                                <div class="resume rounded">
+                                                                                    <p class="mb-0" style="cursor: pointer;">{{stages.displayName}}: &nbsp; <span class="applied-indent-count">{{iteam.stage_count.offer[stages?.displayName]}}</span></p>
+                                                                                </div>
+                                                                            }
+                                                                        }
+                                                                    </div>
+                                                                </p-overlayPanel>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="candidate-stage">
+                                                                <div class="screening-icon" (click)="op5.toggle($event)"  style="cursor: pointer;">
+                                                                    <img src="../../../assets/images/hiring.png" >
+                                                                </div>
+                                                                <a [routerLink]="['/candidate']" [queryParams]="{ indentId: iteam._id, stage: 'Hire' }">
+                                                                    <div class="candidate-stage-details">
+                                                                        <h4>{{iteam.hire || 0}}</h4>
+                                                                        <h5>Hire</h5>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                            
+
+                                                            <div class="card flex justify-content-center">
+                                                                <p-overlayPanel #op5>
+                                                                    <div class="flex flex-column gap-3 w-25rem">
+                                                                        @for(stages of iteam.newstage[3].details; track $index){
+                                                                            @if(stages.status){
+                                                                                <div class="resume rounded">
+                                                                                    <p class="mb-0" style="cursor: pointer;">{{stages.displayName}}: &nbsp; <span class="applied-indent-count">{{iteam.stage_count.hire[stages?.displayName]}}</span></p>
+                                                                                </div>
+                                                                            }
+                                                                        }
+                                                                    </div>
+                                                                </p-overlayPanel>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </li>
+                    }
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p>Showing {{startIndex2}} to {{endIndex2}} of {{filterdRecord}} entries</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="cuspagi" style="float: right;">
+                                <nav aria-label="...">
+                                    <ul class="pagination">
+                                        <li class="page-item {{isDisabled}}"><button class="page-link" (click)="prevPage()">Previous</button></li>
+                                        <li class="page-item active" aria-current="page"><a class="page-link" >{{currentPage}}</a></li>
+                                        <li class="page-item {{isDisabled2}}"><button class="page-link text-danger" (click)="nextPage()">Next</button></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                }@else{
+                    <div class="col-md-12 pt-5">
+                        <div class="empty_state rounded">
+                            <i class="fa-solid fa-face-surprise"></i>
+                            <h3 class="">No records</h3>
+                            <p>There are no records found</p>
+                        </div>
+                    </div>
+                }
+            </ul>
+        </div>
+    }
+    
+}@else{
+    <div class="alert alert-danger" role="alert">
+        <p class="mb-0"><i class="fa-solid fa-triangle-exclamation"></i> Please complete your <span><a routerLink="/myaccount" class="text-primary">profile</a></span> to apply for the Jobs.</p>
+    </div>
+}
+
+
+<div class="card flex justify-content-center">
+    <p-dialog header="Assign/Reassign Recruiter" 
+        [modal]="true" 
+        [(visible)]="visible" 
+        [style]="{ width: '25rem' }" 
+        [style]="{ width: '50rem' }" 
+        [maximizable]="true"
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" >
+
+        <form name="form" #f="ngForm">
+            <div class="step-form">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <div class="form-group">
+                            <label class="control-label">Recruiter <span class="text-danger">*</span></label>
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" name="recruiter_list" [data]="recruiterData" [(ngModel)]="selectedItems" >
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="indentId" [(ngModel)]="updatedIndentId">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="message"></p>
+                    <div class="submit-btn">
+                        @if(isBtnLoading){
+                            <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                        }@else{
+                            <button type="button" class="btn postjob-btn" (click)="reassignRecruter(f)"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+</div>
+
+
+<div class="card flex justify-content-center">
+    <p-dialog header="Change Indent Status" 
+        [modal]="true" 
+        [(visible)]="indentStatusModal" 
+        [style]="{ width: '25rem' }" 
+        [style]="{ width: '50rem' }" 
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" >
+
+        <form [formGroup]="indentStatusForm">
+            <div class="step-form">
+                <div class="row">
+                    <p>Current Status: {{currentStatus}}</p>
+                    <label class="form-check-label">Status</label>
+                    <div class="col-md-12">
+                        <div class="form-check form-check-inline">
+                            <input name="collapsible-address-type" class="form-check-input" type="radio" value="Open" name="indent_status" formControlName="indent_status">
+                            <label class="form-check-label" for="collapsible-address-type-home"> Open </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input name="collapsible-address-type" class="form-check-input" type="radio" value="Close" name="indent_status" formControlName="indent_status">
+                            <label class="form-check-label" for="collapsible-address-type-office"> Close </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input name="collapsible-address-type" class="form-check-input" type="radio" value="Hold" name="indent_status" formControlName="indent_status">
+                            <label class="form-check-label" for="collapsible-address-type-office"> Hold </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input name="collapsible-address-type" class="form-check-input" type="radio" value="Pause" name="indent_status" formControlName="indent_status">
+                            <label class="form-check-label" for="collapsible-address-type-office"> Pause </label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Comment</label>
+                            <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter your comments" formControlName="comment"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="message"></p>
+                    <div class="submit-btn">
+                        <button type="button" class="btn postjob-btn" (click)="updateIndentStatus()"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+</div>
+
+
+<p-dialog header="Apply" [(visible)]="applyModal" [modal]="true" [style]="{width: '50vw'}" [maximizable]="true">
+    <form>
+        <div class="step-form">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Full Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Enter Full Name" value="{{myProfileData?.name}}" readonly>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Mobile <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Enter Mobile Number" value="{{myProfileData?.mobile}}" readonly>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Email Id <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Enter Email Id" value="{{myProfileData?.email}}" readonly>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Upload Resume <span class="text-danger">*</span></label>
+                        @if(myProfileData?.resume_path){
+                            <div class="resume rounded">
+                                <p class="mb-0"> Uploaded Resume <a class="candidate_cv_download" href="http://127.0.0.1:8000/{{myProfileData?.resume_path}}" target="_blank"><i class="fa-solid fa-download"></i></a></p>
+                            </div>
+                        }@else{
+                            <input type="file" class="form-control" readonly>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Strengths <span class="text-danger">*</span></label>
+                        <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter Communication Address" readonly>{{myProfileData?.strengths}}</textarea>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Profile Summary <span class="text-danger">*</span></label>
+                        <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter Communication Address" readonly>{{myProfileData?.candidate_summary}}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        @if(myProfileData?.strengths == '' && myProfileData?.candidate_summary == ''){
+            <p class="text-danger">Please complete your profile then you can apply for this indent.</p>
+        }@else{
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="message"></p>
+                    <div class="submit-btn">
+                        <button type="button" class="btn postjob-btn" (click)="applyThisIndent()"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                    </div>
+                </div>
+            </div>
+        }
+        {{apiMessage5}}
+    </form>
+</p-dialog>
+
+
+<div class="card flex justify-content-center">
+    <p-dialog header="Assign/Reassign Partner" 
+        [modal]="true" 
+        [(visible)]="assignPartnerModal" 
+        [style]="{ width: '25rem' }" 
+        [style]="{ width: '50rem' }" 
+        [maximizable]="true"
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" >
+
+        <form name="form" #fp="ngForm">
+            <div class="step-form">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <div class="form-group">
+                            <label class="control-label">Partner <span class="text-danger">*</span></label>
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" name="partner_list" [data]="partnerData" [(ngModel)]="selectedItems" >
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="indentId" [(ngModel)]="updatedIndentId">
+
+            <!-- {{fp.form| json}} -->
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="message"></p>
+                    <div class="submit-btn">
+                        @if(isBtnLoading){
+                            <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                        }@else{
+                            <button type="button" class="btn postjob-btn" (click)="reassignPartner(fp)"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+</div>
+
+
+
+
+<div class="card flex justify-content-center">
+    <p-dialog header="Manage Indent Location" 
+        [modal]="true" 
+        [(visible)]="indentLocationModal" 
+        [style]="{ width: '25rem' }" 
+        [style]="{ width: '50rem' }" 
+        [maximizable]="true"
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" >
+
+
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Location</th>
+                <th scope="col">No. of Uploaded Candidates</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+            @if(isLocationloader== false){
+                @for(location of indentLocationList?.jobLocations; track $index){
+                    <tr>
+                        <th scope="row">{{$index+1}}</th>
+                        <td>{{location.location}}</td>
+                        <td>{{location.candidate_count}}</td>
+                        <td><button [ngClass]="{'btn-primary': location.status=== 'Open', 'btn-danger': location.status=== 'Close', 'btn-warning': location.status=== 'Hold', 'btn-info': location.status=== 'Pause'}" class="btn  btn-sm" (click)="indentLocationStatusModalPop(location.status,location.location)">{{location.status}}</button></td>
+                    </tr>
+                }
+            }@else{
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span>
+            }
+            </tbody>
+          </table>
+
+    </p-dialog>
+</div>
+
+
+
+
+<div class="card flex justify-content-center">
+    <p-dialog header="Change Location Status" 
+        [modal]="true" 
+        [(visible)]="indentLocationStatusModal" 
+        [style]="{ width: '25rem' }" 
+        [style]="{ width: '50rem' }" 
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" >
+
+        <form [formGroup]="indentLocationStatusForm">
+            <div class="step-form">
+                <div class="row">
+                    <p>Current Status: {{currentLocatonStatus}}</p>
+                    <label class="form-check-label">Status</label>
+                    <div class="col-md-12">
+                        <div class="form-check form-check-inline">
+                            <input name="collapsible-address-type" class="form-check-input" type="radio" value="Open" name="status" formControlName="status">
+                            <label class="form-check-label" for="collapsible-address-type-home"> Open </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input name="collapsible-address-type" class="form-check-input" type="radio" value="Close" name="status" formControlName="status">
+                            <label class="form-check-label" for="collapsible-address-type-office"> Close </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input name="collapsible-address-type" class="form-check-input" type="radio" value="Hold" name="status" formControlName="status">
+                            <label class="form-check-label" for="collapsible-address-type-office"> Hold </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input name="collapsible-address-type" class="form-check-input" type="radio" value="Pause" name="status" formControlName="status">
+                            <label class="form-check-label" for="collapsible-address-type-office"> Pause </label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Comment <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter your comments" formControlName="comment"></textarea>
+                        </div>
+                        <div class="text-danger pt-2 error" *ngIf="indentLocationStatusForm.controls.comment.invalid && (indentLocationStatusForm.controls.comment.touched || indentLocationStatusForm.controls.comment.dirty || isFormSubmited5)" >
+                            <span *ngIf="indentLocationStatusForm.controls.comment.errors?.['required']">* This field is required'</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="message"></p>
+                    <div class="submit-btn">
+                        <button type="button" class="btn postjob-btn" (click)="updateIndentLocationStatus()"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+</div>
+
+<p-toast />

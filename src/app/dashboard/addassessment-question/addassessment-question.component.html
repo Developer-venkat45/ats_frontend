@@ -1,0 +1,151 @@
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class=" container col-md-12">
+        <div class="breadcrumb nav">
+            <span class="breadcrumb-item">
+                <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+            </span>
+            <span class="breadcrumb-item">
+                <a class="breadcrumb-link" [routerLink]="['/assessment']">Assessment</a>
+            </span>
+            <span class="breadcrumb-item">
+                <a class="breadcrumb-link">AddAssessmentquestion</a>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="step-form rounded">
+                    <h5 class="text-danger py-3 - ">Add E&I Question For - <a routerLink="/assessment/" class="link-primary">{{eandiData?.title}}</a></h5>
+                    <form [formGroup]="insertEandiQuestion">
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label class="control-label">Question <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Enter Question" formControlName="question">
+                                    <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.question.invalid && (insertEandiQuestion.controls.question.touched || insertEandiQuestion.controls.question.dirty || isFormSubmited)" >
+                                        <span *ngIf="insertEandiQuestion.controls.question.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Weightage <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Enter Weightage" formControlName="weightage" (keyup)="checkWeightage($event)">
+                                    <p class="small mb-0">{{remaingWeightage}} Weightage left out of 100</p>
+                                    <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.weightage.invalid && (insertEandiQuestion.controls.weightage.touched || insertEandiQuestion.controls.weightage.dirty || isFormSubmited)" >
+                                        <span *ngIf="insertEandiQuestion.controls.weightage.errors?.['required']">* This field is required</span>
+                                        <span *ngIf="insertEandiQuestion.controls.weightage.errors?.['number']" class="text-danger">Please enter only Positive numbers'</span>
+                                    </div>
+                                    <p class="text-danger pt-2 error">{{validationmessage2}}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div formGroupName="options">
+                            @for(opt of optionGroups.controls; track $index){
+                                <div [formGroupName]="$index">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label class="control-label">Option {{'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[$index]}} <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" placeholder="Enter Option" formControlName="option">
+                                                <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.option.invalid && (insertEandiQuestion.controls.options.controls[$index].controls.option.touched || insertEandiQuestion.controls.options.controls[$index].controls.option.dirty || isFormSubmited)" >
+                                                    <span *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.option.errors?.['required']">* This field is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Score {{'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[$index]}} <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" placeholder="Enter Score" formControlName="score">
+                                                <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.score.invalid && (insertEandiQuestion.controls.options.controls[$index].controls.score.touched || insertEandiQuestion.controls.options.controls[$index].controls.score.dirty || isFormSubmited)" >
+                                                    <span *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.score.errors?.['required']">* This field is required</span>
+                                                    <span *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.score.errors?.['number']">Please enter only Positive numbers'</span>
+                                                    <span *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.score.errors?.['scoreNotLessThanWeightage']">* Score Not Grater than Weightage</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                        @if($index >= 2){
+                                            <div class="col-md-1">
+                                                <button type="button" class="btn btn-danger w-100" (click)="removeQuestion($index)" style="margin-top: 27px;"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        }@else{
+                                            @if($index == 0){
+                                            <div class="col-md-1">
+                                                <button class="btn btn-primary w-100" (click)="addMoreQuestion()" style="margin-top: 27px;">Add</button>
+                                            </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+            
+                        <!-- {{ insertEandiQuestion.value | json}} -->
+                        <!-- {{insertEandiQuestion.valid}} -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p id="message"></p>
+                                <div class="submit-btn">
+                                    @if(isBtnLoading){
+                                        <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                                    }@else{
+                                        <button type="button" (click)="insertEandiQuestions();" class="btn postjob-btn" type="button"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="step-form rounded">
+                    <div class="step-boder">
+                        <div class="row">
+                            
+                            <div class="col-md-12 mb-3">
+                                <div class="form-heading-div">
+                                    <h4 class="text-danger">{{eandiData?.title}}</h4>
+                                    <p><b>Category: </b> 
+                                        @for(cat of eandiData?.category; track $index){
+                                            <span>{{cat}}</span>,
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="question-div">
+                                <div class="row">
+                                @for(question of eandiData?.questions; track $index){
+                                    <div class="col-md-12 mb-3">
+                                        <label class="control-label"><b>Q {{$index+1}}</b>. {{question.question}} <span class="text-danger">*</span></label>
+                                        <p>Weightage : {{question.weightage}}</p>
+                                        <div class="row">
+                                            @for(option of question.options; track $index){
+                                                <div class="col-md-6 mb-2">
+                                                    <div class="option-group rounded">
+                                                        <p class="mb-0">Option: {{option.option}}</p>
+                                                        <p class="mb-0">Score: {{option.score}}</p>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-toast />

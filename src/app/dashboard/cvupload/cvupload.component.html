@@ -1,0 +1,795 @@
+<section class="section p-t60 mt-5 p-b60 content site-bg-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="breadcrumb nav">
+                    <span class="breadcrumb-item">
+                        <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+                    </span>
+                    <span class="breadcrumb-item">
+                        <a class="breadcrumb-link" [routerLink]="['/job']">Jobs</a>
+                    </span>
+                    <span class="breadcrumb-item">
+                        <a class="breadcrumb-link" [routerLink]="['/job_details', indentData?._id]">{{indentData?.jobTitle}}</a>
+                    </span>
+                    <span class="breadcrumb-item">
+                        <a class="breadcrumb-link" [routerLink]="['/cvupload', indentData?._id]">Recruit</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white p-3 rounded mb-4">
+            <form [formGroup]="cvParsing">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="float-left">A. Upload Candidate CV For : <a [routerLink]="['/job_details', indentId]" class="link-primary small">{{indentData?.jobTitle}}</a></h5>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="text-right"><a [routerLink]="['/candidate']" [queryParams]="{ indentId: indentId, stage: 'screening' }" class="link-primary">View Applied Candidates</a></h5>
+                </div>
+            </div>
+            <div class="step-form mt-3">
+                <div class="row">
+                    <!-- <h5 class="text-danger mb-3 mt-3">A. Candidate CV</h5> -->
+                    <div class="col-md-4">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="control-label">Location Applied for <span class="text-danger">*</span></label>
+                            <p-autoComplete 
+                            formControlName="uploadLocation"
+                            [dropdown]="true"
+                            [forceSelection]="true"
+                            [suggestions]="filteredLocation"
+                            (completeMethod)="search($event)"
+                            placeholder="Search location" 
+                            />
+                        </div>
+                        <div class="text-danger pt-2 error" *ngIf="cvParsing.controls.uploadLocation.invalid && (cvParsing.controls.uploadLocation.touched || cvParsing.controls.uploadLocation.dirty || isFormSubmited2)" >
+                            <span *ngIf="cvParsing.controls.uploadLocation.errors?.['required']">* This field is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Select Candidate CV (PDF/doc/docx/rtf/txt format) <span class="text-danger">*</span></label>
+                            <input type="file" class="form-control" formControlName="uploadFile" (change)="onProfileResume($event)" accept=".pdf, .doc, .docx, .rtf, .txt">
+                            <div class="text-danger pt-2 error" *ngIf="cvParsing.controls.uploadFile.invalid && (cvParsing.controls.uploadFile.touched || cvParsing.controls.uploadFile.dirty || isFormSubmited2)" >
+                                <span *ngIf="cvParsing.controls.uploadFile.errors?.['required']">* This field is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    @if(hideButton){
+                    <div class="col-md-2">
+                        <div class="submit-btn" style="margin-top: 33px;">
+                            @if(isLoading){
+                                <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Processing...</span></button>
+                            }@else{
+                                <button type="button" (click)="resumeUpload()" class="btn postjob-btn" type="button"><i class="fa-regular fa-paper-plane"></i> {{uploadBtnText}}</button>
+                            }
+                        </div>
+                    </div>
+                    }
+                    @if(indentData?.referrals==true){
+                        @if(loginRoleName !='Partner SPOC - Manager'){
+                            <p class="mb-4 mt-4">Is this an Employee Referral? <input class="form-check-input" type="checkbox" (change)="onCheckBoxChange($event)"></p>
+                        }
+                    }
+                </div>
+            </div>
+                @if(employeeDetailsTab){
+                <h5 class="text-danger mb-3 mt-3">Employee Details:</h5>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Name of the Employee <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Enter Full Name of the Employee" formControlName="referName">
+                                <div class="text-danger pt-2 error" *ngIf="cvParsing.controls.referName.invalid && (cvParsing.controls.referName.touched || cvParsing.controls.referName.dirty || isFormSubmited2)" >
+                                    <span *ngIf="cvParsing.controls.referName.errors?.['required']">* This field is required</span>
+                                    <span *ngIf="cvParsing.controls.referName.errors?.['alphabet']">Please enter only alphabets'</span>
+                                    <span *ngIf="cvParsing.controls.referName.errors?.['maxlength']">* Maximum 50 character should allowed'</span> 
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Email </label>
+                                <input type="text" class="form-control" placeholder="Enter Email" formControlName="referEmail">
+                                <div class="text-danger pt-1 error" *ngIf="cvParsing.controls.referEmail.invalid && (cvParsing.controls.referEmail.touched || cvParsing.controls.referEmail.dirty || isFormSubmited2)" >
+                                    <span *ngIf="cvParsing.controls.referEmail.errors?.['emailvalidate']">Please enter valid email id'</span>
+                                </div>
+                            </div>
+                        </div>
+     
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Mobile </label>
+                                <input type="text" class="form-control" placeholder="Enter Mobile Number" formControlName="referMobile" maxlength="10">
+                                <div class="text-danger pt-1 error" *ngIf="cvParsing.controls.referMobile.invalid && (cvParsing.controls.referMobile.touched || cvParsing.controls.referMobile.dirty || isFormSubmited2)" >
+                                    <span *ngIf="cvParsing.controls.referMobile.errors?.['onlynumber']">Please enter valid mobile number'</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Employee ID <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Enter Employee ID" formControlName="referEmployeId">
+                                <div class="text-danger pt-1 error" *ngIf="cvParsing.controls.referEmployeId.invalid && (cvParsing.controls.referEmployeId.touched || cvParsing.controls.referEmployeId.dirty || isFormSubmited2)" >
+                                    <span *ngIf="cvParsing.controls.referEmployeId.errors?.['required']">* This field is required</span>
+                                    <span *ngIf="cvParsing.controls.referEmployeId.errors?.['alphanumaric']">Please enter only Alphanumeric Characters'</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Employee Location <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Enter Employee Location" formControlName="referEmployeeLocation">
+                                <div class="text-danger pt-1 error" *ngIf="cvParsing.controls.referEmployeeLocation.invalid && (cvParsing.controls.referEmployeeLocation.touched || cvParsing.controls.referEmployeeLocation.dirty || isFormSubmited2)" >
+                                    <span *ngIf="cvParsing.controls.referEmployeeLocation.errors?.['required']">* This field is required</span>
+                                    <span *ngIf="cvParsing.controls.referEmployeeLocation.errors?.['alphabet']">Please enter only alphabets'</span>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="col-md-2">
+                            <div class="submit-btn" style="margin-top: 33px;">
+                                @if(isLoading){
+                                    <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Processing...</span></button>
+                                }@else{
+                                    <button type="button" (click)="resumeUpload()" class="btn postjob-btn" type="button"><i class="fa-regular fa-paper-plane"></i> {{uploadBtnText}}</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+            </form>
+        </div>
+
+        @if(apiResponse){
+            <div class="bg-white p-3 rounded mb-4">
+                <h5 class="text-danger mb-3 mt-3">B. Candidate Preview</h5>
+                <form [formGroup]="updateCandidate">
+                    <div class="step-form">
+                        <div class="step-boder">
+                            
+                            <div class="col-md-12 mb-3">
+                                <div class="form-heading-div">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h4>Generated by AI</h4>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="text-black text-right mb-0"><b>Source:</b> <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg"> Gemini AI</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-boder-two" style="padding: 15px;">
+                                @if(duplicateCandidate == true && duplicateIndent == false && isCoolingPeriod == false){
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p><b>Candidate Score: </b>{{parsingData?.score}}</p>
+                                            <p><b>Explanation: </b>{{parsingData?.explanation}}</p>
+                                        </div>
+                                    </div>
+                                }
+                                @if(duplicateCandidate == false){
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p><b>Candidate Score: </b><span><span class="fir-count">{{parsingData?.score}}</span><span class="sec-count">10</span></span></p>
+                                            <p><b>Explanation: </b>{{parsingData?.explanation}}</p>
+                                        </div>
+                    
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Skills</label>
+                                                <div class="skills">
+                                                    <ul class="list-inline">
+                                                        @for(skill of parsingData?.skills; track $index){
+                                                            <li class="list-inline-item" tooltipPosition="top" pTooltip="Skills">{{skill}}</li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                    
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Strength</label>
+                                                <div class="skills">
+                                                    <ul class="list-inline">
+                                                        @for(strength of parsingData?.strengths; track $index){
+                                                            <li class="list-inline-item" tooltipPosition="top" pTooltip="Strength">{{strength}}</li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                                <div class="row">
+                                    <h5 class="text-danger mb-3 mt-3">1. Basic Info</h5>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label">Full Name <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Enter Full Name" formControlName="name">
+                                                    <div class="text-danger pt-2 error" *ngIf="updateCandidate.controls.name.invalid && (updateCandidate.controls.name.touched || updateCandidate.controls.name.dirty || isFormSubmited)" >
+                                                        <span *ngIf="updateCandidate.controls.name.errors?.['required']">* This field is required</span>
+                                                        <span *ngIf="updateCandidate.controls.name.errors?.['alphabet'] && !updateCandidate.controls.name.errors?.['required']">Please enter only alphabets'</span>
+                                                        <span *ngIf="updateCandidate.controls.name.errors?.['maxlength']">* Maximum 150 character should allowed'</span> 
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">Mobile<span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Enter Mobile Number" formControlName="mobile" maxlength="10">
+ 
+                                                    @if(mobileEmpty == false){
+                                                        <p [ngClass]="{'text-danger': duplicateMobile == true, 'text-success': duplicateMobile == false}" class="small pt-1 mb-0">
+                                                            <i [ngClass]="{'fa-circle-check': duplicateMobile == false, 'fa-circle-xmark': duplicateMobile == true}" class="fa-regular"></i> {{duplicateMobile ? 'Mobile number is duplicate' : 'Mobile number is not duplicate'}} 
+                                                        </p>
+                                                    }
+                                                    <div class="text-danger pt-1 error" *ngIf="updateCandidate.controls.mobile.invalid && (updateCandidate.controls.mobile.touched || updateCandidate.controls.mobile.dirty || isFormSubmited)" >
+                                                        <span *ngIf="updateCandidate.controls.mobile.errors?.['required']">* This field is required</span>
+                                                        <span *ngIf="updateCandidate.controls.mobile.errors?.['onlynumber'] &&  !updateCandidate.controls.mobile.errors?.['required']">Please enter valid mobile number'</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label">Email Id <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Enter Email Id" formControlName="email">
+
+                                                    @if(emailEmpty == false){
+                                                    <p [ngClass]="{'text-success': duplicateEmail == false, 'text-danger': duplicateEmail == true}" class="small pt-1 mb-0">
+                                                        <i [ngClass]="{'fa-circle-check': duplicateEmail == false, 'fa-circle-xmark': duplicateEmail == true}" class="fa-regular"></i> {{duplicateEmail ? 'Email id is duplicate' : 'Email id is not duplicate'}} 
+                                                    </p>
+                                                    }
+                                                    <div class="text-danger pt-1 error" *ngIf="updateCandidate.controls.email.invalid && (updateCandidate.controls.email.touched || updateCandidate.controls.email.dirty || isFormSubmited)" >
+                                                        <span *ngIf="updateCandidate.controls.email.errors?.['required']">* This field is required</span>
+                                                        <span *ngIf="updateCandidate.controls.email.errors?.['emailvalidate'] &&  !updateCandidate.controls.email.errors?.['required']">Please enter valid email id'</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-1">
+                                                @if(isLoading2){
+                                                    <button class="btn btn-primary postjob-btn" type="button" disabled style="margin-top: 32px;"><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"></span></button>
+                                                }@else{
+                                                    <button class="btn btn-primary w-100" (click)="verifyCandidate()" style="margin-top: 32px;">Verify</button>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @if(duplicateCandidate == true && duplicateIndent == false && isCoolingPeriod == false){
+                                        <div class="col-md-12 mt-3">
+                                            <div class="alert alert-danger" role="alert">
+                                                <p class="mb-0">We found this Candidate is duplicate but not applied to this Job. Please fill the "E&I" then Click "Apply" button to Submit the Candidate.</p>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if(duplicateCandidate == true && duplicateIndent == true){
+                                        <div class="col-md-12">
+                                            <div class="alert alert-danger" role="alert">
+                                                <p class="mb-0">We found this candidate is duplicate and already applied for this job.</p>
+                                            </div>
+                                        </div>
+                                    }
+                                    
+                                    @if(isCoolingPeriod){
+                                        <div class="col-md-12">
+                                            <div class="alert alert-danger" role="alert">
+                                                <p class="mb-0">We found this candidate is duplicate upload by other partner.</p>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if(duplicateCandidate == false){
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Date of Birth <span class="text-danger">*</span></label><span style=float:right>Age: {{totalAge}} Years</span>
+                                                <input type="date" class="form-control" formControlName="dob" placeholder="dd/mm/yyyy" (change)="updateEandi('dob')" type="date">
+                                                <div class="text-danger pt-2 error" *ngIf="updateCandidate.controls.dob.invalid && (updateCandidate.controls.dob.touched || updateCandidate.controls.dob.dirty || isFormSubmited)" >
+                                                    <span *ngIf="updateCandidate.controls.dob.errors?.['required']">* This field is required</span>
+                                                    <span *ngIf="updateCandidate.controls.dob.errors?.['minAge']">* You must be at least 18 years old'</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Total Work Experience (In Years) <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" placeholder="Enter Total Work Experience" formControlName="totWorkExp" (keyup)="updateEandi('twe')">
+                                                <div class="text-danger pt-2 error" *ngIf="updateCandidate.controls.totWorkExp.invalid && (updateCandidate.controls.totWorkExp.touched || updateCandidate.controls.totWorkExp.dirty || isFormSubmited)" >
+                                                    <span *ngIf="updateCandidate.controls.totWorkExp.errors?.['required']">* This field is required</span>
+                                                    <span *ngIf="updateCandidate.controls.totWorkExp.errors?.['floatnumbers']">* Please enter only Experience numbers'</span>
+                                                    <span *ngIf="updateCandidate.controls.totWorkExp.errors?.['maxlength']">* Maximum 3 digit should allowed'</span> 
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Father's Name</label>
+                                                <input type="text" class="form-control" placeholder="Enter Father's Name" formControlName="fatherName">
+                                                <div class="text-danger pt-2 error" *ngIf="updateCandidate.controls.fatherName.invalid && (updateCandidate.controls.fatherName.touched || updateCandidate.controls.fatherName.dirty || isFormSubmited)" >
+                                                    <span *ngIf="updateCandidate.controls.fatherName.errors?.['alphabet']&&!updateCandidate.controls.fatherName.errors?.['required']">Please enter only alphabets'</span>
+                                                    <span *ngIf="updateCandidate.controls.fatherName.errors?.['maxlength']">* Maximum 150 character should allowed'</span> 
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Highest Qualification <span class="text-danger">*</span></label>
+                                                <select class="form-control" formControlName="highestQualificationCategory" (change)="updateEandi('hq')">
+                                                    <option value="">Select Category</option>
+                                                    <option value="Under Graduate">Under Graduate</option>
+                                                    <option value="Graduate">Graduate</option>
+                                                    <option value="Post Graduate">Post Graduate</option>
+                                                    <option value="PHD">PHD</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label class="form-check-label">Gender</label><br>
+                                            <div class="form-check form-check-inline">
+                                                <input name="collapsible-address-type" class="form-check-input" type="radio" value="Male" name="gender" checked="" formControlName="gender" (change)="updateEandi('gender')">
+                                                <label class="form-check-label" for="collapsible-address-type-home">Male</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input name="collapsible-address-type" class="form-check-input" type="radio" value="Female" name="gender" formControlName="gender" (change)="updateEandi('gender')">
+                                                <label class="form-check-label" for="collapsible-address-type-office"> Female </label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input name="collapsible-address-type" class="form-check-input" type="radio" value="Third Gender" name="gender" formControlName="gender" (change)="updateEandi('gender')">
+                                                <label class="form-check-label" for="collapsible-address-type-office"> Third Gender </label>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                                @if(duplicateCandidate == false){
+                                <div class="row">
+                                    <h5 class="text-danger mb-3 mt-3">2. Address</h5>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">State <span class="text-danger">*</span></label>
+                                            <select class="form-control" formControlName="state" (change)="getCityOnStateChnage($event)">
+                                                <option value="">Select State</option>
+                                                @for(state of stateData; track $index){
+                                                    <option value="{{state.name}}">{{state.name}}</option>
+                                                }
+                                            </select>
+                                            <div class="text-danger pt-2 error" *ngIf="updateCandidate.controls.state.invalid && (updateCandidate.controls.state.touched || updateCandidate.controls.state.dirty || isFormSubmited)" >
+                                                <span *ngIf="updateCandidate.controls.state.errors?.['required']">* This field is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">City <span class="text-danger">*</span></label>
+                                            <select class="form-control" formControlName="city" (change)="updateEandi('city')">
+                                                <option value="">Select City</option>
+                                                @for(city of cityData; track $index){
+                                                    <option value="{{city.name}}">{{city.name}}</option>
+                                                }
+                                            </select>
+                                            <div class="text-danger pt-2 error" *ngIf="updateCandidate.controls.city.invalid && (updateCandidate.controls.city.touched || updateCandidate.controls.city.dirty || isFormSubmited)" >
+                                                <span *ngIf="updateCandidate.controls.city.errors?.['required']">* This field is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Address</label>
+                                            <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter Full Address" formControlName="address"></textarea>
+                                            <span *ngIf="updateCandidate.controls.address.errors?.['maxlength'] && !updateCandidate.controls.address.errors?.['required']" class="text-danger">Maximum 500 character should allowed'</span>
+                                        </div>
+                                    </div>            
+                                </div>
+
+                                <div class="row">
+                                    <h5 class="text-danger mb-3 mt-3">3. Qualification(s)</h5>
+                                    <div formGroupName="education">
+                                        @for(education of educationGroups.controls; track $index){
+                                            <div [formGroupName]="$index">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            @if($index == 0){
+                                                            <label class="control-label">Qualification</label>
+                                                            }
+                                                            <input type="text" class="form-control" placeholder="Enter Qualification" formControlName="qualification">
+                                                            @if(hq_qualification == allQualifications[$index]){
+                                                                <input type="radio" style="cursor: pointer;" [value]="hq_qualification"  formContolName="highestQualification" name="hq" (change)="markAsHighestQualification($index)" checked> Mark as Highest Qualification
+                                                            }@else{
+                                                                <input type="radio" style="cursor: pointer;" [value]="hq_qualification"  formContolName="highestQualification" name="hq" (change)="markAsHighestQualification($index)"> Mark as Highest Qualification
+                                                            }
+                                                            <!-- <div class="text-danger pt-2 error" *ngIf="updateCandidate.controls.education?.controls[$index]?.controls?.qualification.invalid && (updateCandidate.controls.education?.controls[$index]?.controls?.qualification.touched || updateCandidate.controls.education?.controls[$index]?.controls?.qualification.dirty || isFormSubmited)" >
+                                                                <span *ngIf="updateCandidate?.controls?.education?.controls[$index]?.controls?.qualification?.errors?.['required']">* This field is required</span>
+                                                                <span *ngIf="updateCandidate.controls.education?.controls[$index]?.controls?.qualification.errors?.['maxlength']">* Maximum 150 character should allowed'</span> 
+                                                            </div> -->
+                                                        </div>
+                                                    </div>
+                                                    
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            @if($index == 0){
+                                                            <label class="control-label">Institute/University Name</label>
+                                                            }
+                                                            <input type="text" class="form-control" placeholder="Enter Institute/University Name" formControlName="institute">
+                                                            <div class="text-danger pt-2 error" *ngIf="updateCandidate.controls.education.controls[$index].controls.institute.invalid && (updateCandidate.controls.education.controls[$index].controls.institute.touched || updateCandidate.controls.education.controls[$index].controls.institute.dirty || isFormSubmited)" >
+                                                                <!-- <span *ngIf="updateCandidate.controls.education.controls[$index].controls.institute.errors?.['required']">* This field is required</span> -->
+                                                                <span *ngIf="updateCandidate.controls.education.controls[$index].controls.institute.errors?.['maxlength']">* Maximum 150 character should allowed'</span> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                            @if($index == 0){
+                                                            <label class="control-label">Passed On </label>
+                                                            }
+                                                            <select class="form-control" formControlName="passedOn" (change)="markAsHighestQualification($index)">
+                                                                <option selected="selected" value="">Select Year</option>
+                                                                @for(year of years; track $index){
+                                                                    <option value="{{year}}">{{year}}</option>
+                                                                }
+                                                            </select>
+                                                            <!-- <div class="text-danger pt-2 error" *ngIf="updateCandidate.controls.education.controls[$index].controls.passedOn.invalid && (updateCandidate.controls.education.controls[$index].controls.passedOn.touched || updateCandidate.controls.education.controls[$index].controls.passedOn.dirty || isFormSubmited)" >
+                                                                <span *ngIf="updateCandidate.controls.education.controls[$index].controls.passedOn.errors?.['required']">* This field is required</span>
+                                                            </div> -->
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                            @if($index == 0){
+                                                            <label class="control-label">Percentage</label>
+                                                            }
+                                                            <input type="text" class="form-control" placeholder="Enter Percentage" formControlName="percentage" (change)="markAsHighestQualification($index)">
+                                                            <div class="text-danger pt-2 error" *ngIf="updateCandidate.controls.education.controls[$index].controls.percentage.invalid && (updateCandidate.controls.education.controls[$index].controls.percentage.touched || updateCandidate.controls.education.controls[$index].controls.percentage.dirty || isFormSubmited)" >
+                                                                <!-- <span *ngIf="updateCandidate.controls.education.controls[$index].controls.percentage.errors?.['required']">* This field is required</span> -->
+                                                                <span *ngIf="updateCandidate.controls.education.controls[$index].controls.percentage.errors?.['numbersdots']">* Please enter valid Percentage</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    @if($index >= 1){
+                                                        <div class="col-md-1">
+                                                            <button type="button" class="btn btn-danger w-100" (click)="removeEducation($index)"><i class="fa fa-times"></i></button>
+                                                        </div>
+                                                    }@else{
+                                                        <div class="col-md-1">
+                                                            <button class="btn btn-primary w-100" (click)="addEducation()" style="margin-top: 32px;">Add</button>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <h5 class="text-danger mb-3 mt-3">4. Experience</h5>
+                                    <div formGroupName="experience">
+                                        @for(exps of expGroups.controls; track $index){
+                                            <div [formGroupName]="$index">
+                                                <div class="row">
+
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="col-md-5">
+                                                                <div class="form-group">
+                                                                    @if($index == 0){
+                                                                    <label class="control-label">Working Status</label>
+                                                                    }
+                                                                    <select class="form-control" formControlName="workingStatus" (change)="workingStatusSelect($event, $index)">
+                                                                        <option selected="selected" value="">Select Working Status</option>
+                                                                        <option value="Currently Working">Currently Working</option>
+                                                                        <option value="Already Left">Already Left</option>
+                                                                    </select>
+                                                                    <!-- <div class="text-danger pt-2 error" *ngIf="updateCandidate.controls.experience.controls[$index].controls.workingStatus.invalid && (updateCandidate.controls.experience.controls[$index].controls.workingStatus.touched || updateCandidate.controls.experience.controls[$index].controls.workingStatus.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="updateCandidate.controls.experience.controls[$index].controls.workingStatus.errors?.['required']">* This field is required</span>
+                                                                    </div> -->
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-7">
+                                                                <div class="form-group">
+                                                                    @if($index == 0){
+                                                                    <label class="control-label">Company Name</label>
+                                                                    }
+                                                                    <input type="text" class="form-control" placeholder="Enter Company Name" formControlName="compName">
+                                                                    <div class="text-danger pt-2 error" *ngIf="updateCandidate.controls.experience.controls[$index].controls.compName.invalid && (updateCandidate.controls.experience.controls[$index].controls.compName.touched || updateCandidate.controls.experience.controls[$index].controls.compName.dirty || isFormSubmited)" >
+                                                                        <!-- <span *ngIf="updateCandidate.controls.experience.controls[$index].controls.compName.errors?.['required']">* This field is required</span> -->
+                                                                        <span *ngIf="updateCandidate.controls.experience.controls[$index].controls.compName.errors?.['alphabet']">Please enter only alphabets'</span>
+                                                                        <span *ngIf="updateCandidate.controls.experience.controls[$index].controls.compName.errors?.['maxlength']">* Maximum 150 character should allowed'</span> 
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    @if($index == 0){
+                                                                    <label class="control-label">Industry</label>
+                                                                    }
+                                                                    <select class="form-control" formControlName="industry">
+                                                                        <option selected="selected" value="">Select Industry</option>
+                                                                        @for(industry of industryData; track $index){
+                                                                            <option value="{{industry}}">{{industry}}</option>
+                                                                        }
+                                                                    </select>
+                                                                    <!-- <div class="text-danger pt-2 error" *ngIf="updateCandidate.controls.experience.controls[$index].controls.industry.invalid && (updateCandidate.controls.experience.controls[$index].controls.industry.touched || updateCandidate.controls.experience.controls[$index].controls.industry.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="updateCandidate.controls.experience.controls[$index].controls.industry.errors?.['required']">* This field is required</span>
+                                                                    </div> -->
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    @if($index == 0){
+                                                                    <label class="control-label">Designation</label>
+                                                                    }
+                                                                    <input type="text" class="form-control" placeholder="Enter Designation" formControlName="designation">
+                                                                    <div class="text-danger pt-2 error" *ngIf="updateCandidate.controls.experience.controls[$index].controls.designation.invalid && (updateCandidate.controls.experience.controls[$index].controls.designation.touched || updateCandidate.controls.experience.controls[$index].controls.designation.dirty || isFormSubmited)" >
+                                                                        <!-- <span *ngIf="updateCandidate.controls.experience.controls[$index].controls.designation.errors?.['required']">* This field is required'</span> -->
+                                                                        <span *ngIf="updateCandidate.controls.experience.controls[$index].controls.designation.errors?.['alphabet']">Please enter only alphabets'</span>
+                                                                        <span *ngIf="updateCandidate.controls.experience.controls[$index].controls.designation.errors?.['maxlength']">* Maximum 150 character should allowed'</span> 
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    @if($index == 0){
+                                                                    <label class="control-label">Start Date</label>
+                                                                    }
+                                                                    <input type="date" class="form-control" placeholder="Enter email id" formControlName="startDate">
+                                                                    <!-- <div class="text-danger pt-2 error" *ngIf="updateCandidate.controls.experience.controls[$index].controls.startDate.invalid && (updateCandidate.controls.experience.controls[$index].controls.startDate.touched || updateCandidate.controls.experience.controls[$index].controls.startDate.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="updateCandidate.controls.experience.controls[$index].controls.startDate.errors?.['required']">* This field is required</span>
+                                                                    </div> -->
+                                                                </div>
+                                                            </div>
+                                                        
+
+
+                                                            @if(workingStatusValue2[$index]){
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        @if($index == 0){
+                                                                        <label class="control-label">End Date</label>
+                                                                        }
+                                                                        <input type="date" class="form-control" placeholder="Enter email id" formControlName="endDate">
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                            
+                                                        </div>
+                                                    </div>
+
+                                                    @if($index >= 1){
+                                                        <div class="col-md-1">
+                                                            <button type="button" class="btn btn-danger w-100" (click)="removeExperience($index)"><i class="fa fa-times"></i></button>
+                                                        </div>
+                                                    }@else{
+                                                        <div class="col-md-1">
+                                                            <button class="btn btn-primary w-100" (click)="addExperience()" style="margin-top: 32px;">Add</button>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+                                <!-- <p>{{updateCandidate.valid | json}}</p>
+                                <p>{{updateCandidate.value | json}}</p> -->
+                                <div class="row">
+                                    <h5 class="text-danger mb-3 mt-3">5. Summary</h5>
+                                    <div class="col-md-12">                        
+                                        <div class="form-group">
+                                            <!-- <label class="control-label">Summary <span class="text-danger">*</span></label> -->
+                                            <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter Candidate Summary" formControlName="candidate_summary"></textarea>
+                                            <div class="text-danger pt-2 error" *ngIf="updateCandidate.controls.candidate_summary.invalid && (updateCandidate.controls.candidate_summary.touched || updateCandidate.controls.candidate_summary.dirty || isFormSubmited)" >
+                                                <span *ngIf="updateCandidate.controls.candidate_summary.errors?.['maxlength']">* Maximum 5000 character should allowed'</span> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <p>{{duplicateCandidate}} -- {{duplicateIndent}} -- {{isCoolingPeriod}}</p> -->
+                    <!-- @if(duplicateCandidate == false && duplicateIndent == false && isCoolingPeriod == false){ -->
+                    @if(duplicateIndent == false && isCoolingPeriod == false){
+                        <h5 class="text-danger mb-3 mt-3">C. E&I (Eligibility & Interest)</h5>
+                        <div class="step-form">
+                            <div class="step-boder">
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <div class="form-heading-div">
+                                            <h4>{{ selectedEandi?.title }}</h4>
+                                            <p class="text-black"><b>Category: </b>
+                                                <ng-container *ngFor="let cat of selectedEandi?.category; let i = index">
+                                                    <span>{{ cat }}</span><span *ngIf="i < selectedEandi?.category.length - 1">, </span>
+                                                </ng-container>
+                                            </p>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="question-div">
+                                        <div class="row" formArrayName="answers">
+                                            <ng-container *ngFor="let question of questions.controls; let i = index" [formGroupName]="i">
+                                                <div class="col-md-12 questionoptiondiv">
+                                                    <div class="row">
+                                                        @if(selectedEandi.questions[i].visibility == true){
+                                                            <div class="col-md-12 mb-3">
+                                                                <div class="question-heading rounded">
+                                                                <label class="control-label mb-0">Q. {{ question.get('question')?.value | titlecase}} @if(selectedEandi.questions[i]?.unit){ (In {{selectedEandi.questions[i]?.unit}}) } <span class="text-danger">*</span></label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    
+                                                        @if(selectedEandi.questions[i]?.fieldType == "generic question"){
+                                                            @if(selectedEandi.questions[i]?.inputType == "mcq" && selectedEandi.questions[i]?.visibility == true){
+                                                            <div class="col-md-12 mb-3">
+                                                                <div class="options-div">
+                                                                @for(option of selectedEandi.questions[i]?.options; track $index){
+                                                                    <label>
+                                                                    {{ 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[$index] }}: 
+                                                                    <input type="radio" style="cursor: pointer;" [formControlName]="'answer'" [value]="option.option"> {{ option.option }}
+                                                                    </label>
+                                                                    <br>
+                                                                }
+                                                                </div>
+                                                            </div>
+                                                            }
+                                                            @if(selectedEandi.questions[i]?.inputType == "msq"){
+                                                            <div class="col-md-12 mb-3">
+                                                                <div class="options-div">
+                                                                @for(option of selectedEandi.questions[i].options; track $index){
+                                                                    <label>
+                                                                    {{ 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[$index] }}: 
+                                                                    <input type="checkbox" style="cursor: pointer;" (change)="onCheckboxChange($event, i, option.option)"> {{ option.option }}
+                                                                    </label>
+                                                                    <br>
+                                                                }
+                                                                </div>
+                                                            </div>
+                                                            }
+                                                            @if(selectedEandi.questions[i]?.inputType == "nq"){
+                                                            <div class="col-md-12 mb-3">
+                                                                <div class="options-div">
+                                                                    <input type="number" class="form-control" [formControlName]="'answer'" placeholder="Enter your answer">
+                                                                </div>
+                                                            </div>
+                                                            }
+                                                            @if(selectedEandi.questions[i]?.inputType == "ddq"){
+                                                            <div class="col-md-12 mb-3">
+                                                                <div class="options-div">
+                                                                <select class="form-control" formControlName="answer">
+                                                                    <option value="">Select Your Answer</option>
+                                                                    @for(option of selectedEandi.questions[i]?.options; track $index){
+                                                                    <option value="{{ option.option }}">{{ option.option }}</option>
+                                                                    }
+                                                                </select>
+                                                                </div>
+                                                            </div>
+                                                            }
+                                                            @if(selectedEandi.questions[i]?.inputType == "diq"){
+                                                            <div class="col-md-12 mb-3">
+                                                                <div class="options-div">
+                                                                <input type="date" class="form-control" placeholder="Enter your answer" [formControlName]="'answer'">
+                                                                </div>
+                                                            </div>
+                                                            }
+                                                        }
+                                                        @if(selectedEandi.questions[i]?.fieldType == "candidate field"){
+                                                            @if(selectedEandi.questions[i]?.inputType == "skill" && selectedEandi.questions[i]?.visibility == true){
+                                                            <div class="col-md-12 mb-3">
+                                                                <div class="options-div">
+                                                                @for(option of selectedEandi.questions[i]?.options; track $index){
+                                                                    <label>
+                                                                    {{ 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[$index] }}: 
+                                                                    <input type="checkbox" style="cursor: pointer;" (change)="onCheckboxChange($event, i, option.option)"> {{ option.option }}
+                                                                    </label>
+                                                                    <br>
+                                                                }
+                                                                </div>
+                                                            </div>
+                                                            }
+                                                            @if(selectedEandi.questions[i]?.inputType == "hqs" && selectedEandi.questions[i]?.visibility == true){
+                                                            <div class="col-md-12 mb-3">
+                                                                <div class="options-div">
+                                                                @for(option of selectedEandi.questions[i]?.options; track $index){
+                                                                    <label>
+                                                                    {{ 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[$index] }}: 
+                                                                    <input type="checkbox" style="cursor: pointer;" (change)="onCheckboxChange($event, i, option.option)"> {{ option.option }}
+                                                                    </label>
+                                                                    <br>
+                                                                }
+                                                                </div>
+                                                            </div>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- <p>{{updateCandidate.value | json}}</p> -->
+
+                    @if(duplicateCandidate == false){
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                @if(duplicateCandidate){
+                                    <div class="alert alert-danger" role="alert">
+                                        This is a duplicate entry CV Uploads.
+                                    </div>
+                                }@else{
+                                    <div class="submit-btn">
+                                        <button type="button" (click)="insertCandidateData();" class="btn postjob-btn" type="button"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                                    </div>
+                                    <!-- <div class="submit-btn mt-2">
+                                        <button type="button" (click)="draftCandidateData();" class="btn postjob-btn" type="button"><i class="fa-regular fa-paper-plane"></i> SAVE AS DRAFT</button>
+                                    </div> -->
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    @if(duplicateCandidate == true && duplicateIndent == false && isCoolingPeriod == false){
+                        <div class="col-md-12 mt-3">
+                            <div class="alert alert-danger" role="alert">
+                                <p class="mb-0">We found this Candidate is duplicate but not applied to this Job. Please fill the "E&I" then Click "Apply" button to Submit the Candidate.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="submit-btn">
+                                @if(isLoading3){
+                                    <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                                }@else{
+                                    <button type="button" (click)="applyToIndent();" class="btn postjob-btn" type="button"><i class="fa-regular fa-paper-plane"></i> Apply</button>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    <!-- <p>{{updateCandidate.value | json}}</p>
+                    <p>{{updateCandidate.controls.answers.status}}</p> -->
+                    <!-- <button type="button" (click)="testReset();" class="btn postjob-btn" type="button"><i class="fa-regular fa-paper-plane"></i> Reset</button> -->
+
+                </form>
+            </div>
+        }
+    </div>
+</section>
+<p-toast />

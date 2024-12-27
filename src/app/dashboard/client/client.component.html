@@ -1,0 +1,855 @@
+<!-- <app-navbar></app-navbar> -->
+
+
+<!-- OUR BLOG START -->
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-12 rightSidebar">
+                @if(loader){
+                <div class="fb-item py-5" style="height: 265px;">
+                    <div class="first-section-wrapper">
+                        <div class="gravatar-title">
+                            <div>
+                                <ngx-skeleton-loader
+                                    [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="second-section-wrapper" style="margin-top: -30px;">
+                        <div class="wrapper">
+                            <ngx-skeleton-loader count="1" appearance="circle"
+                                [theme]="{ width: '95%', height: '60px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                        </div>
+                    </div>
+                </div>
+                <div class="fb-item py-5" style="height: 265px;">
+                    <div class="first-section-wrapper">
+                        <div class="gravatar-title">
+                            <div>
+                                <ngx-skeleton-loader
+                                    [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="second-section-wrapper" style="margin-top: -30px;">
+                        <div class="wrapper">
+                            <ngx-skeleton-loader count="1" appearance="circle"
+                                [theme]="{ width: '95%', height: '60px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                        </div>
+                    </div>
+                </div>
+                <div class="fb-item py-5" style="height: 265px;">
+                    <div class="first-section-wrapper">
+                        <div class="gravatar-title">
+                            <div>
+                                <ngx-skeleton-loader
+                                    [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="second-section-wrapper" style="margin-top: -30px;">
+                        <div class="wrapper">
+                            <ngx-skeleton-loader count="1" appearance="circle"
+                                [theme]="{ width: '95%', height: '60px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                        </div>
+                    </div>
+                </div>
+                }@else{
+                <div class="filter-heading" style="margin-top: 8px;">
+                    <div class="breadcrumb nav">
+                        <span class="breadcrumb-item">
+                            <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+                        </span>
+                        <span class="breadcrumb-item">
+                            <a class="breadcrumb-link" [routerLink]="['/client']">Client</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="side-bar bg-white p-3 rounded">
+                    <div class="sidebar-elements search-bx">
+                        <div class="form-group mb-4">
+                            <h4 class="section-head-small mb-2"><i class="fa-solid fa-filter"></i> All Filters</h4>
+                            <h4 class="section-head-small reset-filter mb-2" tooltipPosition="top"
+                                pTooltip="Reset Filters" (click)="resetFilter()"><i class="fa-solid fa-retweet"></i>
+                            </h4>
+                            <hr class="hr" />
+                        </div>
+                        <div class="form-group mb-4 mt-2">
+                            <h4 class="section-head-small mb-2">Name</h4>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search Client name"
+                                    [(ngModel)]="searchClientName" (blur)="searchName($event)">
+                            </div>
+                        </div>
+                        <hr class="hr" />
+
+                        <div class="form-group mb-4">
+                            <h4 class="section-head-small mb-2">Sector</h4>
+                            <select class="wt-select-bar-large selectpicker" [(ngModel)]="searchClientSector"
+                                (change)="searchSector($event)">
+                                <option value="" selected>Select Sector</option>
+                                @for(sector of sectorData; track $index){
+                                <option>{{sector}}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <hr class="hr" />
+                        <div class="form-group mb-4">
+                            <h4 class="section-head-small mb-2">Industry</h4>
+                            <select class="wt-select-bar-large selectpicker" [(ngModel)]="searchClientIndustry"
+                                (change)="searchIndustry($event)">
+                                <option value="" selected>Select Industry</option>
+                                @for(industry of industryData; track $index){
+                                <option>{{industry}}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <hr class="hr" />
+                        <div class="form-group">
+                            <div class="submit-btn mt-2" style="margin-left: 165px;">
+                                <button class="btn postjob-btn btn2" (click)="onSearchSubmit()"> Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+
+            <div class="col-lg-9 col-md-12">
+                @if(loader2){
+                @for(iteam of getNumberArray(loaderCount); track $index){
+                <div class="fb-item">
+                    <div class="first-section-wrapper">
+                        <div class="gravatar">
+                            <ngx-skeleton-loader appearance="circle"
+                                [theme]="{ width: '80px', height: '80px', 'border-radius': '10px' }"></ngx-skeleton-loader>
+                        </div>
+                        <div class="gravatar-title">
+                            <div><ngx-skeleton-loader
+                                    [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div><ngx-skeleton-loader
+                                    [theme]="{ width: '170px', 'border-radius': '0', height: '15px' }"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+                }@else{
+                @if(totalRecord > 0){
+                <div
+                    class="product-filter-wrap d-flex justify-content-between position-relative align-items-center m-b20">
+                    <span class="">Showing {{fetchedRecord}} clients</span>
+                    <div class="submit-btn position-absolute" style="right: 125px;">
+                        <button class="btn postjob-btn" (click)="addNewClient()"><i class="fa-regular fa-plus"></i>
+                            Client</button>
+                    </div>
+                    <form class="woocommerce-ordering tmi-filter-select showmoreSelect" method="get">
+                        <select class="wt-select-bar-2 selectpicker" (change)="onSelectChange($event)">
+                            <option value="10">Show 10</option>
+                            <option value="20">Show 20</option>
+                            <option value="30">Show 30</option>
+                            <option value="40">Show 40</option>
+                            <option value="50">Show 50</option>
+                            <option value="60">Show 60</option>
+                        </select>
+                    </form>
+                </div>
+
+                <div class="row">
+                    @for(item of clientList; track $index ){
+                    <div class="col-md-12 ">
+                        <div class="client-data rounded">
+                            <a routerLink="/client-details/{{item._id}}">
+                                <div class="client-logo ">
+                                    <img src="{{baseAPIURL}}{{item.clientLogo}}" class="logoImage rounded"
+                                        loading="lazy">
+                                </div>
+                                <div class="client-details">
+                                    <h5 class="client-title">{{item.name}}</h5>
+                                    <p class="client-sub-title"><i class="fa-solid fa-location-dot"></i>
+                                        {{item.location}}</p>
+                                    <p class="client-sub-title"><i class="fa-solid fa-briefcase"></i> {{item.sector}}
+                                    </p>
+                                    <p class="client-indent"><i class="fa-solid fa-suitcase"></i> {{item.indentCount}}
+                                        Indents</p>
+                                </div>
+                            </a>
+                            <div class="indent-btn">
+                                <button class="btn client_status ml-2" (click)="showEditModal(item)"><i
+                                        class="fa fa-edit text-info"></i></button>
+                                <button class="btn client_status ml-2" (click)="confirmStatusChange(item)"><i
+                                        [ngClass]="{'fa-eye': item.status === 1, 'fa-eye-slash': item.status === 0}"
+                                        class="fa"></i> </button>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p>Showing {{startIndex2}} to {{endIndex2}} of {{filterdRecord}} entries</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="cuspagi" style="float: right;">
+                                <nav aria-label="...">
+                                    <ul class="pagination">
+                                        <li class="page-item {{isDisabled}}"><button class="page-link"
+                                                (click)="prevPage()">Previous</button></li>
+                                        <li class="page-item active" aria-current="page"><a
+                                                class="page-link">{{currentPage}}</a></li>
+                                        <li class="page-item {{isDisabled2}}"><button class="page-link text-danger"
+                                                (click)="nextPage()">Next</button></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }@else{
+                <div class="col-md-12 pt-5">
+                    <div class="empty_state rounded">
+                        <i class="fa-solid fa-face-surprise"></i>
+                        <h3 class="">No records</h3>
+                        <p>There are no records found</p>
+                        <!-- <button>Call to action</button> -->
+                    </div>
+                </div>
+                }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- OUR BLOG END -->
+<p-toast />
+
+<p-dialog header="Add New Client" [(visible)]="displayModalAdd" [modal]="true" [style]="{width: '50vw'}">
+    <div class="step-form">
+        <form [formGroup]="insertNewClient">
+            <h5 class="text-danger mb-4">1. Client Information</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Enter full name" formControlName="name">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="insertNewClient.controls.name.invalid && (insertNewClient.controls.name.touched || insertNewClient.controls.name.dirty || isFormSubmited2)">
+                            <span *ngIf="insertNewClient.controls.name.errors?.['required']">* This field is
+                                required</span>
+                            <span
+                                *ngIf="insertNewClient.controls.name.errors?.['alphabetspecl'] && !insertNewClient.controls.name.errors?.['required']">Please
+                                enter only alphabets'</span>
+                            <span *ngIf="insertNewClient.controls.name.errors?.['maxlength']">* Maximum 150 character
+                                should be allowed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label class="control-label">Logo <span class="text-danger">*</span></label>
+                                <input type="file" class="form-control" (change)="onFileSelected($event,'insert')"
+                                    formControlName="clientLogo" accept="image/*">
+                                <div class="text-danger pt-2 error"
+                                    *ngIf="insertNewClient.controls.clientLogo.invalid && (insertNewClient.controls.clientLogo.touched || insertNewClient.controls.clientLogo.dirty || isFormSubmited)">
+                                    <span *ngIf="insertNewClient.controls.clientLogo.errors?.['required']">* This field
+                                        is required</span>
+                                    <span *ngIf="insertNewClient.controls.clientLogo.errors?.['maxSize']">* File size
+                                        should be less than 2 MB</span>
+                                    <span *ngIf="insertNewClient.controls.clientLogo.errors?.['invalidFileType']">*
+                                        Invalid file type. Only JPEG, JPG, and PNG are allowed</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <img *ngIf="imageUrl" [src]="imageUrl" alt="Image Preview"
+                                    style="height: 80px; width: 80px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Short Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Enter Short Name"
+                            formControlName="shortName">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="insertNewClient.controls.shortName.invalid && (insertNewClient.controls.shortName.touched || insertNewClient.controls.shortName.dirty || isFormSubmited)">
+                            <span *ngIf="insertNewClient.controls.shortName.errors?.['required']">* This field is
+                                required</span>
+                            <span
+                                *ngIf="insertNewClient.controls.shortName.errors?.['alphabetspecl'] && !insertNewClient.controls.shortName.errors?.['required']">Please
+                                enter only alphabets'</span>
+                            <span
+                                *ngIf="insertNewClient.controls.shortName.errors?.['maxlength'] && !insertNewClient.controls.shortName.errors?.['required']">*Maximum
+                                150 character should allowed'</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Registered Firm Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Enter Firm Name"
+                            formControlName="firmName">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="insertNewClient.controls.firmName.invalid && (insertNewClient.controls.firmName.touched || insertNewClient.controls.firmName.dirty || isFormSubmited)">
+                            <span *ngIf="insertNewClient.controls.firmName.errors?.['required']">* This field is
+                                required</span>
+                            <span
+                                *ngIf="insertNewClient.controls.firmName.errors?.['alphabetspecl'] && !insertNewClient.controls.firmName.errors?.['required']">Please
+                                enter only alphabets'</span>
+                            <span
+                                *ngIf="insertNewClient.controls.firmName.errors?.['maxlength'] && !insertNewClient.controls.firmName.errors?.['required']">*Maximum
+                                150 character should allowed'</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Industry <span class="text-danger">*</span></label>
+                        <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="industryData"
+                            [placeholder]="'Select Industry'" formControlName="industry"></ng-multiselect-dropdown>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="insertNewClient.controls.industry.invalid && (insertNewClient.controls.industry.touched || insertNewClient.controls.industry.dirty || isFormSubmited)">
+                            <span *ngIf="insertNewClient.controls.industry.errors?.['required']">* This field is
+                                required</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Sector <span class="text-danger">*</span></label>
+                        <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="sectorData"
+                            [placeholder]="'Select Sector'" formControlName="sector"></ng-multiselect-dropdown>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="insertNewClient.controls.sector.invalid && (insertNewClient.controls.sector.touched || insertNewClient.controls.sector.dirty || isFormSubmited)">
+                            <span *ngIf="insertNewClient.controls.sector.errors?.['required']">* This field is
+                                required</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Location <span class="text-danger">*</span></label>
+                        <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="locationData"
+                            [placeholder]="'Select Location'" formControlName="location"></ng-multiselect-dropdown>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="insertNewClient.controls.location.invalid && (insertNewClient.controls.location.touched || insertNewClient.controls.location.dirty || isFormSubmited)">
+                            <span *ngIf="insertNewClient.controls.location.errors?.['required']">* This field is
+                                required</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Description <span class="text-danger">*</span></label>
+                        <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter Description"
+                            formControlName="description"></textarea>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="insertNewClient.controls.description.invalid && (insertNewClient.controls.description.touched || insertNewClient.controls.description.dirty || isFormSubmited)">
+                            <span *ngIf="insertNewClient.controls.description.errors?.['required']">* This field is
+                                required</span>
+                            <span *ngIf="insertNewClient.controls.description.errors?.['maxlength']">* Maximum 5000
+                                character should allowed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h5 class="text-danger mb-3 mt-3">2. Client Documents </h5>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Company PAN Card Number <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Enter Pancard Number"
+                                    formControlName="pancard" (input)="edittoUppercase()">
+                                <div class="text-danger pt-2 error"
+                                    *ngIf="insertNewClient.controls.pancard.invalid && (insertNewClient.controls.pancard.touched || insertNewClient.controls.pancard.dirty || isFormSubmited)">
+                                    <span *ngIf="insertNewClient.controls.pancard.errors?.['required']">* This field is
+                                        required</span>
+                                    <span *ngIf="insertNewClient.controls.pancard.errors?.['pannumber']">Please enter
+                                        PAN card number'</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <label class="control-label">Pancard Image<span class="text-danger">
+                                                *</span></label>
+                                        <input type="file" class="form-control" (change)="onPancardSelected($event)"
+                                            formControlName="pancardImage" accept="image/*">
+                                        <div class="text-danger pt-2 error"
+                                            *ngIf="insertNewClient.controls.pancardImage.invalid && (insertNewClient.controls.pancardImage.touched || insertNewClient.controls.pancardImage.dirty || isFormSubmited)">
+                                            <span *ngIf="insertNewClient.controls.pancardImage.errors?.['required']"> *
+                                                This field is required</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <img *ngIf="pancardImageUrl" [src]="pancardImageUrl" alt="Image Preview"
+                                            style="height: 80px; width: 80px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">GST Registration</label><br>
+                                <label class="radio-inline">
+                                    <input type="radio" name="gstin" [value]="true" (click)="editgstinCheck(true)"
+                                        formControlName="gstin"> Yes
+                                </label> &nbsp;
+                                <label class="radio-inline">
+                                    <input type="radio" name="gstin" [value]="false" (click)="editgstinCheck(false)"
+                                        formControlName="gstin"> No
+                                </label>
+                            </div>
+                        </div>
+
+                        @if(showgst){
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Company GSTIN Number<span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Enter GSTIN Number"
+                                    formControlName="gistinNumber">
+                                <div class="text-danger pt-2 error"
+                                    *ngIf="insertNewClient.controls.gistinNumber.invalid && (insertNewClient.controls.gistinNumber.touched || insertNewClient.controls.gistinNumber.dirty || isFormSubmited)">
+                                    <span *ngIf="insertNewClient.controls.gistinNumber.errors?.['required']"> * This
+                                        field is required</span>
+                                    <span *ngIf="insertNewClient.controls.gistinNumber.errors?.['gstnumber']">Please
+                                        enter GSTIN number'</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label class="control-label">GSTIN Certificate <span
+                                                class="text-danger">*</span></label>
+                                        <input type="file" class="form-control" (change)="onGstSelected($event)"
+                                            formControlName="gstinImage" accept="image/*,application/pdf">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <img *ngIf="gstImageUrl" [src]="gstImageUrl" alt="Image Preview"
+                                            style="height: 80px; width: 80px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="row">
+                <h5 class="text-danger mb-3 mt-3">3. Client Address</h5>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">State <span class="text-danger">*</span></label>
+                        <select class="form-control" formControlName="state" (change)="getCityOnStateChnage($event)">
+                            <option value="">Select State</option>
+                            @for(state of stateData; track $index){
+                            <option value="{{state.name}}">{{state.name}}</option>
+                            }
+                        </select>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="insertNewClient.controls.state.invalid && (insertNewClient.controls.state.touched || insertNewClient.controls.state.dirty || isFormSubmited)">
+                            <span *ngIf="insertNewClient.controls.state.errors?.['required']">* This field is
+                                required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">City <span class="text-danger">*</span></label>
+                        <select class="form-control" formControlName="city">
+                            <option value="">Select City</option>
+                            @for(city of cityData; track $index){
+                            <option value="{{city.name}}">{{city.name}}</option>
+                            }
+                        </select>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="insertNewClient.controls.city.invalid && (insertNewClient.controls.city.touched || insertNewClient.controls.city.dirty || isFormSubmited)">
+                            <span *ngIf="insertNewClient.controls.city.errors?.['required']">* This field is
+                                required</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Address <span class="text-danger">*</span></label>
+                        <textarea class="form-control" rows="2" style="height: 80px;"
+                            placeholder="Enter your full address" formControlName="address"></textarea>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="insertNewClient.controls.address.invalid && (insertNewClient.controls.address.touched || insertNewClient.controls.address.dirty || isFormSubmited)">
+                            <span *ngIf="insertNewClient.controls.address.errors?.['required']">* This field is
+                                required</span>
+                            <span *ngIf="insertNewClient.controls.address.errors?.['maxlength']">* Maximum 500 character
+                                should allowed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <p>{{insertNewClient.value | json}}</p> -->
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="message"></p>
+                    <div class="submit-btn">
+                        @if(isLoading){
+                        <button class="btn btn-primary postjob-btn" type="button" disabled><span
+                                class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status">
+                                Loading...</span></button>
+                        }@else{
+                        <button type="button" (click)="insertClient();" class="btn postjob-btn" type="button"><i
+                                class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</p-dialog>
+
+
+<p-dialog header="Edit Client" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}">
+    <div class="step-form">
+        <form [formGroup]="editClient">
+            <h5 class="text-danger mb-4">1. Client Information</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Enter full name" formControlName="name">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="insertNewClient.controls.name.invalid && (editClient.controls.name.touched || editClient.controls.name.dirty || isFormSubmited2)">
+                            <span *ngIf="editClient.controls.name.errors?.['required']">* This field is required</span>
+                            <span
+                                *ngIf="editClient.controls.name.errors?.['alphabetspecl'] && !editClient.controls.name.errors?.['required']">Please
+                                enter only alphabets'</span>
+                            <span *ngIf="editClient.controls.name.errors?.['maxlength']">* Maximum 50 charector should
+                                allowed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label class="control-label">Logo <span class="text-danger">*</span></label>
+                                <input type="file" class="form-control" (change)="onFileSelected($event,'edit')"
+                                    formControlName="clientLogo" accept="image/*">
+                                <div class="text-danger pt-2 error"
+                                    *ngIf="editClient.controls.clientLogo.invalid && (editClient.controls.clientLogo.touched || editClient.controls.clientLogo.dirty || isFormSubmited2)">
+                                    <span *ngIf="editClient.controls.clientLogo.errors?.['required']">* This field is
+                                        required</span>
+                                    <span *ngIf="editClient.controls.clientLogo.errors?.['maxSize']">* File size should
+                                        be less than 2 MB</span>
+                                    <span *ngIf="editClient.controls.clientLogo.errors?.['invalidFileType']">* Invalid
+                                        file type. Only JPEG, JPG, and PNG are allowed</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <img *ngIf="imageUrl" [src]="imageUrl" alt="Image Preview"
+                                    style="height: 80px; width: 80px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Short Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Enter Short Name"
+                            formControlName="shortName">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="insertNewClient.controls.shortName.invalid && (editClient.controls.shortName.touched || insertNewClient.controls.shortName.dirty || isFormSubmited2)">
+                            <span *ngIf="editClient.controls.shortName.errors?.['required']">* This field is
+                                required</span>
+                            <span
+                                *ngIf="editClient.controls.shortName.errors?.['alphabetspecl'] && !editClient.controls.shortName.errors?.['required']">Please
+                                enter only alphabets'</span>
+                            <span
+                                *ngIf="editClient.controls.shortName.errors?.['maxlength'] && !editClient.controls.shortName.errors?.['required']">*Maximum
+                                150 character should allowed'</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Registered Firm Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Enter Registered Firm Name"
+                            formControlName="firmName">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editClient.controls.firmName.invalid && (editClient.controls.firmName.touched || editClient.controls.firmName.dirty || isFormSubmited2)">
+                            <span *ngIf="editClient.controls.firmName.errors?.['required']">* This field is
+                                required</span>
+                            <span
+                                *ngIf="editClient.controls.firmName.errors?.['alphabetspecl'] && !editClient.controls.firmName.errors?.['required']">Please
+                                enter only alphabets'</span>
+                            <span
+                                *ngIf="editClient.controls.firmName.errors?.['maxlength'] && !editClient.controls.firmName.errors?.['required']">*Maximum
+                                150 character should allowed'</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Industry <span class="text-danger">*</span></label>
+                        <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="industryData"
+                            [placeholder]="'Select Industry'" formControlName="industry"></ng-multiselect-dropdown>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editClient.controls.industry.invalid && (editClient.controls.industry.touched || editClient.controls.industry.dirty || isFormSubmited2)">
+                            <span *ngIf="editClient.controls.industry.errors?.['required']">* This field is
+                                required</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Sector <span class="text-danger">*</span></label>
+                        <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="sectorData"
+                            [placeholder]="'Select Sector'" formControlName="sector"></ng-multiselect-dropdown>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editClient.controls.sector.invalid && (editClient.controls.sector.touched || editClient.controls.sector.dirty || isFormSubmited2)">
+                            <span *ngIf="editClient.controls.sector.errors?.['required']">* This field is
+                                required</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Location <span class="text-danger">*</span></label>
+                        <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="locationData"
+                            [placeholder]="'Select Location'" formControlName="location"></ng-multiselect-dropdown>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editClient.controls.location.invalid && (editClient.controls.location.touched || editClient.controls.location.dirty || isFormSubmited2)">
+                            <span *ngIf="editClient.controls.location.errors?.['required']">* This field is
+                                required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Description <span class="text-danger">*</span></label>
+                        <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter Description"
+                            formControlName="description"></textarea>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editClient.controls.description.invalid && (editClient.controls.description.touched || editClient.controls.description.dirty || isFormSubmited2)">
+                            <span *ngIf="editClient.controls.description.errors?.['required']">* This field is
+                                required</span>
+                            <span *ngIf="editClient.controls.description.errors?.['maxlength']">* Maximum 5000 charector
+                                should allowed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h5 class="text-danger mb-3 mt-3">2. Client Documents </h5>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Company PAN Card Number <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Enter Pancard Number"
+                                formControlName="pancard" (input)="edittoUppercase2()">
+                            <div class="text-danger pt-2 error"
+                                *ngIf="editClient.controls.pancard.invalid && (editClient.controls.pancard.touched || editClient.controls.pancard.dirty || isFormSubmited2)">
+                                <span *ngIf="editClient.controls.pancard.errors?.['required']">* This field is
+                                    required</span>
+                                <span *ngIf="editClient.controls.pancard.errors?.['pannumber']">Please enter PAN card
+                                    number'</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label class="control-label">Pancard Image<span class="text-danger">
+                                            *</span></label>
+                                    <input type="file" class="form-control" (change)="onPancardSelected($event)"
+                                        formControlName="pancardImage" accept="image/*">
+                                    <div class="text-danger pt-2 error"
+                                        *ngIf="editClient.controls.pancardImage.invalid && (editClient.controls.pancardImage.touched || editClient.controls.pancardImage.dirty || isFormSubmited2)">
+                                        <span *ngIf="editClient.controls.pancardImage.errors?.['required']"> * This
+                                            field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <img *ngIf="pancardImageUrl" [src]="pancardImageUrl" alt="Image Preview"
+                                        style="height: 80px; width: 80px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">GST Registration</label><br>
+                            <label class="radio-inline">
+                                <input type="radio" name="gstin" [value]="true" (click)="editgstinCheck2(true)"
+                                    formControlName="gstin"> Yes
+                            </label> &nbsp;
+                            <label class="radio-inline">
+                                <input type="radio" name="gstin" [value]="false" (click)="editgstinCheck2(false)"
+                                    checked="" formControlName="gstin"> No
+                            </label>
+                        </div>
+                    </div>
+
+                    @if(showgst2){
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Company GSTIN Number<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Enter GSTIN Number"
+                                formControlName="gistinNumber">
+                            <div class="text-danger pt-2 error"
+                                *ngIf="editClient.controls.gistinNumber.invalid && (editClient.controls.gistinNumber.touched || editClient.controls.gistinNumber.dirty || isFormSubmited2)">
+                                <span *ngIf="editClient.controls.gistinNumber.errors?.['required']"> * This field is
+                                    required</span>
+                                <span *ngIf="editClient.controls.gistinNumber.errors?.['gstnumber']">Please enter GSTIN
+                                    number'</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label class="control-label">GSTIN Certificate <span
+                                            class="text-danger">*</span></label>
+                                    <input type="file" class="form-control" (change)="onGstSelected($event)"
+                                        formControlName="gstinImage" accept="image/*,application/pdf">
+                                    <div class="text-danger pt-2 error"
+                                        *ngIf="editClient.controls.gstinImage.invalid && (editClient.controls.gstinImage.touched || editClient.controls.gstinImage.dirty || isFormSubmited2)">
+                                        <span *ngIf="editClient.controls.gstinImage.errors?.['required']"> * This field
+                                            is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <img *ngIf="gstImageUrl" [src]="gstImageUrl" alt="Image Preview"
+                                        style="height: 80px; width: 80px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <div class="row">
+                <h5 class="text-danger mb-3 mt-3">3. Client Address</h5>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">State <span class="text-danger">*</span></label>
+                        <select class="form-control" formControlName="state" (change)="getCityOnStateChnage($event)">
+                            <option value="">Select State</option>
+                            @for(state of stateData; track $index){
+                            <option value="{{state.name}}">{{state.name}}</option>
+                            }
+                        </select>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editClient.controls.state.invalid && (editClient.controls.state.touched || editClient.controls.state.dirty || isFormSubmited2)">
+                            <span *ngIf="editClient.controls.state.errors?.['required']">* This field is required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">City <span class="text-danger">*</span></label>
+                        <select class="form-control" formControlName="city">
+                            <option value="">Select City</option>
+                            @for(city of cityData; track $index){
+                            <option value="{{city.name}}">{{city.name}}</option>
+                            }
+                        </select>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editClient.controls.city.invalid && (editClient.controls.city.touched || editClient.controls.city.dirty || isFormSubmited2)">
+                            <span *ngIf="editClient.controls.city.errors?.['required']">* This field is required</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Address <span class="text-danger">*</span></label>
+                        <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter Full Address"
+                            formControlName="address"></textarea>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editClient.controls.address.invalid && (editClient.controls.address.touched || editClient.controls.address.dirty || isFormSubmited2)">
+                            <span *ngIf="editClient.controls.address.errors?.['required']">* This field is
+                                required</span>
+                            <span *ngIf="editClient.controls.address.errors?.['maxlength']">* Maximum 5000 character
+                                should allowed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="message"></p>
+                    <div class="submit-btn">
+                        @if(isLoading){
+                        <button class="btn btn-primary postjob-btn" type="button" disabled><span
+                                class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status">
+                                Loading...</span></button>
+                        }@else{
+                        <button type="button" (click)="updateClient();" class="btn postjob-btn" type="button"><i
+                                class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</p-dialog>
+<p-toast />

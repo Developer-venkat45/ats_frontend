@@ -1,0 +1,191 @@
+<p-toast></p-toast>
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="row mb-2">
+                    <div class=" container col-md-12">
+                        <ul style="list-style-type: none;display: flex;justify-content: flex-start;align-items: center;position:relative;">
+                            <li>
+                                <div class="breadcrumb nav" style="margin: 0;">
+                                    <span class="breadcrumb-item">
+                                        <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i>Home</a>
+                                    </span>
+                                    <span class="breadcrumb-item">
+                                        <a class="breadcrumb-link" style="cursor:pointer;" [routerLink]="['/master']">Master</a>
+                                    </span>
+                                    <span class="breadcrumb-item">
+                                        <a class="breadcrumb-link" style="cursor:pointer;" [routerLink]="['/master/:'+masterCategory]">{{masterCategory}}</a>
+                                    </span>
+                                </div>
+                            </li>
+                            <li style="margin-left:20px;cursor:pointer;color:white;position: absolute;right: 0;" (click)="addFieldDialog()">
+                                <a class="postjob-btn"><i class="fa-regular fa-plus"></i> Add {{masterCategory}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p-table 
+                    #dt2 [value]="fieldData" 
+                    dataKey="id" 
+                    [paginator]="true" 
+                    [loading]="loading" 
+                    [rows]="10" 
+                    [tableStyle]="{ 'min-width': '50rem' }" 
+                    [rowsPerPageOptions]="[10, 25, 50, 100, 500]"
+                    [globalFilterFields]="['name']">
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <p-iconField iconPosition="left" class="ml-auto">
+                                <p-inputIcon><i class="pi pi-search"></i></p-inputIcon>
+                                <input pInputText type="text" class="newinput-class2" (input)="dt2.filterGlobal($any($event).target.value, 'contains')" placeholder="Search type" />
+                            </p-iconField>
+                        </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th *ngFor="let field of fieldDataProperties; let i = index">
+                                <span *ngIf="fieldSortable[i] === false">
+                                    {{ field }}
+                                </span>
+                                <span *ngIf="fieldSortable[i]"  pSortableColumn="name"> 
+                                    {{ field }}
+                                    <p-sortIcon field="subject" />
+                                </span>
+                            </th>
+                            <th>
+                                edit
+                            </th>
+                            <th *ngIf="doesStatusExist">
+                                Active/Inactive
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-fieldData let-i="rowIndex">
+                            <tr>
+                                <td *ngFor="let field of fieldDataProperties;let j = index">
+                                    <span *ngIf="j===0">{{i + 1}}</span>
+                                    <span *ngIf="j===1">{{fieldData["name"]}}</span>
+                                    <span *ngIf="j!=0 && j!=1 && field==='state'">{{fieldData["displayName"]==="select a
+                                        state"?"":fieldData["displayName"]}}</span>
+                                    <span *ngIf="j!=0 && j!=1 && field==='zone'">{{fieldData["displayName"]==="select a
+                                        zone"?"":fieldData["displayName"]}}</span>
+                                    <span *ngIf="j>1 && field!='state' && field!='zone'">{{fieldData[field]}}</span>
+                                </td>
+                                <td>
+                                    <a class="" style="cursor: pointer;" (click)="updateFieldDialog(fieldData)"><i
+                                            class="fa fa-edit text-info"></i></a>
+                                </td>
+                                <td *ngIf="doesStatusExist">
+                                    <a class="" style="cursor: pointer;" (click)="changeStatus(fieldData)
+                                    ">
+                                      @if(fieldData["status"]){
+                                            <i class="fa fa-eye text-info"></i>
+                                      }
+                                      @else {
+                                            <i class="fa fa-eye-slash text-grey"></i>
+                                      }
+                                    </a>
+                                </td>
+                            </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div *ngIf="isAddFieldDialogActive" style="margin:0;padding:0">
+    <p-dialog header={{addFieldDialogHeader}} [modal]="true" [(visible)]="addDialogVisible" [style]="{ width: '25rem' }" [maximizable]="true"
+        [draggable]="false">
+        <div class="flex align-items-center gap-3 mb-3" *ngFor="let field of fieldDataProperties; let i = index">
+            
+            <label for={{field}} *ngIf="i!=0 && i!=1 && ( field==='zone' || field==='state')"
+                class="font-semibold w-6rem">{{field}}</label>
+            <select *ngIf="i != 0 && i != 1 && (field === 'zone' || field === 'state')"
+                [(ngModel)]="captureInsertValues[i - 1]" [id]="field">
+                <!-- Placeholder option -->
+                <option value="" selected>
+                    {{ field === 'state' ? stateIdOptionValues[0].label : zoneIdOptionValues[0].label }}
+                </option>
+
+                <!-- Options for state or zone -->
+                <option
+                    *ngFor="let option of (field === 'state' ? stateIdOptionValues.slice(1) : zoneIdOptionValues.slice(1))"
+                    [value]="option.value">
+                    {{ option.label }}
+                </option>
+            </select>
+            <label for={{field}} *ngIf="i===1 || (i!=0 && field!=='zone' && field!=='state')"
+                class="font-semibold w-6rem">{{field}}</label>
+            <input pInputText *ngIf="i===1 || (i!=0 && field!=='zone' && field!=='state')" [id]="field"
+                class="flex-auto" autocomplete="off" [(ngModel)]="captureInsertValues[i-1]" value="" placeholder="Enter {{ field }}"/>
+
+                
+        </div>
+        <div class="flex justify-content-end gap-2 dupentry" *ngIf="dupEntry">
+            @for(e of err;track e;){
+                  <div style="font-size:14px;font-style:italic;" class="text-danger">{{e}}</div>
+            }
+        </div>
+        <div class="flex justify-content-end gap-2">
+            <p-button label="Save" (click)="checkDupEntry()" />
+        </div>
+    </p-dialog>
+</div>
+
+
+<div *ngIf="isUpdateFieldDialogActive" style="margin:0;padding:0;">
+    <p-dialog header={{updateFieldDialogHeader}} [modal]="true" [(visible)]="updateDialogVisible"
+        [style]="{ width: '25rem' }" [draggable]="false" [maximizable]="true">
+        <div class="flex align-items-center gap-3 mb-3" *ngFor="let field of fieldDataProperties; let i = index">
+            <label for={{field}} *ngIf="i!=0 && i!=1 && ( field==='zone' || field==='state')"
+                class="font-semibold w-6rem">{{field}}</label>
+            <select *ngIf="i != 0 && i != 1 && (field === 'zone' || field === 'state')"
+                [(ngModel)]="captureUpdateValues[i - 1]" [id]="field"> 
+                @if(field==="state"){
+                    @for(option of stateIdOptionValues;track option; ){
+                         <option  [value]="option.value">
+                            {{ option.label }}
+                            </option>
+                    }
+                }
+            
+                @if(field==="zone"){
+                @for(option of zoneIdOptionValues;track option; ){
+                <option [value]="option.value">
+                    {{ option.label }}
+                </option>
+                }
+                }
+                 
+            </select>
+            <label for={{field}} *ngIf="i===1 || (i!=0 && field!=='zone' && field!=='state')"
+                class="font-semibold w-6rem">{{field}}</label>
+            <input pInputText *ngIf="i===1 || (i!=0  && field!=='zone' && field!=='state')" id={{field}}
+                class="flex-auto newinput-class" autocomplete="off" value={{updateFieldvalues[i-1]}}
+                [(ngModel)]="captureUpdateValues[i-1]" />
+        </div>
+        <div class="flex justify-content-end gap-2 dupentry" *ngIf="dupEntry">
+            @for(e of err;track e;){
+            <div style="font-size:14px;font-style:italic;" class="text-danger">{{e}}</div>
+            }
+        </div>
+        <div class="flex justify-content-end gap-2">
+            <p-button label="Save" (click)="checkDupEntry()" />
+        </div>
+    </p-dialog>
+</div>
+
+
+<p-dialog header="{{statusFieldDialogHeader}}" [modal]="true" [(visible)]="statusDialogVisible" [closable]="false"
+    [style]="{ width: '25rem', fontSize: '10px' }" [draggable]="false">
+
+    <div class="flex justify-content-end gap-2">
+        <p-button label="Cancel" severity="secondary" (onClick)="statusDialogVisible = false"></p-button>
+        <p-button label="Change" (onClick)="statusDialogVisible = false" (click)="changeStatusRoute()"></p-button>
+    </div>
+</p-dialog>

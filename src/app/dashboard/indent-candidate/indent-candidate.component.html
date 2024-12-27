@@ -1,0 +1,392 @@
+<!-- <app-navbar></app-navbar> -->
+
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        @if(loader){
+                        <div class="fb-item py-5" style="height: 400px;">
+                            <div class="first-section-wrapper">
+                                <div class="gravatar-title">
+                                    <div>
+                                        <ngx-skeleton-loader
+                                            [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="second-section-wrapper" style="margin-top: -30px;">
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader count="1" appearance="circle"
+                                        [theme]="{ width: '95%', height: '60px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+
+                            <div class="second-section-wrapper" style="margin-top: 10;">
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader count="1" appearance="circle"
+                                        [theme]="{ width: '95%', height: '60px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+
+                            <div class="second-section-wrapper" style="margin-top: 10px;">
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader count="1" appearance="circle"
+                                        [theme]="{ width: '95%', height: '60px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                        @else{
+                        <div class="filter-heading" style="margin-top: 8px;">
+                            <div class="breadcrumb nav">
+                                <span class="breadcrumb-item">
+                                    <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i>
+                                        Home</a>
+                                </span>
+                                <span class="breadcrumb-item">
+                                    <a class="breadcrumb-link" [routerLink]="['/candidates']">Candidates</a>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="side-bar bg-white p-3 rounded">
+                            <div class="sidebar-elements search-bx">
+                                <div class="form-group mb-4">
+                                    <h4 class="section-head-small mb-2"><i class="fa-solid fa-filter"></i> All Filters
+                                    </h4>
+                                    <h4 class="section-head-small reset-filter mb-2" tooltipPosition="top"
+                                        pTooltip="Reset Filters" (click)="resetFilter()"><i
+                                            class="fa-solid fa-retweet"></i></h4>
+                                    <hr class="hr" />
+                                </div>
+                                <div class="form-group mb-4 mt-3">
+                                    <h4 class="section-head-small mb-2">Name</h4>
+                                    <div class="input-group">
+                                        <input tooltipPosition="left" pTooltip="Search Candidate Name"
+                                            tooltipEvent="focus" type="text" class="form-control"
+                                            placeholder="Candidate Name" [(ngModel)]="searchName"
+                                            (blur)="searchCanName()">
+                                    </div>
+                                </div>
+                                <hr class="hr" />
+                                <div class="form-group mb-4">
+                                    <h4 class="section-head-small mb-2">Mobile</h4>
+                                    <div class="input-group">
+                                        <input tooltipPosition="left" pTooltip="Search Mobile" tooltipEvent="focus"
+                                            type="text" name="query" class="form-control" placeholder="Candidate Mobile"
+                                            [(ngModel)]="searchMobile" (blur)="searchCanMobile()">
+                                    </div>
+                                </div>
+                                <hr class="hr" />
+                                <div class="form-group mb-4">
+                                    <label class="section-head-small mb-2 text-danger">Highest Qualification</label>
+                                    <select class="form-control" tooltipPosition="left"
+                                        pTooltip="Search Candidate education" tooltipEvent="focus"
+                                        [(ngModel)]="searchEducation" (change)="searchCanEducation($event)">
+                                        <option selected="selected" Value="">Select Qualification</option>
+                                        <option>Graduate</option>
+                                        <option>Under Graduate</option>
+                                        <option>Post Graduate</option>
+                                    </select>
+                                </div>
+                                <hr class="hr" />
+                                <div class="form-group mb-4">
+                                    <label class="form-check-label text-danger">Gender</label><br>
+                                    <div class="form-check">
+                                        <input name="collapsible-address-type" class="form-check-input" type="radio"
+                                            value="male" checked="" [(ngModel)]="searchGender"
+                                            (change)="searchCanGender()">
+                                        <label class="form-check-label" for="collapsible-address-type-home">Male</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input name="collapsible-address-type" class="form-check-input" type="radio"
+                                            value="female" [(ngModel)]="searchGender" (change)="searchCanGender()">
+                                        <label class="form-check-label" for="collapsible-address-type-office"> Female
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input name="collapsible-address-type" class="form-check-input" type="radio"
+                                            value="thirdgender" [(ngModel)]="searchGender" (change)="searchCanGender()">
+                                        <label class="form-check-label" for="collapsible-address-type-office"> Third
+                                            Gender </label>
+                                    </div>
+                                </div>
+
+                                <hr class="hr" />
+                                <div class="form-group mb-4">
+                                    <label class="section-head-small mb-2 text-danger">State</label>
+                                    <select class="form-control" [(ngModel)]="searchState"
+                                        (change)="getCityOnStateChnage($event)">
+                                        <option selected="selected" Value="">Select State</option>
+                                        @for(state of stateData; track $index){
+                                        <option value="{{state.name}}">{{state.name}}</option>
+                                        }
+                                    </select>
+                                </div>
+                                <hr class="hr" />
+                                <div class="form-group mb-4">
+                                    <label class="section-head-small mb-2 text-danger">City</label>
+                                    <select class="form-control" [(ngModel)]="searchCity" (change)="searchCanCity()">
+                                        <option selected="selected" Value="">Select City</option>
+                                        @for(city of cityData; track $index){
+                                        <option value="{{city.name}}">{{city.name}}</option>
+                                        }
+                                    </select>
+                                </div>
+                                <hr class="hr" />
+                                <div class="form-group">
+                                    <div class="submit-btn mt-2" style="margin-left: 165px;">
+                                        <button class="btn postjob-btn btn2" (click)="onSearchSubmit()"> Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                @if(loader2){
+                @for(iteam of getNumberArray(loaderCount); track $index){
+                <div class="fb-item">
+                    <div class="first-section-wrapper">
+                        <div class="gravatar">
+                            <ngx-skeleton-loader appearance="circle"
+                                [theme]="{ width: '80px', height: '80px' }"></ngx-skeleton-loader>
+                        </div>
+                        <div class="gravatar-title">
+                            <div>
+                                <ngx-skeleton-loader
+                                    [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div>
+                                <ngx-skeleton-loader
+                                    [theme]="{ width: '170px', 'border-radius': '0', height: '15px' }"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="second-section-wrapper">
+                        <div class="wrapper">
+                            <ngx-skeleton-loader [theme]="{
+                                        'width': '80%',
+                                        'border-radius': '0',
+                                        'height': '10px',
+                                        'margin-bottom': '10px'
+                                    }"></ngx-skeleton-loader>
+                        </div>
+
+                        <div class="wrapper">
+                            <ngx-skeleton-loader count="4" appearance="circle" [theme]="{
+                                    width: '23%',
+                                    height: '70px',
+                                    'border-radius': '10px'
+                                    }">
+                            </ngx-skeleton-loader>
+                        </div>
+                    </div>
+                </div>
+                }
+                }@else{
+                @if(totalRecord > 0){
+                <div class="product-filter-wrap d-flex justify-content-between align-items-center m-b20">
+                    <span class="">Showing {{fetchedRecord}} Candidates</span>
+                    <form class="woocommerce-ordering tmi-filter-select" method="get">
+                        <select class="wt-select-bar-2 selectpicker" (change)="onSelectChange($event)">
+                            <option value="10">Show 10</option>
+                            <option value="20">Show 20</option>
+                            <option value="30">Show 30</option>
+                            <option value="40">Show 40</option>
+                            <option value="50">Show 50</option>
+                            <option value="60">Show 60</option>
+                        </select>
+                    </form>
+                </div>
+
+                @for(iteam of recommData; track $index){
+                @if($index == 0){
+                @if(this.selectedIndent){
+                <div class="can_stage">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5 class="mb-1 mt-3">Job Title: <a
+                                    [routerLink]="['/job_details', indentData?._id]"
+                                    class="text-primary"><span style="font-size: 14px;">
+                                        {{indentData?.jobCode}} - {{indentData?.jobTitle}}
+                                    </span></a></h5>
+                            <div class="indent-details text-black">
+                                <span><i class="fa-solid fa-calendar"></i></span><span class="twm-title"> &nbsp;
+                                    {{indentData?.minExperience}} -
+                                    {{indentData?.maxExperience}} Yrs</span> &nbsp; &nbsp;
+                                <span><i class="fa-solid fa-indian-rupee-sign"></i></span><span class="twm-title">
+                                    &nbsp; {{indentData?.minSalary | currency:'INR' : '' : '1.0-0'}} -
+                                    {{indentData?.maxSalary | currency:'INR':'':'1.0-0'}} Per
+                                    {{indentData?.salaryUnit}}</span> &nbsp; &nbsp;
+                                <span><i class="fa-solid fa-user"></i></span><span class="twm-title"> &nbsp;
+                                    {{indentData?.vacancies}}</span> &nbsp; &nbsp;
+                                <span><i class="fa-solid fa-location-dot"></i></span><span class="twm-title">
+                                    @for(location of indentData?.advLocation; track $index){
+                                    {{location}},
+                                    }
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+                }
+
+                <div class="can_stage mt-3 rounded">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-1" tooltipPosition="top" pTooltip="Candidate Image">
+                                    <a class="text-primary" href="candidateprofile/{{iteam._id}}">
+                                        <img src="https://tms.tmivirtually.com/docs/trainer/image/1683046513Trainer_IMG.jpg"
+                                            style="width: 52px; height: 52px; border-radius: 100%; border: 4px solid #f0f8ff;">
+                                    </a>
+                                </div>
+                                <div class="col-md-8" style="margin-left: -17px; margin-top: 10px;">
+                                    <h6>
+                                        <a class="text-primary" tooltipPosition="top" pTooltip="Candidate Name"
+                                            href="candidateprofile/{{iteam._id}}">{{iteam.name}}</a>
+                                        <br>
+                                        <span tooltipPosition="top"
+                                            pTooltip="Candidate Mobile Number">{{iteam.mobile}}</span>
+                                    </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <a [routerLink]="['/appliedindent', iteam._id]">
+                                        <div class="resume rounded">
+                                            <p class="mb-0">Applied Jobs: <span
+                                                    class="applied-indent-count">{{iteam.no_of_applied_indents}}</span>
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row my-3" style="box-sizing: content-box;">
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="card card-border-shadow-primary h-100" style="background-color: #F0f0f0;">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-2 pb-1">
+                                            <div class="avatar me-2">
+                                                <span class="avatar-initial rounded bg-label-primary"><i
+                                                        class="fa-solid fa-golf-ball-tee"></i></span>
+                                            </div>
+                                            <h4 class="ms-1 mb-0">Summary</h4>
+                                        </div>
+                                        <p class="mb-1" tooltipPosition="left" pTooltip="{{ iteam.candidate_summary}}">
+                                            {{ iteam.candidate_summary | slice:0:40}}...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="card card-border-shadow-warning h-100" style="background-color: #F0f0f0;">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-2 pb-1">
+                                            <div class="avatar me-2">
+                                                <span class="avatar-initial rounded bg-label-warning"><i
+                                                        class="fa-solid fa-graduation-cap"></i></span>
+                                            </div>
+                                            <h4 class="ms-1 mb-0">Education</h4>
+                                        </div>
+                                        @if(iteam.education != ''){
+                                        <p class="mb-1">{{iteam.education[0].qualification}}</p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="card card-border-shadow-danger h-100" style="background-color: #F0f0f0;">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-2 pb-1">
+                                            <div class="avatar me-2">
+                                                <span class="avatar-initial rounded bg-label-danger"><i
+                                                        class="fa-solid fa-graduation-cap"></i></span>
+                                            </div>
+                                            <h4 class="ms-1 mb-0">Strengths</h4>
+                                        </div>
+                                        @if(iteam.strengths){
+                                        <p class="mb-1">{{iteam.strengths[0] | slice:0:10}}...</p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="card card-border-shadow-info h-100" style="background-color: #F0f0f0;">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-2 pb-1">
+                                            <div class="avatar me-2">
+                                                <span class="avatar-initial rounded bg-label-info"><i
+                                                        class="fa-solid fa-briefcase"></i></span>
+                                            </div>
+                                            <h4 class="ms-1 mb-0">Experience</h4>
+                                        </div>
+                                        <p class="mb-1">{{iteam.totWorkExp}} Years</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="col-md-12 mt-3" tooltipPosition="left" pTooltip="Associated Indent">
+                                        <p class="mb-0"><b>Indent Title:</b> {{recommData[0].jobTitle}}</p>
+                                    </div> -->
+                        @if(this.selectedIndent){
+                        @if(iteam.exits_indent){
+                        <p class="mb-0">Candidate already applied on
+                            <a class="link-primary"
+                                [routerLink]="['/candidate_details', iteam._id, indentData?._id]">{{iteam.created_at+'Z'
+                                | date: 'dd MMM, yyyy hh:mm:ss a'}}</a>
+                        </p>
+                        }@else{
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a class="btn appaly_btn ml-2 postjob-btn"
+                                    routerLink="/enitest/{{indentData?._id}}/{{indentData?.eandiId}}/{{iteam._id}}"><i
+                                        class="fa-solid fa-paper-plane"></i> Apply</a>
+                            </div>
+                        </div>
+                        }
+                        }
+                    </div>
+                </div>
+                }
+                <div class="row">
+                    <div class="col-md-8">
+                        <p>Showing {{startIndex2}} to {{endIndex2}} of {{filterdRecord}} entries</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="cuspagi" style="float: right;">
+                            <nav aria-label="...">
+                                <ul class="pagination">
+                                    <li class="page-item {{isDisabled}}"><button class="page-link"
+                                            (click)="prevPage()">Previous</button></li>
+                                    <li class="page-item active" aria-current="page"><a
+                                            class="page-link">{{currentPage}}</a></li>
+                                    <li class="page-item {{isDisabled2}}"><button class="page-link text-danger"
+                                            (click)="nextPage()">Next</button></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                }@else{
+                <div class="col-md-12 pt-5">
+                    <div class="empty_state rounded">
+                        <i class="fa-solid fa-face-surprise"></i>
+                        <h3 class="">No records</h3>
+                        <p>There are no records found</p>
+                    </div>
+                </div>
+                }
+                }
+            </div>
+        </div>
+    </div>
+</div>

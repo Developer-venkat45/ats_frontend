@@ -1,0 +1,1276 @@
+<!-- <app-navbar></app-navbar> -->
+
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                @if(loader){
+                    <div class="fb-item">
+                        <div class="first-section-wrapper">
+                            <div class="gravatar">
+                                <ngx-skeleton-loader appearance="circle" [theme]="{ width: '50px', height: '50px' }"></ngx-skeleton-loader>
+                            </div>
+                            <div class="gravatar-title">
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{width: '80px', 'border-radius': '0', height: '10px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{ width: '170px', 'border-radius': '0', height: '15px' }"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="second-section-wrapper">
+                            <div class="wrapper">
+                                <ngx-skeleton-loader
+                                [theme]="{
+                                    'width': '40%',
+                                    'border-radius': '0',
+                                    'height': '5px',
+                                    'margin-bottom': '10px'
+                                }"
+                                ></ngx-skeleton-loader>
+                            </div>
+                        
+                            <div class="wrapper">
+                                <ngx-skeleton-loader
+                                count="4"
+                                appearance="circle"
+                                [theme]="{
+                                width: '12%',
+                                height: '20px',
+                                'border-radius': '10px'
+                                }"
+                            >
+                            </ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                }@else{
+                <div class="can_details rounded p-3">
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-1 p-2">
+                                    <span class="can-icon"><i class="fas fa-user"></i></span>
+                                </div>
+                                <div class="col-md-11">
+                                    <div class="can-name">
+                                        <h4><a [routerLink]="['/candidateprofile', candidateData?._id]" class="link-primary">{{candidateData?.name}}</a></h4>
+                                        <h6>Profile added via {{candidateData?.auth}} by <span>{{candidateData?.source?.name}} ({{candidateData?.source?.role_name}})</span></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <p><b>Current Stage: &nbsp; </b> <span class="parentStage">{{candidateData?.stage | titlecase}}</span><span class="currentStage">{{candidateData?.childStage | titlecase}}</span> </p>
+
+                            @if(isShown){
+                                @if(candidateData?.indent?.indentStep5?.screening?.eandiDone?.status == false && candidateData?.indent?.indentStep5?.screening?.onlineAssessment?.status == false && candidateData?.indent?.indentStep5?.screening?.manualAssessment?.status == false){
+                                    <p-button (click)="showDialog(candidateData?.stage,'hshsh',candidateData?.childStage)" label="Change Stage" class="ml-2" />
+                                }@else if(candidateData?.indent?.indentStep5?.screening?.eandiDone?.status == false && candidateData?.indent?.indentStep5?.screening?.onlineAssessment?.status == true || candidateData?.indent?.indentStep5?.screening?.manualAssessment?.status == true){
+                                    @if(candidateData?.childStage != 'Online Assessment'){
+                                        <p-button (click)="showDialog(candidateData?.stage,'hshsh',candidateData?.childStage)" label="Change Stage" class="ml-2" />
+                                    }
+                                }@else if(candidateData?.indent?.indentStep5?.screening?.eandiDone?.status == true && candidateData?.indent?.indentStep5?.screening?.onlineAssessment?.status == false || candidateData?.indent?.indentStep5?.screening?.manualAssessment?.status == false){
+                                    @if(candidateData?.childStage != 'Scored'){
+                                        <p-button (click)="showDialog(candidateData?.stage,'hshsh',candidateData?.childStage)" label="Change Stage" class="ml-2" />
+                                    }
+                                }@else if(candidateData?.indent?.indentStep5?.screening?.eandiDone?.status == true && candidateData?.indent?.indentStep5?.screening?.onlineAssessment?.status == true || candidateData?.indent?.indentStep5?.screening?.manualAssessment?.status == true){
+                                    @if(candidateData?.childStage != 'Online Assessment'){
+                                        <p-button (click)="showDialog(candidateData?.stage,'hshsh',candidateData?.childStage)" label="Change Stage" class="ml-2" />
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                    
+
+                    <h5 class="mb-1 mt-3">Applied For: <a [routerLink]="['/job_details', candidateData?.indent?._id]" class="text-primary"><span style="font-size: 14px;">{{candidateData?.indent?.indentStep1?.jobTitle}}</span></a></h5>
+
+                    <div class="indent-details text-black">
+                        <span ><i class="fa-solid fa-calendar"></i></span><span class="twm-title"> &nbsp; {{candidateData?.indent?.indentStep2?.minExperience}} - {{candidateData?.indent?.indentStep2?.maxExperience}} Yrs</span> &nbsp; &nbsp;
+                        <span><i class="fa-solid fa-indian-rupee-sign"></i></span><span class="twm-title"> &nbsp; {{candidateData?.indent?.indentStep2?.minSalary | currency:'INR' : '' : '1.0-0'}} - {{candidateData?.indent?.indentStep2?.maxSalary | currency:'INR':'':'1.0-0'}} Per {{candidateData?.indent?.indentStep2?.salaryUnit}}</span> &nbsp; &nbsp;
+                        <span><i class="fa-solid fa-user"></i></span><span class="twm-title"> &nbsp; {{candidateData?.indent?.indentStep2?.vacancies}}</span> &nbsp; &nbsp;
+                        <span><i class="fa-solid fa-location-dot"></i></span><span class="twm-title"> 
+                            @for(location of candidateData?.indent?.indentStep2?.advLocation; track $index){
+                                {{location}},
+                            }
+                        </span>
+                    </div> 
+
+                    <div class="skills">
+                        <ul class="list-inline mb-0" >
+                            @for(skill of candidateData?.indent?.indentStep2.skilsList; track $index){
+                                <li class="list-inline-item" tooltipPosition="top" pTooltip="Skills">{{skill}}</li>
+                            }
+                        </ul>
+                    </div>
+
+                </div>
+                }
+                @if(loader){
+                    <div class="fb-item">
+                        <div class="first-section-wrapper">
+                            
+                            <div class="gravatar-title">
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{width: '900px', 'border-radius': '0', height: '100px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{ width: '170px', 'border-radius': '0', height: '15px' }"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="second-section-wrapper">
+                            <div class="wrapper">
+                                <ngx-skeleton-loader
+                                count="4"
+                                appearance="circle"
+                                [theme]="{
+                                width: '23%',
+                                height: '70px',
+                                'border-radius': '10px'
+                                }"
+                            >
+                            </ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                }@else{
+                    <div class="can_stage rounded">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p><b>Resume Summary:</b> {{candidateData?.candidate_summary}} </p>
+                            <p><b>Source:</b> <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg"> Gemini AI</p>
+                            <hr>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card card-border-shadow-primary h-100" style="background-color: #F0f0f0;">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-2 pb-1">
+                                        <div class="avatar me-2">
+                                            <span class="avatar-initial rounded bg-label-primary"><i class="fa-solid fa-golf-ball-tee"></i></span>
+                                        </div>
+                                        <h4 class="ms-1 mb-0">AI Score</h4>
+                                    </div>
+                                    <p class="mb-1">{{ getScorePercentage(candidateData?.score)}}</p>
+                                    <p class="small"><b>Source:</b> <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" width="20px"> Gemini AI</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card card-border-shadow-warning h-100" style="background-color: #F0f0f0;">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-2 pb-1">
+                                        <div class="avatar me-2">
+                                            <span class="avatar-initial rounded bg-label-warning"><i class="fa-solid fa-graduation-cap"></i></span>
+                                        </div>
+                                        <h4 class="ms-1 mb-0">E&I</h4>
+                                    </div>
+                                    @if(eandIsubmitButton){
+                                        <button class="btn btn-danger">Pending</button>
+                                    }@else{
+                                        <p class="mb-1">{{enadiAnswerData?.scorePercentage}} %</p>
+                                    }
+
+                                    @if(enadiAnswerData?.ragTag){
+                                        @if(enadiAnswerData?.ragTag == "green"){
+                                            <div id="custribbon" class="greentag">
+                                                <span class="custcontent greentagborder"></span>
+                                            </div>
+                                        }
+                                        @if(enadiAnswerData?.ragTag == "amber"){
+                                            <div id="custribbon" class="warningtag">
+                                                <span class="custcontent warningtagborder"></span>
+                                            </div>
+                                        }
+                                        @if(enadiAnswerData?.ragTag == "red"){
+                                            <div id="custribbon" class="dangertag">
+                                                <span class="custcontent dangertagborder"></span>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card card-border-shadow-danger h-100" style="background-color: #F0f0f0;">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-2 pb-1">
+                                        <div class="avatar me-2">
+                                            <span class="avatar-initial rounded bg-label-danger"><i class="fa-solid fa-graduation-cap"></i></span>
+                                        </div>
+                                        <h4 class="ms-1 mb-0">Education</h4>
+                                    </div>
+                                    @if(candidateData?.education){
+                                        <p class="mb-1">{{candidateData?.education[0]?.qualification}}</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card card-border-shadow-info h-100" style="background-color: #F0f0f0;">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-2 pb-1">
+                                        <div class="avatar me-2">
+                                            <span class="avatar-initial rounded bg-label-info"><i class="fa-solid fa-briefcase"></i></span>
+                                        </div>
+                                        <h4 class="ms-1 mb-0">Experience</h4>
+                                    </div>
+                                    <p class="mb-1">{{candidateData?.totWorkExp}} Years</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+                @if(loader){
+                    <div class="fb-item">
+                        <div class="first-section-wrapper">
+                            <div class="gravatar-title">
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{width: '300px', 'border-radius': '0', height: '15px'}"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="second-section-wrapper" style="margin-top: -20px;">
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '80%', 'border-radius': '0', height: '10px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '90%', 'border-radius': '0', height: '10px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '60%', 'border-radius': '0', height: '10px','margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                }@else{
+                <div class="can_tabs">
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Resume</button>
+                            <button class="nav-link" id="nav-document-tab" data-bs-toggle="tab" data-bs-target="#nav-document" type="button" role="tab" aria-controls="nav-document" aria-selected="false">Profile</button>
+                            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Strengths</button>
+                            @if(candidateData?.indent?.indentStep5?.screening?.eandiDone?.status){
+                                <button class="nav-link" id="nav-eandi-tab" data-bs-toggle="tab" data-bs-target="#nav-eandi" type="button" role="tab" aria-controls="nav-eandi" aria-selected="false">E&I</button>
+                            }
+                            @if(candidateData?.indent?.indentStep5?.screening?.onlineAssessment?.status || candidateData?.indent?.indentStep5?.screening?.manualAssessment?.status){
+                                <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Assessment</button>
+                            }
+                            <button class="nav-link" id="nav-comment-tab" data-bs-toggle="tab" data-bs-target="#nav-comment" type="button" role="tab" aria-controls="nav-comment" aria-selected="false">Comment</button>
+                            <!-- @if(candidateData?.stagelog?.interview?.candidatesScheduled){
+                            <button class="nav-link" id="nav-interview-tab" data-bs-toggle="tab" data-bs-target="#nav-interview" type="button" role="tab" aria-controls="nav-interview" aria-selected="false">Interview</button>
+                            } -->
+                        </div>
+                    </nav>
+                    <div class="tab-content p-3  bg-light" id="nav-tabContent">
+                        <div class="tab-pane fade active show position-relative" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                            @if(candidateData?.resume_path){
+
+                                @if(loginUserRole == 'Super Admin' || loginUserRole == 'Recruiter' || loginUserRole =='BU Head' || loginUserRole =='Project Manager' || loginUserRole =='CRCM' || loginUserRole=='Partner Admin - Internal'){
+                                <button (click)="downloadPDF(candidateData?.resume_path, candidateData?.name)" class="btn btn-danger mb-3"><i class="fa fa-download"></i> Download PDF</button>
+                                }
+
+                            <pdf-viewer 
+                            src="{{apiURL}}{{candidateData?.resume_path}}" 
+                            [rotation]="0"
+                            [original-size]="false"
+                            [show-all]="true"
+                            [fit-to-page]="false"
+                            [zoom]="1"
+                            [zoom-scale]="'page-width'"
+                            [stick-to-page]="false"
+                            [render-text]="true"
+                            [external-link-target]="'blank'"
+                            [autoresize]="true"
+                            [show-borders]="false"
+                            style="width: 100%; height: 100vh;"
+                            >
+                            </pdf-viewer>
+                            }@else{
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <p class="py-5"><strong>Resume not uploaded</strong></p>
+                                        <!-- <button class="btn postjob-btn text-white my-4"><i class="fa-solid fa-camera"></i> Upload</button> -->
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="tab-pane fade" id="nav-document" role="tabpanel" aria-labelledby="nav-document-tab">
+                            <!-- <p class="text-center py-5"><strong>No documents uploaded for this Candidate</strong></p> -->
+                            <p><span><i class="fas fa-phone"></i></span><a href="tel:{{candidateData?.mobile}}" class="link-primary"><span class="twm-title"> {{candidateData?.mobile}}</span></a></p>
+                            <p><span><i class="fas fa-envelope"></i></span><a href="mailto:{{candidateData?.email}}" class="link-primary"><span class="twm-title"> {{candidateData?.email}}</span></a></p>
+                            <p><span><i class="fas fa-calendar"></i></span><span class="twm-title"> Date of Birth: {{candidateData?.dob || 'No Record Found'}}</span></p>
+
+
+                            <h5 class="text-danger mb-3">Skills</h5>
+                            <div class="skills">
+                                <ul class="list-inline">
+                                    @for(skill of candidateData?.skills; track $index){
+                                        <li class="list-inline-item" tooltipPosition="top" pTooltip="Skills">{{skill}}</li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <h5 class="text-danger mb-3">Education</h5>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Institute</th>
+                                            <th scope="col">Qualification</th>
+                                            <th scope="col">Passed On</th>
+                                            <th scope="col">Percentage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for(education of candidateData?.education; track $index){
+                                            <tr>
+                                                <th scope="row">{{$index+1}}</th>
+                                                <td>{{education.institute}}</td>
+                                                <td>{{education.qualification}}</td>
+                                                <td>{{education.passedOn}}</td>
+                                                <td>{{education.percentage}}</td>
+                                            </tr>
+                                        }
+                                        
+                                    </tbody>
+                                </table>
+
+
+
+                                <h5 class="text-danger mb-3">Experience</h5>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Company Name</th>
+                                            <th scope="col">Designation</th>
+                                            <th scope="col">Working Status</th>
+                                            <th scope="col">Start Date</th>
+                                            <th scope="col">End Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for(experience of candidateData?.experience; track $index){
+                                            <tr>
+                                                <th scope="row">{{$index+1}}</th>
+                                                <td>{{experience.compName}}</td>
+                                                <td>{{experience.designation}}</td>
+                                                <td>{{experience.workingStatus}}</td>
+                                                <td>{{experience.startdate}}</td>
+                                                <td>{{experience.enddate}}</td>
+                                            </tr>
+                                        }
+                                        
+                                    </tbody>
+                                </table>
+
+
+                        </div>
+
+                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" >
+                            <p><b>Strengths:</b></p>
+                            @for(strength of candidateData?.strengths; track $index){
+                                <p><i class="fa fa-circle circle"></i> {{strength}}</p>
+                            }
+                            <p>Source: <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg"> Gemini AI</p>
+                        </div>
+
+                        @if(candidateData?.indent?.indentStep5?.screening?.eandiDone?.status){
+                            <div class="tab-pane fade position-relative" id="nav-eandi" role="tabpanel" aria-labelledby="nav-eandi-tab" >
+                                @if(eandIsubmitButton){
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p>Click to view/complete <a class="text-primary" href="enaditest/{{candidateData?.indent?._id}}/{{candidateData?.indent?.indentStep4?.eandiId}}/{{candidateData?._id}}">E and I</a></p>
+                                            <button class="btn btn-danger" style="position: absolute; right: 0; top: 0;">Pending</button>
+                                            <div class="row">
+                                                <div class="step-form">
+                                                    <div class="step-boder">
+                                                        <div class="row">
+                                                            
+                                                            <div class="col-md-12 mb-3">
+                                                                <div class="form-heading-div">
+                                                                    <h4 class="text-white">{{eandiData?.title}}</h4>
+                                                                    <p><b>Category: </b> 
+                                                                        @for(cat of eandiData?.category; track $index){
+                                                                            <span>{{cat}}</span>,
+                                                                        }
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="question-div">
+                                                                <div class="row">
+                                                                @for(question of eandiData?.questions; track $index){
+                                                                    <div class="col-md-12 mb-3">
+                                                                        <label class="control-label"><b>Q {{$index+1}}</b>. {{question.question}} <span class="text-danger">*</span></label>
+                                                                        <p><b>Weightage:</b> {{question.weightage}}</p>
+                                                                        <div class="row">
+                                                                            @for(option of question.options; track $index){
+                                                                                <div class="col-md-6 mb-2">
+                                                                                    <div class="option-group rounded">
+                                                                                        <p class="mb-0">Option: {{option.option}}</p>
+                                                                                        <p class="mb-0">Score: {{option.score}}</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }@else{
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><b>Title:</b> {{eandiData?.title}}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p style="float: right;"><b>Submitted On:</b> {{enadiAnswerData?.created_on+'Z' | date: 'dd MMM, yyyy hh:mm:ss a'}}</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="step-form">
+                                        <div class="step-boder">
+                                            <div class="row">
+                                                <div class="question-div">
+                                                    <div class="row">
+                                                    @for(ans of enadiAnswerData?.answers; track $index){
+                                                        <div class="col-md-12 mb-3">
+                                                            <label class="control-label"><b>Q {{$index+1}}</b>. 
+                                                                @if(ans.question == 'twe'){
+                                                                    Total Work Experience
+                                                                }@else if(ans.question == 'dob'){
+                                                                    Date of Birth
+                                                                }@else if(ans.question == 'hq'){
+                                                                    Highest Qualification
+                                                                }@else if(ans.question == 'hqs'){
+                                                                    Highest Qualification Specialization
+                                                                }@else if(ans.question == 'hqpy'){
+                                                                    Highest Qualification Passing Year
+                                                                }@else if(ans.question == 'hqp'){
+                                                                    Highest Qualification Percentage
+                                                                }@else{
+                                                                    {{ans.question | titlecase}} 
+                                                                }
+                                                                <span class="text-danger">*</span></label>
+                                                            <p><b>Answer:</b> {{ans.answer}}</p>
+                                                            <!-- @for(opt of eandiData?.questions[$index]?.options; track $index){
+                                                                <p style="font-size: 12px;"><b>Option: </b>{{opt.option}}, <b>Score: </b>{{opt.score}}</p>
+                                                            } -->
+                                                        </div>
+                                                    }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+
+                        @if(candidateData?.indent?.indentStep5?.screening?.onlineAssessment?.status || candidateData?.indent?.indentStep5?.screening?.manualAssessment?.status){
+                        <div class="tab-pane fade position-relative" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" >
+                            @if(submitButton){
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @if(candidateData?.indent?.indentStep5?.screening?.eandiDone?.status){
+                                            @if(candidateData?.childStage == 'EandIdone' ){
+                                                <p>Click to view/complete <a class="text-primary" href="assessmenttest/{{candidateData?.indent?._id}}/{{candidateData?.indent?.indentStep6?.assessmentId}}/{{candidateData?._id}}">Assessment</a></p>
+                                            }@else{
+                                                <p>The assessment will be accessible after the completion of E & I.</p>
+                                            }
+                                        }@else{
+                                            <p>Click to view/complete <a class="text-primary" href="assessmenttest/{{candidateData?.indent?._id}}/{{candidateData?.indent?.indentStep6?.assessmentId}}/{{candidateData?._id}}">Assessment</a></p>
+                                        }
+                                        <button class="btn btn-danger" style="position: absolute; right: 0; top: 0;">Pending</button>
+                                        <div class="row">
+                                            <div class="step-form">
+                                                <div class="step-boder">
+                                                    <div class="row">
+                                                        
+                                                        <div class="col-md-12 mb-3">
+                                                            <div class="form-heading-div">
+                                                                <h4 class="text-white">{{assessmentData?.title}}</h4>
+                                                                <p><b>Category: </b> 
+                                                                    @for(cat of assessmentData?.category; track $index){
+                                                                        <span>{{cat}}</span>,
+                                                                    }
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="question-div">
+                                                            <div class="row">
+                                                                @for(question of assessmentData?.questions; track $index){
+                                                                    <div class="col-md-12 mb-3">
+                                                                        <label class="control-label"><b>Q {{$index+1}}</b>. {{question.question}} <span class="text-danger">*</span></label>
+                                                                        <p><b>Weightage:</b> {{question.weightage}}</p>
+                                                                        <div class="row">
+                                                                            @for(option of question.options; track $index){
+                                                                                <div class="col-md-6 mb-2">
+                                                                                    <div class="option-group rounded">
+                                                                                        <p class="mb-0">Option: {{option.option}}</p>
+                                                                                        <p class="mb-0">Score: {{option.score}}</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            }@else{
+                                <div class="col-md-12">
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr><th colspan="6" class="text-center aqua_excel">Score Card</th></tr>
+                                            <tr>
+                                                <th colspan="6" class="text-center aqua_excel">
+                                                    <span style="float: left;">Title: {{assessmentData?.title}}</span> 
+                                                    <span style="float: right;">Time: {{assessmentList?.created_on | date: 'dd MMM, yyyy'}}</span>
+                                                </th>
+                                            </tr>
+                                            <tr id="batchthead" style="font-size: 13px;">
+                                                <th>Question</th>
+                                                <th>Weightage</th>
+                                                <th>Candidate Answer</th>
+                                                <th>Answer Score</th>
+                                                <!-- <th>Candidate Answer</th> -->
+                                            </tr>
+                                        </thead>
+                                        <tbody id="batchStatusOverall" style="font-size: 14px;">
+                                            @for(ans of assessmentList?.answers; track $index){
+                                                <tr>
+                                                    <td>{{ans.question}}</td>
+                                                    @if(assessmentData?.questions[$index]?.question == ans.question){
+                                                        <td>{{assessmentData?.questions[$index]?.weightage}}</td>
+                                                    }
+                                                    <td>{{ans.answer}}</td>
+                                                    @for(option of ans.options; track $index){
+                                                        @if(ans.answer == option.option){
+                                                            <td>{{option.score}}</td>
+                                                        }
+                                                    }
+                                                </tr>
+                                            }
+                                            <tr class="totalsum">
+                                                <td colspan="3">Total</td>
+                                                <td>{{assessmentList?.scorePercentage}}%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                        </div>
+                        }
+
+                        <!-- <div class="tab-pane fade position-relative" id="nav-interview" role="tabpanel" aria-labelledby="nav-interview-tab" >
+                            @for(staged of candidateData?.stagelog?.interview?.candidatesScheduled; track $index){
+                                <div class="interviewStagesDiv">
+                                    <p><span class="text-danger"><i class="fas fa-calendar"></i></span> <b> Interview Date :</b> {{staged.interviewDate}}</p>
+                                    <p><span class="text-danger"><i class="fas fa-clock"></i></span> <b> Interview Time :</b> {{staged.interviewTime}}</p>
+                                    <p><span class="text-danger"><i class="fas fa-user"></i></span> <b> Interviewer Name :</b> {{staged.interviewerName}}</p>
+                                    <p><span class="text-danger"><i class="fas fa-envelope"></i></span> <b> Interviewer Email :</b> {{staged.interviewerEmail}}</p>
+                                    <p><span class="text-danger"><i class="fas fa-map-marker"></i></span> <b> Interview Address :</b> {{staged.interviewAddress}}</p>
+                                    <p><span class="text-danger"><i class="fas fa-link"></i></span> <b> Interview URL :</b> {{staged.videoInterview}}</p>
+                                </div>
+                            }
+                        </div> -->
+
+                        <div class="tab-pane fade" id="nav-comment" role="tabpanel" aria-labelledby="nav-comment-tab">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="can-timeline">
+                                        <div class="flex justify-content-center">
+                                            <div class="card-body" style="padding: 10px 25px;">
+                                                <div class="timeline-container commentline-container">
+                                                    <ul class="tl" style="width: 100%;">
+                                                        @for(staged of indentStaged; track $index){
+                                                            <li class="tl-item">
+                                                                <div class="item-icon"></div>
+                                                                <div class="item-text">
+                                                                    <div class="item-title">{{staged.displayName}}</div>
+                                                                    <!-- <div class="item-detail">By {{staged.created_by}}</div> -->
+                                                                    <div class="item-comment bg-white rounded">
+                                                                        <p class="mb-0">{{staged.comment}}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="item-timestamp">{{staged.date+'Z' | date: 'dd MMM, yyyy hh:mm:ss a'}}</div>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                }
+            </div>
+            <div class="col-md-3">
+                @if(loader){
+                    <div class="fb-item" style="height: 100vh;">
+                        <div class="first-section-wrapper">
+                            <div class="gravatar-title">
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{width: '200px', 'border-radius': '0', height: '35px','margin-bottom': '20px','margin-left':'-4px'}"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="second-section-wrapper" style="margin-top: -20px;">
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '80%', 'border-radius': '0', height: '10px', 'margin-bottom': '30px','margin-left':'6px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '90%', 'border-radius': '0', height: '10px', 'margin-bottom': '30px','margin-left':'6px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '60%', 'border-radius': '0', height: '10px','margin-bottom': '30px','margin-left':'6px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '80%', 'border-radius': '0', height: '10px', 'margin-bottom': '50px','margin-left':'6px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '90%', 'border-radius': '0', height: '10px', 'margin-bottom': '50px','margin-left':'6px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '60%', 'border-radius': '0', height: '10px','margin-bottom': '50px','margin-left':'6px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '80%', 'border-radius': '0', height: '10px', 'margin-bottom': '50px','margin-left':'6px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '90%', 'border-radius': '0', height: '10px', 'margin-bottom': '50px','margin-left':'6px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '60%', 'border-radius': '0', height: '10px','margin-bottom': '50px','margin-left':'6px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '60%', 'border-radius': '0', height: '10px','margin-bottom': '50px','margin-left':'6px'}"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                }@else{
+                <div class="can-timeline bg-white rounded">
+                    <div class="card flex justify-content-center">
+                        <h5 class="card-header">Stage Timeline</h5>
+                        <div class="card-body" style="padding: 10px 25px;">
+                            <div class="timeline-container">
+                                <ul class="tl">
+                                    @for(staged of indentStaged; track $index){
+                                        <li class="tl-item ">
+                                            <div class="item-icon"></div>
+                                            <div class="item-text">
+                                                <div class="item-title">{{staged.displayName}}</div>
+                                                <div class="item-detail">By {{staged.created_by}}</div>
+                                            </div>
+                                            <div class="item-timestamp">{{staged.date+'Z' | date: 'dd MMM, yyyy hh:mm:ss a'}}</div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card flex justify-content-center">
+    
+    <p-dialog header="Edit Stage" 
+        [modal]="true" 
+        [(visible)]="visible" 
+        [style]="{ width: '25rem' }" 
+        [style]="{ width: '50rem' }" 
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" >
+
+        <form [formGroup]="updateCandidateStage">
+            <div class="step-form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Stage</label>
+                            <select class="form-control" formControlName="stage" (change)="stageChanged($event)">
+                                <option selected="selected" value="">Select Stage</option>
+                                @for(stages of indentStaging; track $index){
+                                    @if(candidateData?.stage == "screening"){
+                                        @if(stages.stageName == "screening" || stages.stageName == "interview"){
+                                            <optgroup label="{{stages.stageName | titlecase}}">
+                                                @for(staged of stages.details; track $index){
+                                                    @if(staged.status){
+                                                        @if(staged.isSubmitted == false){
+                                                            @if(staged.displayName !== thechildstage){
+                                                            <option value="{{stages.stageName}}.{{staged.key}}">{{staged.displayName}}</option>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            </optgroup>
+                                        }
+                                    }
+                                    @if(candidateData?.stage == "interview"){
+                                        @if(stages.stageName == "interview" || stages.stageName == "offer"){
+                                            <optgroup label="{{stages.stageName | titlecase}}">
+                                                @for(staged of stages.details; track $index){
+                                                    @if(staged.status){
+                                                        @if(staged.isSubmitted == false){
+                                                            @if(staged.displayName !== thechildstage){
+                                                            <option value="{{stages.stageName}}.{{staged.key}}">{{staged.displayName}}</option>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            </optgroup>
+                                        }
+                                    }
+                                    @if(candidateData?.stage == "offer"){
+                                        @if(stages.stageName == "offer" || stages.stageName == "hire"){
+                                            <optgroup label="{{stages.stageName | titlecase}}">
+                                                @for(staged of stages.details; track $index){
+                                                    @if(staged.status){
+                                                        @if(staged.isSubmitted == false){
+                                                            @if(staged.displayName !== thechildstage){
+                                                            <option value="{{stages.stageName}}.{{staged.key}}">{{staged.displayName}}</option>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            </optgroup>
+                                        }
+                                    }
+                                    @if(candidateData?.stage == "hire"){
+                                        @if(stages.stageName == "hire"){
+                                            <optgroup label="{{stages.stageName | titlecase}}">
+                                                @for(staged of stages.details; track $index){
+                                                    @if(staged.status){
+                                                        @if(staged.isSubmitted == false){
+                                                            @if(staged.displayName !== thechildstage){
+                                                            <option value="{{stages.stageName}}.{{staged.key}}">{{staged.displayName}}</option>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            </optgroup>
+                                        }
+                                    }
+                                }
+                            </select>
+                            <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.stage.invalid && (updateCandidateStage.controls.stage.touched || updateCandidateStage.controls.stage.dirty || isFormSubmited)" >
+                                <span *ngIf="updateCandidateStage.controls.stage.errors?.['required']">* This field is required</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if(candidateParentStageSelected == "screening.rejected"){
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Reason for Rejection<span class="text-danger">*</span></label>
+                                <select class="form-control" formControlName="screeningRejectReason">
+                                    <option value="">Select Reason</option>
+                                    <option value="Duplicate on Client Portal">Duplicate on Client Portal</option>
+                                    <option value="Lack of Required Skills">Lack of Required Skills</option>
+                                    <option value="Overqualified">Overqualified</option>
+                                    <option value="Lack of Technical Knowledge">Lack of Technical Knowledge</option>
+                                    <option value="Insufficient Experience">Insufficient Experience</option>
+                                    <option value="Industry Experience">Industry Experience</option>
+                                    <option value="Job Role Unfit">Job Role Unfit</option>
+                                    <option value="Cultural Unfit">Cultural Unfit</option>
+                                    <option value="Communication Skills">Communication Skills</option>
+                                    <option value="Unable to join within the given timeframe">Unable to join within the given timeframe</option>
+                                    <option value="Accepted Other Offer">Accepted Other Offer</option>
+                                    <option value="Location Constraints">Location Constraints</option>
+                                    <option value="Compensation Expectations">Compensation Expectations</option>
+                                    <option value="Not Interested">Not Interested</option>
+                                </select>
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.screeningRejectReason.invalid && (updateCandidateStage.controls.screeningRejectReason.touched || updateCandidateStage.controls.screeningRejectReason.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.screeningRejectReason.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if(candidateParentStageSelected == "screening.hold"){
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Reason for Hold<span class="text-danger">*</span></label>
+                                <select class="form-control" formControlName="screeningHoldReason">
+                                    <option value="">Select Reason</option>
+                                    <option>Could not able to connect</option>
+                                    <option>No Vacancy for the location</option>
+                                    <option>Candidate need sometime</option>
+                                    <option>Others</option>
+                                </select>
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.screeningHoldReason.invalid && (updateCandidateStage.controls.screeningHoldReason.touched || updateCandidateStage.controls.screeningHoldReason.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.screeningHoldReason.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if(candidateParentStageSelected == "interview.candidatesScheduled" || candidateParentStageSelected == "interview.candidateRescheduled"){
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Interview Date <span class="text-danger">*</span></label>
+                                <!-- <input type="date" class="form-control" placeholder="Interview Date" formControlName="interviewDate"> -->
+                                <p-calendar formControlName="interviewDate" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" showIcon="true" [iconDisplay]="'input'" appendTo="body" [minDate]="minDate"  />
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.interviewDate.invalid && (updateCandidateStage.controls.interviewDate.touched || updateCandidateStage.controls.interviewDate.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.interviewDate.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Start Time</label>
+                                <input type="time" class="form-control" placeholder="Interview Time" formControlName="startTime">
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.startTime.invalid && (updateCandidateStage.controls.startTime.touched || updateCandidateStage.controls.startTime.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.startTime.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">End Time</label>
+                                <input type="time" class="form-control" placeholder="End Time" formControlName="endTime">
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.endTime.invalid && (updateCandidateStage.controls.endTime.touched || updateCandidateStage.controls.endTime.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.endTime.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Mode of Interview <span class="text-danger">*</span></label>
+                                <select class="form-control" formControlName="interviewMode" (change)="modeChanged($event)">
+                                    <option value="">Select Mode</option>
+                                    <option value="In-Person">In-Person</option>
+                                    <option value="Telephonic">Telephonic</option>
+                                    <option value="Virtual">Virtual</option>
+                                </select>
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.interviewMode.invalid && (updateCandidateStage.controls.interviewMode.touched || updateCandidateStage.controls.interviewMode.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.interviewMode.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        @if(selectMode2){
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Link of Video Interview <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Link of Video Interview" formControlName="videoInterview">
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.videoInterview.invalid && (updateCandidateStage.controls.videoInterview.touched || updateCandidateStage.controls.videoInterview.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.videoInterview.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if(selectMode){
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Address <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter Address" formControlName="interviewAddress"></textarea>
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.interviewAddress.invalid && (updateCandidateStage.controls.interviewAddress.touched || updateCandidateStage.controls.interviewAddress.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.interviewAddress.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Interviewer Name</label>
+                                <input type="text" class="form-control" placeholder="Interviewer Name" formControlName="interviewerName">
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.interviewerName.invalid && (updateCandidateStage.controls.interviewerName.touched || updateCandidateStage.controls.interviewerName.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.interviewerName.errors?.['alphabet']">Please enter only alphabets'</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Interviewer Email Id</label>
+                                <input type="text" class="form-control" placeholder="Interviewer Email Id" formControlName="interviewerEmail">
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.interviewerEmail.invalid && (updateCandidateStage.controls.interviewerEmail.touched || updateCandidateStage.controls.interviewerEmail.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.interviewerEmail.errors?.['emailvalidate']">Please enter valid email address'</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if(candidateParentStageSelected== "interview.interviewSelected"){
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Actual Date of Interview <span class="text-danger">*</span></label>
+                                <!-- <input type="date" class="form-control" placeholder="Actual Date of Interview" formControlName="selectedActualInterviewDate"> -->
+                                <p-calendar formControlName="selectedActualInterviewDate" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" showIcon="true" [iconDisplay]="'input'" appendTo="body"  />
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.selectedActualInterviewDate.invalid && (updateCandidateStage.controls.selectedActualInterviewDate.touched || updateCandidateStage.controls.selectedActualInterviewDate.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.selectedActualInterviewDate.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                }
+                @if(candidateParentStageSelected== "interview.interviewRejected"){
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Actual Date of Interview <span class="text-danger">*</span></label>
+                                <!-- <input type="date" class="form-control" placeholder="Actual Date of Interview" formControlName="actualInterviewDate"> -->
+                                <p-calendar formControlName="actualInterviewDate" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" showIcon="true" [iconDisplay]="'input'" appendTo="body"  />
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.actualInterviewDate.invalid && (updateCandidateStage.controls.actualInterviewDate.touched || updateCandidateStage.controls.actualInterviewDate.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.actualInterviewDate.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Reason for Rejection<span class="text-danger">*</span></label>
+                                <select class="form-control" formControlName="rejectReason">
+                                    <option value="">Select Reason</option>
+                                    <option value="Lack of Required Skills">Lack of Required Skills</option>
+                                    <option value="Overqualified">Overqualified</option>
+                                    <option value="Lack of Technical Knowledge">Lack of Technical Knowledge</option>
+                                    <option value="Insufficient Experience">Insufficient Experience</option>
+                                    <option value="Industry Experience">Industry Experience</option>
+                                    <option value="Job Role Unfit">Job Role Unfit</option>
+                                    <option value="Cultural Unfit">Cultural Unfit</option>
+                                    <option value="Communication Skills">Communication Skills</option>
+                                    <option value="Unable to join within the given timeframe">Unable to join within the given timeframe</option>
+                                    <option value="Accepted Other Offer">Accepted Other Offer</option>
+                                    <option value="Location Constraints">Location Constraints</option>
+                                    <option value="Compensation Expectations">Compensation Expectations</option>
+                                    <option value="Not Interested">Not Interested</option>
+                                </select>
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.rejectReason.invalid && (updateCandidateStage.controls.rejectReason.touched || updateCandidateStage.controls.rejectReason.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.rejectReason.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if(candidateParentStageSelected== "interview.interviewHold"){
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Actual Date of Interview <span class="text-danger">*</span></label>
+                                <!-- <input type="date" class="form-control" placeholder="Actual Date of Interview" formControlName="actualInterviewHoldDate"> -->
+                                <p-calendar formControlName="actualInterviewHoldDate" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" showIcon="true" [iconDisplay]="'input'" appendTo="body"  />
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.actualInterviewHoldDate.invalid && (updateCandidateStage.controls.actualInterviewHoldDate.touched || updateCandidateStage.controls.actualInterviewHoldDate.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.actualInterviewHoldDate.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Reason for Hold<span class="text-danger">*</span></label>
+                                <select class="form-control" formControlName="rejectHoldReason">
+                                    <option value="">Select Reason</option>
+                                    <option value="Comparison with Other candidates">Comparison with Other candidates</option>
+                                    <option value="Pending decision approval">Pending decision approval</option>
+                                    <option value="Role Clarification">Role Clarification</option>
+                                    <option value="Budget Allocation">Budget Allocation</option>
+                                    <option value="Internal Process Delays">Internal Process Delays</option>
+                                    <option value="Strategic Alignment">Strategic Alignment</option>
+                                    <option value="Pending Project Requirements">Pending Project Requirements</option>
+                                </select>
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.rejectHoldReason.invalid && (updateCandidateStage.controls.rejectHoldReason.touched || updateCandidateStage.controls.rejectHoldReason.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.rejectHoldReason.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if(candidateParentStageSelected== "offer.offerReleased"){
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Offer Date <span class="text-danger">*</span></label>
+                                <!-- <input type="date" class="form-control" placeholder="Enter Offer Date" formControlName="offerDate"> -->
+                                <p-calendar formControlName="offerDate" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" showIcon="true" [iconDisplay]="'input'" appendTo="body"  />
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.offerDate.invalid && (updateCandidateStage.controls.offerDate.touched || updateCandidateStage.controls.offerDate.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.offerDate.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Tentative Date of Joining <span class="text-danger">*</span></label>
+                                <!-- <input type="date" class="form-control" placeholder="Enter Tentative Date of Joining" formControlName="tentativeJoiningDate"> -->
+                                <p-calendar formControlName="tentativeJoiningDate" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" showIcon="true" [iconDisplay]="'input'" appendTo="body"  />
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.tentativeJoiningDate.invalid && (updateCandidateStage.controls.tentativeJoiningDate.touched || updateCandidateStage.controls.tentativeJoiningDate.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.tentativeJoiningDate.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Work Location <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Enter Work Location" formControlName="workLocation">
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.workLocation.invalid && (updateCandidateStage.controls.workLocation.touched || updateCandidateStage.controls.workLocation.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.workLocation.errors?.['required']">* This field is required</span>
+                                    <span *ngIf="updateCandidateStage.controls.workLocation.errors?.['alphanumaric']">Please enter only alphanumarics values'</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Offered CTC (Per annum) <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Enter Offered CTC" formControlName="offeredCTC">
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.offeredCTC.invalid && (updateCandidateStage.controls.offeredCTC.touched || updateCandidateStage.controls.offeredCTC.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.offeredCTC.errors?.['required']">* This field is required</span>
+                                    <span *ngIf="updateCandidateStage.controls.offeredCTC.errors?.['alphanumaric']">Please enter only alphanumarics values'</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Offered Perks (If any) <span class="text-danger">*</span></label>
+                                <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter Offered Perks" formControlName="offeredPerks"></textarea>
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.offeredPerks.invalid && (updateCandidateStage.controls.offeredPerks.touched || updateCandidateStage.controls.offeredPerks.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.offeredPerks.errors?.['required']">* This field is required</span>
+                                    <span *ngIf="updateCandidateStage.controls.offeredPerks.errors?.['alphanumaric']">Please enter only alphanumarics values'</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                }
+                @if(candidateParentStageSelected== "offer.documentsNotSubmitted"){
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Reason for Not Submitted<span class="text-danger">*</span></label>
+                                <select class="form-control" formControlName="documentsNotSubmitted">
+                                    <option value="">Select Reason</option>
+                                    <option value="Accepted Another Offer">Accepted Another Offer</option>
+                                    <option value="Career Growth">Career Growth</option>
+                                    <option value="Company Culture">Company Culture</option>
+                                    <option value="Company Reputation">Company Reputation</option>
+                                    <option value="Compensation Issue">Compensation Issue</option>
+                                    <option value="Contract Terms">Contract Terms</option>
+                                    <option value="Counteroffer from current employer">Counteroffer from current employer</option>
+                                    <option value="Documents Not Available">Documents Not Available</option>
+                                    <option value="Job Role Misalignment">Job Role Misalignment</option>
+                                    <option value="Job Security">Job Security</option>
+                                    <option value="Lack of Access">Lack of Access</option>
+                                    <option value="Location Issue">Location Issue</option>
+                                    <option value="Personal Reasons">Personal Reasons</option>
+                                    <option value="Relocation Issue">Relocation Issue</option>
+                                    <option value="Timings Issue">Timings Issue</option>
+                                    <option value="Work-life Balance">Work-life Balance</option>
+                                </select>
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.documentsNotSubmitted.invalid && (updateCandidateStage.controls.documentsNotSubmitted.touched || updateCandidateStage.controls.documentsNotSubmitted.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.documentsNotSubmitted.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if(candidateParentStageSelected== "offer.offerRejected"){
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Reason for Reject<span class="text-danger">*</span></label>
+                                <select class="form-control" formControlName="offerRejected">
+                                    <option value="">Select Reason</option>
+                                    <option value="Accepted Another Offer">Accepted Another Offer</option>
+                                    <option value="Career Growth">Career Growth</option>
+                                    <option value="Company Culture">Company Culture</option>
+                                    <option value="Company Reputation">Company Reputation</option>
+                                    <option value="Compensation Issue">Compensation Issue</option>
+                                    <option value="Contract Terms">Contract Terms</option>
+                                    <option value="Counteroffer from current employer">Counteroffer from current employer</option>
+                                    <option value="Job Security">Job Security</option>
+                                    <option value="Location Issue">Location Issue</option>
+                                    <option value="Personal Reasons">Personal Reasons</option>
+                                    <option value="Relocation Issue">Relocation Issue</option>
+                                    <option value="Timings Issue">Timings Issue</option>
+                                    <option value="Work-life Balance">Work-life Balance</option>
+                                    <option value="BGV Negative">BGV Negative</option>
+                                </select>
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.offerRejected.invalid && (updateCandidateStage.controls.offerRejected.touched || updateCandidateStage.controls.offerRejected.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.offerRejected.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if(candidateParentStageSelected== "offer.offerHold"){
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Reason for Reject<span class="text-danger">*</span></label>
+                                <select class="form-control" formControlName="offerHold">
+                                    <option value="">Select Reason</option>
+                                    <option value="Approval Pending">Approval Pending</option>
+                                    <option value="Budget Constraints">Budget Constraints</option>
+                                    <option value="Candidate Background Check">Candidate Background Check</option>
+                                    <option value="Hiring Freeze">Hiring Freeze</option>
+                                    <option value="Internal Restructuring">Internal Restructuring</option>
+                                    <option value="Legal/Compliance Issues">Legal/Compliance Issues</option>
+                                    <option value="Operational Issues">Operational Issues</option>
+                                    <option value="Project Delays">Project Delays</option>
+                                    <option value="Role Reevaluation">Role Reevaluation</option>
+                                </select>
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.offerHold.invalid && (updateCandidateStage.controls.offerHold.touched || updateCandidateStage.controls.offerHold.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.offerHold.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+                @if(candidateParentStageSelected== "hire.joinedYet"){
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Date of Joining<span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" formControlName="dateofJoining">
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.dateofJoining.invalid && (updateCandidateStage.controls.dateofJoining.touched || updateCandidateStage.controls.dateofJoining.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.dateofJoining.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Work Location<span class="text-danger">*</span></label>
+                                <input type="text" placeholder="Enter Work Location" class="form-control" formControlName="workHirelocation">
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.workHirelocation.invalid && (updateCandidateStage.controls.workHirelocation.touched || updateCandidateStage.controls.workHirelocation.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.workHirelocation.errors?.['required']">* This field is required</span>
+                                    <span *ngIf="updateCandidateStage.controls.workHirelocation.errors?.['alphaSpace']">Please Enter only alphabets'</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Employee Code<span class="text-danger">*</span></label>
+                                <input type="text" placeholder="Enter Employee Code" class="form-control" formControlName="employeeCode">
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.employeeCode.invalid && (updateCandidateStage.controls.employeeCode.touched || updateCandidateStage.controls.employeeCode.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.employeeCode.errors?.['required']">* This field is required</span>
+                                    <span *ngIf="updateCandidateStage.controls.employeeCode.errors?.['alphanumaric']">Please enter only alphanumarics values'</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Designation<span class="text-danger">*</span></label>
+                                <input type="text" placeholder="Enter Designation" class="form-control" formControlName="designation">
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.designation.invalid && (updateCandidateStage.controls.designation.touched || updateCandidateStage.controls.designation.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.designation.errors?.['required']">* This field is required</span>
+                                    <span *ngIf="updateCandidateStage.controls.designation.errors?.['alphaSpace']">Please Enter only alphabets'</span>
+                                    <span *ngIf="updateCandidateStage.controls.designation.errors?.['maxlength']">* Only 150 characters should be allowed'</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if(candidateParentStageSelected== "hire.joinedLeft"){
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Date of Leaving<span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" formControlName="dateofleaving">
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.dateofleaving.invalid && (updateCandidateStage.controls.dateofleaving.touched || updateCandidateStage.controls.dateofleaving.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.dateofleaving.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label"> Reason for Leaving<span class="text-danger">*</span></label>
+                                <select class="form-control" formControlName="rasonforLeaving">
+                                    <option value="">Select  Reason</option>
+                                    <option>Relocation</option>
+                                    <option>Health reasons</option>
+                                    <option>Better Opportunity</option>
+                                    <option>Career Growth</option>
+                                    <option>Job Role</option>
+                                    <option>Work-life Balance</option>
+                                    <option>Job Security</option>
+                                    <option>Management issue</option>
+                                    <option>Culture Fit</option>
+                                    <option>Job Fit</option>
+                                    <option>Compensation</option>
+                                    <option>Work Environment</option>
+                                    <option>Commute</option>
+                                </select>
+                                <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.rasonforLeaving.invalid && (updateCandidateStage.controls.rasonforLeaving.touched || updateCandidateStage.controls.rasonforLeaving.dirty || isFormSubmited)" >
+                                    <span *ngIf="updateCandidateStage.controls.rasonforLeaving.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Comment <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter your comment" formControlName="comment"></textarea>
+                            <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.comment.invalid && (updateCandidateStage.controls.comment.touched || updateCandidateStage.controls.comment.dirty || isFormSubmited)" >
+                                <span *ngIf="updateCandidateStage.controls.comment.errors?.['required']">* This field is required</span>
+                                <span *ngIf="updateCandidateStage.controls.comment.errors?.['maxlength']">*Maximum 500 character allowed'</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <p class="text-danger">{{overallFormValid4}}</p> 
+            <p class="text-danger">{{apiMessage4}}</p>
+
+            <!-- <div class="flex justify-content-end gap-2">
+                <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+                <p-button label="Save" (click)="updateStage();"  />
+                
+            </div> -->
+            <!-- {{updateCandidateStage.value|json}} -->
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="message"></p>
+                    <div class="submit-btn">
+                        <button type="button" (click)="updateStage();" class="btn postjob-btn" type="button"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </p-dialog>
+</div>
+
+<p-toast />

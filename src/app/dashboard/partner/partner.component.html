@@ -1,0 +1,1350 @@
+<!-- <app-navbar></app-navbar> -->
+
+
+<!-- OUR BLOG START -->
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-12 rightSidebar">
+                @if(loader){
+                <div class="fb-item py-5" style="height: 265px;">
+                    <div class="first-section-wrapper">
+                        <div class="gravatar-title">
+                            <div>
+                                <ngx-skeleton-loader
+                                    [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="second-section-wrapper" style="margin-top: -30px;">
+                        <div class="wrapper">
+                            <ngx-skeleton-loader count="1" appearance="circle"
+                                [theme]="{ width: '95%', height: '60px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                        </div>
+                    </div>
+                </div>
+                <div class="fb-item py-5" style="height: 265px;">
+                    <div class="first-section-wrapper">
+                        <div class="gravatar-title">
+                            <div>
+                                <ngx-skeleton-loader
+                                    [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="second-section-wrapper" style="margin-top: -30px;">
+                        <div class="wrapper">
+                            <ngx-skeleton-loader count="1" appearance="circle"
+                                [theme]="{ width: '95%', height: '60px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                        </div>
+                    </div>
+                </div>
+                }@else{
+                <div class="filter-heading">
+                    <div class="breadcrumb nav">
+                        <span class="breadcrumb-item">
+                            <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+                        </span>
+                        <span class="breadcrumb-item">
+                            <a class="breadcrumb-link" [routerLink]="['/partner']">Partner</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="side-bar bg-white p-3 rounded">
+                    <div class="sidebar-elements search-bx">
+                        <div class="form-group mb-4">
+                            <h4 class="section-head-small mb-2"><i class="fa-solid fa-filter"></i> All Filters</h4>
+                            <h4 class="section-head-small reset-filter mb-2" tooltipPosition="top"
+                                pTooltip="Reset Filters" (click)="resetFilter()"><i class="fa-solid fa-retweet"></i>
+                            </h4>
+                            <hr class="hr" />
+                        </div>
+                        <div class="form-group mb-4">
+                            <h4 class="section-head-small mb-2">Partner SPOC Name</h4>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search Partner SPOC Name"
+                                    [(ngModel)]="searchName" (blur)="searchPartnerName($event)">
+                            </div>
+                        </div>
+                        <hr class="hr" />
+                        <div class="form-group mb-4">
+                            <h4 class="section-head-small mb-2">Firm Name</h4>
+                            <div class="input-group">
+                                <input type="text" name="location" class="form-control" placeholder="Search Firm Name"
+                                    [(ngModel)]="searchFirmName" (blur)="searchPartnerFirmName($event)">
+                            </div>
+                        </div>
+                        <hr class="hr" />
+                        @if(loginUserRole != "Recruiter"){
+                        <div class="form-group mb-4">
+                            <h4 class="section-head-small mb-2">Status</h4>
+                            <select class="wt-select-bar-large selectpicker" [(ngModel)]="searchstatus"
+                                (change)="searchCanStatus($event)">
+                                <option value="">Select Status</option>
+                                <option value="account verification pending">Account Verification Pending</option>
+                                <option value="documents pending">Documents Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="verification pending">Verification Pending</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                        <hr class="hr" />
+                        }
+
+                        <div class="form-group mb-4">
+                            <h4 class="section-head-small mb-2">Base Location</h4>
+                            <select class="wt-select-bar-large selectpicker" [(ngModel)]="searchLocation"
+                                (change)="searchCanLocation($event)">
+                                <option value="" selected>Select Location</option>
+                                @for(location of stateData2; track $index){
+                                <option>{{location}}</option>
+                                }
+                            </select>
+                        </div>
+                        <hr class="hr" />
+                        <div class="form-group mb-4">
+                            <h4 class="section-head-small mb-2">Industry</h4>
+                            <select class="wt-select-bar-large selectpicker" [(ngModel)]="searchIndustry"
+                                (change)="searchCanIndustry($event)">
+                                <option value="" selected>Select Industry</option>
+                                @for(industry of industryData; track $index){
+                                <option>{{industry}}</option>
+                                }
+                            </select>
+                        </div>
+                        <hr class="hr" />
+                        <div class="form-group mb-4">
+                            <h4 class="section-head-small mb-2">Partner Type</h4>
+                            <select class="wt-select-bar-large selectpicker" [(ngModel)]="searchPartnetType"
+                                (change)="searchCanPartnerType($event)">
+                                <option value="" selected>Select Partner Type</option>
+                                <option>Commercial</option>
+                                <option>Non-Commercial</option>
+                            </select>
+                        </div>
+                        <hr class="hr" />
+                        <div class="form-group">
+                            <div class="submit-btn mt-2" style="margin-left: 165px;">
+                                <button class="btn postjob-btn btn2" (click)="onSearchSubmit()"> Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+
+            <div class="col-lg-9 col-md-12">
+                @if(loader2){
+                @for(iteam of getNumberArray(loaderCount); track $index){
+                <div class="fb-item">
+                    <div class="first-section-wrapper">
+                        <div class="gravatar">
+                            <ngx-skeleton-loader appearance="circle"
+                                [theme]="{ width: '80px', height: '80px', 'border-radius': '10px' }"></ngx-skeleton-loader>
+                        </div>
+                        <div class="gravatar-title">
+                            <div><ngx-skeleton-loader
+                                    [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div><ngx-skeleton-loader
+                                    [theme]="{ width: '170px', 'border-radius': '0', height: '15px' }"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+                }@else{
+                @if(totalRecord > 0){
+                <div class="product-filter-wrap d-flex justify-content-between position-relative m-b10">
+                    <span class="">Showing {{fetchedRecord}} Partners</span>
+                    <form class="woocommerce-ordering tmi-filter-select" method="get">
+                        <select class="wt-select-bar-2 selectpicker" (change)=" onSelectChange($event)">
+                            <option value="10">Show 10</option>
+                            <option value="20">Show 20</option>
+                            <option value="30">Show 30</option>
+                            <option value="40">Show 40</option>
+                            <option value="50">Show 50</option>
+                            <option value="60">Show 60</option>
+                            <option value="100">Show 100</option>
+                            <option value="150">Show 150</option>
+                        </select>
+                    </form>
+                    @if(showNotification){
+                    <div class="submit-btn position-absolute" style="right: 135px;">
+                        <a class="postjob-btn" style="color:white; cursor: pointer;"
+                            (click)="onNotifications()">Notifications</a>
+                    </div>
+                    }
+                </div>
+
+                <div class="row">
+                    @for(item of partnerList; track $index ){
+                    <div class="col-md-12 ">
+                        <div class="client-data rounded">
+                            <a [routerLink]="['/partner-details', item._id]">
+                                <div class="client-logo ">
+                                    @if(item.partnerLogo != ''){
+                                    <img src="{{baseAPIURL}}{{item.partnerLogo}}" class="logoImage rounded"
+                                        loading="lazy">
+                                    }@else{
+                                    <img src="https://tms.tmivirtually.com/profiles/noimg.jpg" class="logoImage rounded"
+                                        loading="lazy">
+                                    }
+                                </div>
+                                <div class="client-details">
+                                    @if(item.partnerCategory != "Freelancer"){
+                                    <div style="display: flex; align-items: center;">
+                                        <h5 class="client-title">{{item.firmName}}</h5>
+                                        <!-- <h4 class="pb-2">
+                                            <input class="form-check-input" (change)="onCheckBoxCheck(item._id,$event)"
+                                                type="checkbox" style="margin-left: 10px; border: 2px solid crimson;"
+                                                onclick="event.stopPropagation()" />
+                                        </h4> -->
+                                    </div>
+
+                                    }@else{
+                                    <div style="display: flex; align-items: center;">
+                                        <h5 class="client-title">{{item.vendorName}}</h5>
+                                        <!-- <h4 class="pb-2">
+                                            <input class="form-check-input" (change)="onCheckBoxCheck(item._id,$event)"
+                                                type="checkbox" style="margin-left: 10px; border: 2px solid crimson;"
+                                                onclick="event.stopPropagation()" />
+                                        </h4> -->
+                                    </div>
+                                    }
+                                    <p class="client-sub-title"><i class="fa-solid fa-briefcase"></i>
+                                        {{item.partnerCategory}}</p>
+                                    @if(item.partnerCategory != "Freelancer"){
+                                    <p class="client-sub-title" tooltipPosition="top" pTooltip="Contact Person"><i
+                                            class="fa-duotone fa-solid fa-user"></i> {{item.vendorName}}</p>
+                                    }
+                                    <p class="client-sub-title"><i class="fa-duotone fa-solid fa-envelope"></i>
+                                        {{item.primaryEmailId}} &nbsp; <i class="fa-solid fa-phone"></i>
+                                        {{item.primaryContactNumber}}</p>
+                                    <!-- <p class="client-sub-title"><i class="fa-solid fa-phone-volume"></i> {{item.primaryContactNumber}}</p> -->
+                                    <!-- <p class="client-sub-title"><i class="fa-solid fa-location-dot"></i> {{item.state}},{{item.city}}</p> -->
+                                    <!-- <p class="client-indent"><i class="fa-solid fa-suitcase"></i> {{item.indentCount}} Indents</p> -->
+                                </div>
+                                <div class="client-details mt-2" style="width: 100%; padding: 0;">
+                                    <p class="client-sub-title"><i class="fa-sharp fa-solid fa-location-dot"></i>
+                                        Locations: {{item.recruitmentPresence}}</p>
+                                    <p class="client-sub-title"><i class="fa-solid fa-industry"></i> Industries:
+                                        {{item.currentlyHiringIndustries}}</p>
+                                    @if(item.partnerStatus == 'approved'){
+                                    <p class="client-sub-title"><i class="fa-solid fa-calendar"></i> Agreement
+                                        expiration: {{item.aggrementExpirationdate | date: 'dd MMM, yyyy'}}</p>
+                                    }
+                                </div>
+                            </a>
+                            <div class="indent-btn">
+                                @if(loginUserRole != "Recruiter"){
+                                <button tooltipPosition="top" pTooltip="Edit partner details"
+                                    class="btn client_status ml-2" (click)="showEditModal(item)"><i
+                                        class="fa fa-edit text-info"></i></button>
+                                <button tooltipPosition="top" pTooltip="Activate/De-activate partner"
+                                    class="btn client_status ml-2" (click)="confirmStatusChange(item)"><i
+                                        [ngClass]="{'fa-eye': item.status === 1, 'fa-eye-slash': item.status === 0}"
+                                        class="fa"></i> </button>
+                                <button tooltipPosition="top" pTooltip="Approve partner" class="btn client_status ml-2"
+                                    (click)="updateCanPartner(item)"><i class="fa fa-clone text-danger"></i></button>
+                                }
+                            </div>
+
+                            <div class="partner_status">
+                                @if((item.isVerified == false) && (item.partnerStatus != 'rejected')){
+                                <button class="pending_status_btn btn ml-2"><i [ngClass]="{'fa-times-circle': true}"
+                                        class="fa"></i> Account Verification Pending </button>
+                                }@else{
+                                <!-- @if(item.isSubmited === false){ -->
+                                <!-- <button class="pending_status_btn btn ml-2"><i [ngClass]="{'fa-times-circle': true}" class="fa"></i> Documents Pending</button> -->
+                                <!-- @if(item.partnerStatus=== 'rejected'){
+                                                    <button class="btn pending_status_btn ml-2"><i class="fa fa-times-circle"></i> <span class="pl-4"> Rejected</span></button>
+                                                }@else{
+                                                    <button class="pending_status_btn btn ml-2"><i [ngClass]="{'fa-times-circle': true}" class="fa"></i> Documents Pending</button>
+                                                } -->
+                                <!-- }@else { -->
+                                <button
+                                    [ngClass]="{'approved_status_btn': item.partnerStatus=== 'approved', 'pending_status_btn': item.partnerStatus=== 'verification pending' || item.partnerStatus=== 'rejected' || item.partnerStatus === 'documents pending'}"
+                                    class="btn ml-2"><i
+                                        [ngClass]="{'fa-check-circle': item.partnerStatus=== 'approved', 'fa-times-circle': item.partnerStatus=== 'verification pending' || item.partnerStatus=== 'rejected' || item.partnerStatus === 'documents pending'}"
+                                        class="fa"></i>
+                                    <span class="pl-4">
+                                        @if(item.partnerStatus=== 'verification pending'){
+                                        Verification Pending
+                                        }
+                                        @if(item.partnerStatus=== 'rejected'){
+                                        Rejected
+                                        }
+                                        @if(item.partnerStatus=== 'documents pending'){
+                                        Documents Pending
+                                        }
+                                        @if(item.partnerStatus=== 'approved'){
+                                        Approved
+                                        }
+
+                                        <!-- {{ item.partnerStatus=== 'verification pending' ? "Verification Pending" : (item.partnerStatus=== 'rejected' ? "Rejected" : "Approved") }} -->
+                                    </span>
+                                </button>
+                                <!-- } -->
+                                }
+                                @if(item.expired){
+                                <button class="pending_status_btn btn ml-2"><i class="fa fa-times-circle"></i> Expired
+                                </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p>Showing {{startIndex2}} to {{endIndex2}} of {{filterdRecord}} entries</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="cuspagi" style="float: right;">
+                                <nav aria-label="...">
+                                    <ul class="pagination">
+                                        <li class="page-item {{isDisabled}}"><button class="page-link"
+                                                (click)="prevPage()">Previous</button></li>
+                                        <li class="page-item active" aria-current="page"><a
+                                                class="page-link">{{currentPage}}</a></li>
+                                        <li class="page-item {{isDisabled2}}"><button class="page-link text-danger"
+                                                (click)="nextPage()">Next</button></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }@else{
+                <div class="col-md-12 pt-5">
+                    <div class="empty_state rounded">
+                        <i class="fa-solid fa-face-surprise"></i>
+                        <h3 class="">No records</h3>
+                        <p>There are no records found</p>
+                    </div>
+                </div>
+                }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- OUR BLOG END -->
+
+
+
+
+<p-toast />
+
+<p-dialog header="Edit Partner" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}"
+    [maximizable]="true">
+    <div class="step-form">
+        <form [formGroup]="editPartner">
+            <h5 class="text-danger mb-4">1. Information</h5>
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Partner Category</label>
+                        <select class="form-control" formControlName="partnerCategory"
+                            (change)="getPartnerFields($event)">
+                            <option selected="selected" value="">Select Partner Category</option>
+                            <option value="Freelancer">Freelancer</option>
+                            <option value="Recruitment Firm">Recruitment Firm</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div formGroupName="source" class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Referred By <span class="text-danger">*</span></label>
+                        <select class="form-control" formControlName="options" (change)="getReferredFields($event)">
+                            <option selected="selected" value="">Select Referred By</option>
+                            <option value="Email">Email</option>
+                            <option value="WhatsApp">WhatsApp</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="LinkedIn">LinkedIn</option>
+                            <option value="Instagram">Instagram</option>
+                            <option value="SMS">SMS</option>
+                            <option value="Poster/Pamphlet">Poster/Pamphlet</option>
+                            <option value="Others">Others</option>
+                        </select>
+                        <!-- <input type="text" class="form-control" placeholder="Enter Referred By Name" formControlName="referredBy"> -->
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.source.controls.options.invalid && (editPartner.controls.source.controls.options.touched || editPartner.controls.source.controls.options.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.source.controls.options.errors?.['required']">* This field
+                                is required</span>
+                        </div>
+                    </div>
+                </div>
+
+                @if(selectedReferredType === "Others"){
+                <div formGroupName="source" class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Referred Type<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Enter Referred Type"
+                            formControlName="others">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.source.controls.others.invalid && (editPartner.controls.source.controls.others.touched || editPartner.controls.source.controls.others.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.source.controls.others.errors?.['required']">* This field
+                                is required</span>
+                            <!-- <span *ngIf="insertNewRegisterPartner.controls.vendorName.errors?.['alphabet'] &&  !insertNewRegisterPartner.controls.vendorName.errors?.['required']" class="text-danger">Please enter alphabets'</span> -->
+                        </div>
+                    </div>
+                </div>
+                }
+
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Form Filled By <span class="text-danger"> *</span></label>
+                        <input type="text" class="form-control" placeholder="Enter Form Filled By "
+                            formControlName="vendorName">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.vendorName.invalid && (editPartner.controls.vendorName.touched || editPartner.controls.vendorName.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.vendorName.errors?.['required']">* This field is
+                                required</span>
+                            <span
+                                *ngIf="editPartner.controls.vendorName.errors?.['alphabet'] &&  !editPartner.controls.vendorName.errors?.['required']"
+                                class="text-danger">Please enter alphabets'</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label class="control-label">Partner Logo</label>
+                                <input type="file" class="form-control" (change)="onpartnerLogoSelected($event)"
+                                    formControlName="partnerLogo" accept="image/*">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <img *ngIf="partnerImageUrl" [src]="partnerImageUrl" alt="Image Preview"
+                                    style="height: 80px; width: 80px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Short Name</label>
+                        <input type="text" class="form-control" placeholder="Enter Partner Short Name"
+                            formControlName="shortName">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.shortName.invalid && (editPartner.controls.shortName.touched || editPartner.controls.shortName.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.shortName.errors?.['alphabet']" class="text-danger">Please
+                                enter alphabets'</span>
+                        </div>
+                    </div>
+                </div>
+                @if(slectedPartnerType != "Freelancer"){
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Company Name<span class="text-danger"> *</span></label>
+                        <input type="text" class="form-control" placeholder="Enter Company Name (registered Firm Name)"
+                            formControlName="firmName">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.firmName.invalid && (editPartner.controls.firmName.touched || editPartner.controls.firmName.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.firmName.errors?.['required']">* This field is
+                                required</span>
+                            <span
+                                *ngIf="editPartner.controls.firmName.errors?.['alphanumaric'] &&  !editPartner.controls.firmName.errors?.['required']"
+                                class="text-danger">Please enter alphabets'</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Full Name of the MD/Proprietor </label>
+                        <input type="text" class="form-control" placeholder="Enter Full Name of the MD/Proprietor"
+                            formControlName="mdName">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.mdName.invalid && (editPartner.controls.mdName.touched || editPartner.controls.mdName.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.mdName.errors?.['alphabet']" class="text-danger">Please
+                                enter only alphabets'</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Designation </label>
+                        <input type="text" class="form-control" placeholder="Enter Designation"
+                            formControlName="designation">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.designation.invalid && (editPartner.controls.designation.touched || editPartner.controls.designation.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.designation.errors?.['designationValid']"
+                                class="text-danger">Please enter only alphabets'</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Date of Incorporation<span class="text-danger"> *</span></label>
+                        <p-calendar formControlName="dateOfIncorporation" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy"
+                            showIcon="true" [iconDisplay]="'input'" appendTo="body" />
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.dateOfIncorporation.invalid && (editPartner.controls.dateOfIncorporation.touched || editPartner.controls.dateOfIncorporation.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.dateOfIncorporation.errors?.['required']">* This field is
+                                required</span>
+                        </div>
+                    </div>
+                </div>
+                }
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Contact Number-1 (WhatsApp) <span class="text-danger">
+                                *</span></label>
+                        <input type="text" class="form-control" placeholder="Enter Primary Contact Number"
+                            formControlName="primaryContactNumber">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.primaryContactNumber.invalid && (editPartner.controls.primaryContactNumber.touched || editPartner.controls.primaryContactNumber.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.primaryContactNumber.errors?.['required']">* This field is
+                                required</span>
+                            <span *ngIf="editPartner.controls.primaryContactNumber.errors?.['onlynumber']"
+                                class="text-danger">Please enter Contact number'</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Contact Number-2 (if any) </label>
+                        <input type="text" class="form-control" placeholder="Enter Alternative Contact Number"
+                            formControlName="secondaryContactNumber">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.secondaryContactNumber.invalid && (editPartner.controls.secondaryContactNumber.touched || editPartner.controls.secondaryContactNumber.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.secondaryContactNumber.errors?.['onlynumber']"
+                                class="text-danger">Please enter Contact number'</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Primary Email Id <span class="text-danger"> *</span></label>
+                        <input type="text" class="form-control" placeholder="Enter Primary Email Id"
+                            formControlName="primaryEmailId">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.primaryEmailId.invalid && (editPartner.controls.primaryEmailId.touched || editPartner.controls.primaryEmailId.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.primaryEmailId.errors?.['required']">* This field is
+                                required</span>
+                            <span *ngIf="editPartner.controls.primaryEmailId.errors?.['emailvalidate']"
+                                class="text-danger">Please enter valid Email address'</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Secondary Email Id (If Any) </label>
+                        <input type="text" class="form-control" placeholder="Enter Secondary Email Id"
+                            formControlName="secondaryEmailId">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.secondaryEmailId.invalid && (editPartner.controls.secondaryEmailId.touched || editPartner.controls.secondaryEmailId.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.secondaryEmailId.errors?.['emailvalidate']"
+                                class="text-danger">Please enter valid Email address'</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Recruitment Presence <span class="text-danger">*</span></label>
+                        <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="stateData2"
+                            [placeholder]="'Select State'"
+                            formControlName="recruitmentPresence"></ng-multiselect-dropdown>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.recruitmentPresence.invalid && (editPartner.controls.recruitmentPresence.touched || editPartner.controls.recruitmentPresence.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.recruitmentPresence.errors?.['required']">* This field is
+                                required</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Industries which you are hiring currently? <span
+                                class="text-danger">*</span></label>
+                        <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="industryData"
+                            formControlName="currentlyHiringIndustries"></ng-multiselect-dropdown>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.currentlyHiringIndustries.invalid && (editPartner.controls.currentlyHiringIndustries.touched || editPartner.controls.currentlyHiringIndustries.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.currentlyHiringIndustries.errors?.['required']">* This
+                                field is required</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Position Levels which you are hiring currently? <span
+                                class="text-danger">*</span></label>
+                        <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="positionLevel"
+                            formControlName="positionLevel"></ng-multiselect-dropdown>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.positionLevel.invalid && (editPartner.controls.positionLevel.touched || editPartner.controls.positionLevel.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.positionLevel.errors?.['required']">* This field is
+                                required</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Roles you are currently working? <span
+                                class="text-danger">*</span></label>
+                        <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="roleData"
+                            formControlName="currentlyWorkingRoles"></ng-multiselect-dropdown>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.currentlyWorkingRoles.invalid && (editPartner.controls.currentlyWorkingRoles.touched || editPartner.controls.currentlyWorkingRoles.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.currentlyWorkingRoles.errors?.['required']">* This field
+                                is required</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Employee Count of the Partner Company? <span
+                                class="text-danger">*</span></label>
+                        <input type="number" class="form-control" placeholder="Please enter no of employees"
+                            formControlName="employeeCount">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.employeeCount.invalid && (editPartner.controls.employeeCount.touched || editPartner.controls.employeeCount.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.employeeCount.errors?.['required']">* This field is
+                                required</span>
+                            <span *ngIf="editPartner.controls.employeeCount.errors?.['negativeValue']"
+                                class="text-danger">Please enter valid number</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Date of Birth<span class="text-danger"> *</span></label>
+                        <p-calendar formControlName="dateOfBirth" dateFormat="dd/mm/yy" [inline]="false"
+                            placeholder="dd/mm/yyyy" showIcon="true" [iconDisplay]="'input'" appendTo="body" />
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.dateOfBirth.invalid && (editPartner.controls.dateOfBirth.touched || editPartner.controls.dateOfBirth.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.dateOfBirth.errors?.['required']">* This field is
+                                required</span>
+                            <span *ngIf="editPartner.controls.dateOfBirth.errors?.['minAge']">* You must be at least 18
+                                years old'</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <h5 class="text-danger mb-3 mt-3">2. Certifications</h5>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Company PAN Card Number <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Enter Pancard Number"
+                                    formControlName="pancard" (input)="edittoUppercase()">
+                                <div class="text-danger pt-2 error"
+                                    *ngIf="editPartner.controls.pancard.invalid && (editPartner.controls.pancard.touched || editPartner.controls.pancard.dirty || isFormSubmited)">
+                                    <span *ngIf="editPartner.controls.pancard.errors?.['required']">* This field is
+                                        required</span>
+                                    <span *ngIf="editPartner.controls.pancard.errors?.['pannumber']"
+                                        class="text-danger">Please enter PAN card number'</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <label class="control-label">Pancard Image</label>
+                                        <input type="file" class="form-control" (change)="onPancardSelected($event)"
+                                            formControlName="pancardImage" accept="image/*">
+                                        <!-- <div class="text-danger pt-2 error" *ngIf="editPartner.controls.pancardImage.invalid && (editPartner.controls.pancardImage.touched || editPartner.controls.pancardImage.dirty || isFormSubmited)" >
+                                            <span *ngIf="editPartner.controls.pancardImage.errors?.['required']"> * This field is required</span>
+                                        </div> -->
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <img *ngIf="pancardImageUrl" [src]="pancardImageUrl" alt="Image Preview"
+                                            style="height: 80px; width: 80px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">GST Registration</label><br>
+                                <label class="radio-inline">
+                                    <input type="radio" name="gstin" [value]="true" (click)="editgstinCheck(true)"
+                                        formControlName="gstin"> Yes
+                                </label> &nbsp;
+                                <label class="radio-inline">
+                                    <input type="radio" name="gstin" [value]="false" (click)="editgstinCheck(false)"
+                                        checked="" formControlName="gstin"> No
+                                </label>
+                            </div>
+                        </div>
+
+                        @if(showgst){
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">GSTIN Number <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Enter GSTIN Number"
+                                    formControlName="gistinNumber">
+                                <div class="text-danger pt-2 error"
+                                    *ngIf="editPartner.controls.gistinNumber.invalid && (editPartner.controls.gistinNumber.touched || editPartner.controls.gistinNumber.dirty || isFormSubmited)">
+                                    <span *ngIf="editPartner.controls.gistinNumber.errors?.['required']"> * This field
+                                        is required</span>
+                                    <span *ngIf="editPartner.controls.gistinNumber.errors?.['gstnumber']"
+                                        class="text-danger">Please enter GSTIN number'</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <label class="control-label">GSTIN Certificate </label>
+                                        <input type="file" class="form-control" (change)="onGstSelected($event)"
+                                            formControlName="gstinImage" accept="image/*">
+                                        <!-- <div class="text-danger pt-2 error" *ngIf="editPartner.controls.gstinImage.invalid && (editPartner.controls.gstinImage.touched || editPartner.controls.gstinImage.dirty || isFormSubmited)" >
+                                                <span *ngIf="editPartner.controls.gstinImage.errors?.['required']"> * This field is required</span>
+                                            </div> -->
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <img *ngIf="gstImageUrl" [src]="gstImageUrl" alt="Image Preview"
+                                            style="height: 80px; width: 80px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">MSME Registration</label><br>
+                                <label class="radio-inline">
+                                    <input type="radio" name="msme" [value]="true" (click)="msmeCheck(true)"
+                                        formControlName="msme"> Yes
+                                </label> &nbsp;
+                                <label class="radio-inline">
+                                    <input type="radio" name="msme" [value]="false" (click)="msmeCheck(false)"
+                                        checked="" formControlName="msme"> No
+                                </label>
+                            </div>
+                        </div>
+
+                        @if(showmsme){
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">MSME No <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Enter MSME Number"
+                                    formControlName="msmeNumber" (input)="editmsmetoUppercase()">
+                                <div class="text-danger pt-2 error"
+                                    *ngIf="editPartner.controls.msmeNumber.invalid && (editPartner.controls.msmeNumber.touched || editPartner.controls.msmeNumber.dirty || isFormSubmited)">
+                                    <span *ngIf="editPartner.controls.msmeNumber.errors?.['required']"> * This field is
+                                        required</span>
+                                    <span *ngIf="editPartner.controls.msmeNumber.errors?.['msmenumber']"
+                                        class="text-danger">Please enter MSME number'</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <label class="control-label">MSME Certificate </label>
+                                        <input type="file" class="form-control" (change)="onMsmeSelected($event)"
+                                            formControlName="msmeImage" accept="image/*">
+                                        <!-- <div class="text-danger pt-2 error" *ngIf="editPartner.controls.msmeImage.invalid && (editPartner.controls.msmeImage.touched || editPartner.controls.msmeImage.dirty || isFormSubmited)" >
+                                                <span *ngIf="editPartner.controls.msmeImage.errors?.['required']"> * This field is required</span>
+                                            </div> -->
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <img *ngIf="msmeImageUrl" [src]="msmeImageUrl" alt="Image Preview"
+                                            style="height: 80px; width: 80px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <h5 class="text-danger mb-3 mt-3">3. Account Inforamtion</h5>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Bank Name</label>
+                        <input type="text" class="form-control" placeholder="Enter Bank Name"
+                            formControlName="bankName">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.bankName.invalid && (editPartner.controls.bankName.touched || editPartner.controls.bankName.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.bankName.errors?.['bankname']" class="text-danger">Please
+                                enter only alphabets'</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Account Holder Name</label>
+                        <input type="text" class="form-control" placeholder="Enter Account Name"
+                            formControlName="accountName">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.accountName.invalid && (editPartner.controls.accountName.touched || editPartner.controls.accountName.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.accountName.errors?.['bankname']"
+                                class="text-danger">Please enter only alphabets'</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Bank Branch Name</label>
+                        <input type="text" class="form-control" placeholder="Enter Barnch Name"
+                            formControlName="branchName">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.branchName.invalid && (editPartner.controls.branchName.touched || editPartner.controls.branchName.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.branchName.errors?.['branchname']"
+                                class="text-danger">Please enter only alphabets'</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Bank Account Number</label>
+                        <input type="text" class="form-control" placeholder="Enter Account Number"
+                            formControlName="accountNumber">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.accountNumber.invalid && (editPartner.controls.branchName.touched || editPartner.controls.accountNumber.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.accountNumber.errors?.['accountnumber']"
+                                class="text-danger">Please enter only alphabets'</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">IFSC Code</label>
+                        <input type="text" class="form-control" placeholder="Enter IFSC Code"
+                            formControlName="ifscCode">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.ifscCode.invalid && (editPartner.controls.ifscCode.touched || editPartner.controls.ifscCode.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.ifscCode.errors?.['ifscnumber']"
+                                class="text-danger">Please enter ifsc Code'</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">MICR Code</label>
+                        <input type="text" class="form-control" placeholder="Enter MICR Code"
+                            formControlName="micrCode">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.micrCode.invalid && (editPartner.controls.accountNumber.touched || editPartner.controls.micrCode.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.micrCode.errors?.['micrcode']" class="text-danger">Please
+                                enter MICR Code'</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label class="control-label">Attach Cancel Cheque</label>
+                                <input type="file" class="form-control" (change)="onChequeSelected($event)"
+                                    formControlName="chequeImage" accept="image/*">
+                                <!-- <div class="text-danger pt-2 error" *ngIf="editPartner.controls.chequeImage.invalid && (editPartner.controls.chequeImage.touched || editPartner.controls.chequeImage.dirty || isFormSubmited)" >
+                                    <span *ngIf="editPartner.controls.chequeImage.errors?.['required']"> * This field is required</span>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <img *ngIf="chequeImageUrl" [src]="chequeImageUrl" alt="Image Preview"
+                                    style="height: 80px; width: 80px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Full Address of the Bank Branch</label>
+                        <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter Branch Address"
+                            formControlName="bankAddress"></textarea>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.bankAddress.invalid && (editPartner.controls.bankAddress.touched || editPartner.controls.bankAddress.dirty || isFormSubmited)">
+                            <span
+                                *ngIf="editPartner.controls.bankAddress.errors?.['Address'] &&  !editPartner.controls.bankAddress.errors?.['required']"
+                                class="text-danger">Please enter valid address'</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <h5 class="text-danger mb-3 mt-3">4. Address</h5>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Zone<span class="text-danger">*</span></label>
+                        <select class="form-control" formControlName="zone" (change)="getStateOnZoneChnage($event)">
+                            <option selected="selected" value="">Select Zone</option>
+                            <option value="East">East</option>
+                            <option value="West">West</option>
+                            <option value="North">North</option>
+                            <option value="South">South</option>
+                        </select>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.zone.invalid && (editPartner.controls.zone.touched || editPartner.controls.zone.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.zone.errors?.['required']">* This field is required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Base Location State <span class="text-danger"> *</span></label>
+                        <select class="form-control" formControlName="state" (change)="getCityOnStateChnage($event)">
+                            <option value="">Select State</option>
+                            @for(state of stateData; track $index){
+                            <option value="{{state.name}}">{{state.name}}</option>
+                            }
+                        </select>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.state.invalid && (editPartner.controls.state.touched || editPartner.controls.state.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.state.errors?.['required']">* This field is
+                                required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Base Location City <span class="text-danger"> *</span></label>
+                        <select class="form-control" formControlName="city">
+                            <option value="">Select City</option>
+                            @for(city of cityData; track $index){
+                            <option value="{{city.name}}">{{city.name}}</option>
+                            }
+                        </select>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.city.invalid && (editPartner.controls.city.touched || editPartner.controls.city.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.city.errors?.['required']">* This field is required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Pincode <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Enter Pincode" formControlName="pincode"
+                            maxlength="6">
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.pincode.invalid && (editPartner.controls.pincode.touched || editPartner.controls.pincode.dirty || isFormSubmited2)">
+                            <span *ngIf="editPartner.controls.pincode.errors?.['required']">* This field is
+                                required</span>
+                            <span
+                                *ngIf="editPartner.controls.pincode.errors?.['pattern'] &&  !editPartner.controls.pincode.errors?.['required']">Please
+                                enter valid pincode'</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Address for Communications <span class="text-danger">
+                                *</span></label>
+                        <textarea class="form-control" rows="2" style="height: 80px;"
+                            placeholder="Enter Communication Address" formControlName="address"></textarea>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.address.invalid && (editPartner.controls.address.touched || editPartner.controls.address.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.address.errors?.['required']">* This field is
+                                required</span>
+                            <span
+                                *ngIf="editPartner.controls.address.errors?.['Address'] &&  !editPartner.controls.address.errors?.['required']"
+                                class="text-danger">Please enter valid address'</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Company Registered Address <span class="text-danger">
+                                *</span></label>
+                        <textarea class="form-control" rows="2" style="height: 80px;"
+                            placeholder="Enter Compnay Registered Address"
+                            formControlName="registeredAddress"></textarea>
+                        <div class="text-danger pt-2 error"
+                            *ngIf="editPartner.controls.registeredAddress.invalid && (editPartner.controls.registeredAddress.touched || editPartner.controls.registeredAddress.dirty || isFormSubmited)">
+                            <span *ngIf="editPartner.controls.registeredAddress.errors?.['required']">* This field is
+                                required</span>
+                            <span
+                                *ngIf="editPartner.controls.registeredAddress.errors?.['Address'] &&  !editPartner.controls.registeredAddress.errors?.['required']"
+                                class="text-danger">Please enter valid address'</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- {{editPartner.valid | json}} -->
+
+            <!-- <p>--Here--</p>
+            <p>partnerCategory: {{editPartner.controls.partnerCategory.valid}}</p>
+            <p>referredBy: {{editPartner.controls.referredBy.valid}}</p>
+            <p>vendorName: {{editPartner.controls.vendorName.valid}}</p>
+            <p>partnerLogo: {{editPartner.controls.partnerLogo.valid}}</p>
+            <p>shortName: {{editPartner.controls.shortName.valid}}</p>
+            <p>firmName: {{editPartner.controls.firmName.valid}}</p>
+            <p>mdName: {{editPartner.controls.mdName.valid}}</p>
+            <p>designation: {{editPartner.controls.designation.valid}}</p>
+            <p>primaryContactNumber: {{editPartner.controls.primaryContactNumber.valid}}</p>
+            <p>secondaryContactNumber: {{editPartner.controls.secondaryContactNumber.valid}}</p>
+            <p>primaryEmailId: {{editPartner.controls.primaryEmailId.valid}}</p>
+            <p>secondaryEmailId: {{editPartner.controls.secondaryEmailId.valid}}</p>
+            <p>recruitmentPresence: {{editPartner.controls.recruitmentPresence.valid}}</p>
+            <p>currentlyHiringIndustries: {{editPartner.controls.currentlyHiringIndustries.valid}}</p>
+            <p>positionLevel: {{editPartner.controls.positionLevel.valid}}</p>
+            <p>currentlyWorkingRoles: {{editPartner.controls.currentlyWorkingRoles.valid}}</p>
+            <p>employeeCount: {{editPartner.controls.employeeCount.valid}}</p>
+            <p>pancard: {{editPartner.controls.pancard.valid}}</p>
+            <p>pancardImage: {{editPartner.controls.pancardImage.valid}}</p>
+            <p>gstin: {{editPartner.controls.gstin.valid}}</p>
+            <p>gistinNumber: {{editPartner.controls.gistinNumber.valid}}</p>
+            <p>gstinImage: {{editPartner.controls.gstinImage.valid}}</p>
+            <p>msme: {{editPartner.controls.msme.valid}}</p>
+            <p>msmeNumber: {{editPartner.controls.msmeNumber.valid}}</p>
+            <p>msmeImage: {{editPartner.controls.msmeImage.valid}}</p>
+            <p>bankName: {{editPartner.controls.bankName.valid}}</p>
+            <p>accountName: {{editPartner.controls.accountName.valid}}</p>
+            <p>branchName: {{editPartner.controls.branchName.valid}}</p>
+            <p>accountNumber: {{editPartner.controls.accountNumber.valid}}</p>
+            <p>ifscCode: {{editPartner.controls.ifscCode.valid}}</p>
+            <p>bankAddress: {{editPartner.controls.bankAddress.valid}}</p>
+            <p>micrCode: {{editPartner.controls.micrCode.valid}}</p>
+            <p>chequeImage: {{editPartner.controls.chequeImage.valid}}</p>
+            <p>zone: {{editPartner.controls.zone.valid}}</p>
+            <p>state: {{editPartner.controls.state.valid}}</p>
+            <p>city: {{editPartner.controls.city.valid}}</p>
+            <p>address: {{editPartner.controls.address.valid}}</p>
+            <p>registeredAddress: {{editPartner.controls.registeredAddress.valid}}</p> -->
+
+
+
+            <p class="text-danger">{{overallFormValid2}}</p>
+            <p class="text-info">{{apiMessage2}}</p>
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="message"></p>
+                    <div class="submit-btn">
+                        @if(isLoading){
+                        <button class="btn btn-primary postjob-btn" type="button" disabled><span
+                                class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status">
+                                Loading...</span></button>
+                        }@else{
+                        <button type="button" (click)="updatePartner();" class="btn postjob-btn" type="button"><i
+                                class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</p-dialog>
+
+<div class="card flex justify-content-center">
+    <p-dialog header="Change Partner Status For - {{partnerFirmName}}" [modal]="true" [(visible)]="visible"
+        [style]="{ width: '25rem' }" [style]="{ width: '50rem' }" [maximizable]="true"
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+
+        <form [formGroup]="updatePartnerAprove">
+            <div class="step-form" id="stepform">
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Status <span class="text-danger">*</span></label>
+                            <select class="form-control" formControlName="partnerStatus"
+                                (change)="partnerStatusChange($event)">
+                                <option value="">Select Partner Status</option>
+                                @if(partnerStatus == 'approved'){
+                                <option value="rejected">Rejected</option>
+                                }@else if(partnerStatus == 'rejected'){
+                                <option value="approved">Approved</option>
+                                }@else{
+                                <option value="rejected">Rejected</option>
+                                <option value="approved">Approved</option>
+                                }
+                            </select>
+                            <div class="text-danger pt-2 error"
+                                *ngIf="updatePartnerAprove.controls.partnerStatus.invalid && (updatePartnerAprove.controls.partnerStatus.touched || updatePartnerAprove.controls.partnerStatus.dirty || isFormSubmited3)">
+                                <span *ngIf="updatePartnerAprove.controls.partnerStatus.errors?.['required']">* This
+                                    field is required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Engagement Type <span class="text-danger">*</span></label>
+                            <select class="form-control" formControlName="partnerType">
+                                <option selected="selected" value="">Select Partner Type</option>
+                                <option value="Commercial">Commercial</option>
+                                <option value="Non-Commercial">Non-Commercial</option>
+                            </select>
+                            <div class="text-danger pt-2 error"
+                                *ngIf="updatePartnerAprove.controls.partnerType.invalid && (updatePartnerAprove.controls.partnerType.touched || updatePartnerAprove.controls.partnerType.dirty || isFormSubmited3)">
+                                <span *ngIf="updatePartnerAprove.controls.partnerType.errors?.['required']">* This field
+                                    is required</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @if(selectedStatus =='rejected')
+                    {
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Reason <span class="text-danger">*</span></label>
+                            <select class="form-control" formControlName="reason">
+                                <option selected="selected" value="">Select reason for rejection</option>
+                                <option value="Non-compliance with Contractual Agreements">Non-compliance with
+                                    Contractual Agreements</option>
+                                <option value="Poor Performance">Poor Performance</option>
+                                <option value="Lack of Communication">Lack of Communication</option>
+                                <option value="Compliance or Legal Issues">Compliance or Legal Issues</option>
+                                <option value="Financial Reasons">Financial Reasons</option>
+                                <option value="Negative Client Feedback">Negative Client Feedback</option>
+                                <option value="Duplicate or Unsolicited Submissions">Duplicate or Unsolicited
+                                    Submissions</option>
+                                <option value="Violation of ATS Policies">Violation of ATS Policies</option>
+                                <option value="Internal Business Strategy Changes">Internal Business Strategy Changes
+                                </option>
+                                <option value="Ownership or Operational Changes">Ownership or Operational Changes
+                                </option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <div class="text-danger pt-2 error"
+                                *ngIf="updatePartnerAprove.controls.reason.invalid && (updatePartnerAprove.controls.reason.touched || updatePartnerAprove.controls.reason.dirty || isFormSubmited3)">
+                                <span *ngIf="updatePartnerAprove.controls.reason.errors?.['required']">* This field is
+                                    required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    }
+
+                    @if(selectedStatus=='approved'){
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Agreement Expiration date<span class="text-danger">
+                                    *</span></label><br>
+                            <p-calendar formControlName="aggrementExpirationdate" dateFormat="dd/mm/yy"
+                                placeholder="dd/mm/yyyy" showIcon="true" [iconDisplay]="'input'" appendTo="body" />
+                            <div class="text-danger pt-2 error"
+                                *ngIf="updatePartnerAprove.controls.aggrementExpirationdate.invalid && (updatePartnerAprove.controls.aggrementExpirationdate.touched || updatePartnerAprove.controls.aggrementExpirationdate.dirty || isFormSubmited3)">
+                                <span
+                                    *ngIf="updatePartnerAprove.controls.aggrementExpirationdate.errors?.['required']">*
+                                    This field is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    }
+
+                    <div class="col-md-12 mt-2">
+                        <div class="form-group">
+                            <label class="control-label">Remarks</label>
+                            <textarea class="form-control" rows="2" style="height: 80px;"
+                                placeholder="Enter your remarks" formControlName="comment"></textarea>
+                            <div class="text-danger pt-2 error"
+                                *ngIf="updatePartnerAprove.controls.comment.invalid && (updatePartnerAprove.controls.comment.touched || updatePartnerAprove.controls.comment.dirty || isFormSubmited3)">
+                                <span *ngIf="updatePartnerAprove.controls.comment.errors?.['maxlength']">* Maximum 500
+                                    character should allowed </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        @if(isLoading){
+                        <button class="btn btn-primary postjob-btn" type="button" disabled><span
+                                class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status">
+                                Loading...</span></button>
+                        }@else{
+                        <button type="button" class="btn postjob-btn" type="button" (click)="updateAproveStage();"><i
+                                class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+</div>
+
+<p-dialog header="" [(visible)]="showNotificationModel" [modal]="true" [style]="{width: '50vw'}" [maximizable]="true">
+    <div class="step-form">
+        <div>
+            <label class="radio-inline" style="padding-left: 30px; cursor: pointer;">
+                <input type="radio" name="type" (click)="onWhatsAppChange('whatsapp')"> WhatsApp
+            </label> &nbsp;
+            <label class="radio-inline" style="margin-left: 15px; cursor: pointer;">
+                <input type="radio" name="type" (click)="onMailChange('email')"> Email
+            </label>
+
+            @if(showMessage){
+            <div style="text-align: center;" class="mt-3 mb-3 text-danger">
+                <p>Choose a type to display the template.</p>
+            </div>
+            }
+
+            <div class="card mt-4" style="padding-left: 25px;">
+                <p-accordion>
+                    @for(item of notificationList; track $index){
+                    @if(showWhatsAppData){
+                    @if(loader3){
+                    <div class="fb-item">
+                        <div class="first-section-wrapper">
+                            <div class="gravatar">
+                                <ngx-skeleton-loader appearance="circle"
+                                    [theme]="{ width: '20px', height: '15px', 'border-radius': '10px' }"></ngx-skeleton-loader>
+                            </div>
+                            <div class="gravatar-title">
+                                <div><ngx-skeleton-loader
+                                        [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div><ngx-skeleton-loader
+                                        [theme]="{ width: '170px', 'border-radius': '0', height: '15px' }"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }@else{
+                    <p-accordionTab [header]="item.templateName">
+                        <p>Channel Id: {{item.channelId}}</p>
+                        <p>Name Space: {{item.namespace}}</p>
+                        <p>Template Name: {{item.templateName}}</p>
+
+                        <div class="submit-btn">
+                            <button type="button" class="btn postjob-btn" type="button"
+                                (click)="sendBulkNotification($index)"><i class="fa-regular fa-paper-plane"></i>
+                                SUBMIT</button>
+                        </div>
+                    </p-accordionTab>
+                    }
+                    }
+                    @if(showMailData){
+                    @if(loader3){
+                    <div class="fb-item">
+                        <div class="first-section-wrapper">
+                            <div class="gravatar">
+                                <ngx-skeleton-loader appearance="circle"
+                                    [theme]="{ width: '20px', height: '15px', 'border-radius': '10px' }"></ngx-skeleton-loader>
+                            </div>
+                            <div class="gravatar-title">
+                                <div><ngx-skeleton-loader
+                                        [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div><ngx-skeleton-loader
+                                        [theme]="{ width: '170px', 'border-radius': '0', height: '15px' }"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }@else{
+                    <p-accordionTab [header]="item.subject">
+
+                        <p>Subject: {{item.subject}}</p>
+                        @if(item.cc){
+                        <p>Email CC: {{item.cc}}</p>
+                        }
+                        @if(item.bc){
+                        <p>Email BC: {{item.bc}}</p>
+                        }
+                        @if(item.formemail){
+                        <p>From Mail: {{item.formemail}}</p>
+                        }
+                        <p [innerHTML]="item.body">Email Body: {{item.body}}</p>
+
+                        <div class="submit-btn">
+                            <button type="button" class="btn postjob-btn" type="button"
+                                (click)="sendBulkNotification($index)"><i class="fa-regular fa-paper-plane"></i>
+                                SUBMIT</button>
+                        </div>
+                    </p-accordionTab>
+                    }
+                    }
+                    }
+
+                </p-accordion>
+            </div>
+
+            <!-- @for(item of notificationList; track $index){
+            <div class="mt-4">
+                @if(showWhatsAppData){
+                    <div class="background mt-4">
+                        <a class="clickable-link">{{item.templateName}}</a>
+                    </div>
+                }
+            </div>
+
+            <div class="mt-4">
+                @if(showMailData){
+                    <div class="background mt-4">
+                        <a class="clickable-link">{{item.subject}}</a>
+                    </div>
+                }
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="message"></p>
+                    <div class="submit-btn">
+                        @if(isLoading){
+                            <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                        }@else{
+                            <button type="button" class="btn postjob-btn" type="button"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                        }
+                    </div>
+                </div>
+            </div>-->
+        </div>
+    </div>
+</p-dialog>

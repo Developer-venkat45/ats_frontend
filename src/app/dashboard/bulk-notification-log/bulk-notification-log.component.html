@@ -1,0 +1,117 @@
+<div class="section-full p-5 mt-5 site-bg-gray">
+    <div class="container">
+        @if(loader){
+        <div class="fb-item py-5" style="height: 600px;">
+            <div>
+                <div class="product-filter-wrap d-flex justify-content-end position-relative">
+                    <div>
+                        <ngx-skeleton-loader
+                            [theme]="{width: '18vw', 'border-radius': '5px', height: '50px', 'margin-bottom': '25px'}"></ngx-skeleton-loader>
+                    </div>
+                    <div style="float: right;">
+                        <ngx-skeleton-loader
+                            [theme]="{width: '8vw', 'border-radius': '15px', height: '50px', 'margin-bottom': '25px', 'margin-left':'20px', 'margin-right':'40px'}"></ngx-skeleton-loader>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <ngx-skeleton-loader
+                    [theme]="{width: '84vw', 'border-radius': '0', height: '40px', 'margin-bottom': '25px', 'margin-left':'28px'}"></ngx-skeleton-loader>
+            </div>
+            <div class="second-section-wrapper" style="margin-top: -30px;">
+                <div class="wrapper">
+                    <ngx-skeleton-loader count="1" appearance="circle"
+                        [theme]="{ width: '95%', height: '370px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                </div>
+            </div>
+        </div>
+        }
+        @else{
+        <div class="row">
+            <div class="breadcrumb nav">
+                <span class="breadcrumb-item">
+                    <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+                </span>
+                <span class="breadcrumb-item">
+                    <a class="breadcrumb-link" [routerLink]="['/bulknotificationlog']">Bulk Notification Log</a>
+                </span>
+            </div>
+
+            <diV class="col-md-12 mb-2 product-filter-wrap d-flex justify-content-end position-relative m-b20">
+                <input class="search" type="search" placeholder="  Search Keyword" [(ngModel)]="searchQuery"
+                    (input)="searchBulkNotificationData($event)" />
+                <div class="submit-btn mb-1" style="margin-left: 20px;">
+                    <button class="btn postjob-btn" (click)="onSubmit()"><i></i> Submit</button>
+                </div>
+            </diV>
+            @if(totalRecord > 0){
+            <div class="col-md-12 ">
+                <div style="overflow-x: auto;">
+                    <table class="table">
+                        <tr class="table-header">
+                            <th class="cell">#</th>
+                            <th class="cell">Batch Id</th>
+                            <th class="cell">Contact</th>
+                            <th class="cell">Created At</th>
+                            <th class="cell">Status</th>
+                            <th class="cell">Notify Type</th>
+                            <th class="cell">Updated At</th>
+                            <th class="cell">Error Message</th>
+                        </tr>
+
+                        @for(item of bulkNotificationList; track $index){
+                        <tr class="active">
+                            <td>{{($index +1)+ (currentPage -1)* itemsPerPage }}</td>
+                            <td>{{item.batch_id}}</td>
+                            <td>{{item.contact_info}}</td>
+                            <td>{{item.created_at}}</td>
+                            @if(item.status === "success"){
+                            <td><span class="status1">{{item.status}}</span></td>
+                            }
+                            @if(item.status === "failed"){
+                            <td><span class="status2">{{item.status}}</span></td>
+                            }
+                            @if(item.status === "processing"){
+                            <td><span class="status3">{{item.status}}</span></td>
+                            }
+                            <td>{{item.notify_type}}</td>
+                            <td>{{item.updated_at}}</td>
+                            <td>{{item.error_message}}</td>
+                        </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-8">
+                    <p>Showing {{startIndex2}} to {{endIndex2}} of {{filterdRecord}} entries</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="cuspagi" style="float: right;">
+                        <nav aria-label="...">
+                            <ul class="pagination">
+                                <li class="page-item {{isDisabled}}"><button class="page-link"
+                                        (click)="prevPage()">Previous</button></li>
+                                <li class="page-item active" aria-current="page"><a
+                                        class="page-link">{{currentPage}}</a></li>
+                                <li class="page-item {{isDisabled2}}"><button class="page-link text-danger"
+                                        (click)="nextPage()">Next</button></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            }@else{
+            <div class="col-md-12 pt-2">
+                <div class="empty_state rounded">
+                    <i class="fa-solid fa-face-surprise"></i>
+                    <h3 class="">No records</h3>
+                    <p>There are no records found</p>
+                </div>
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>

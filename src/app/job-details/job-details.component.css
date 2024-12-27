@@ -1,0 +1,225 @@
+.stage{
+    background-color: #F0f0f0;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+ul li {
+    padding: 0 0 15px 0;
+    list-style: none;
+}
+
+div.skills ul li{
+  background-color: #f1f1f1;
+  padding: 1px 10px;
+  border-radius: 20px;
+  margin-right: 4px;
+  font-size: 12px;
+  border: 1px solid grey;
+}
+
+.indent_status{
+  position: absolute;
+  right: 20px;
+  top: 15px;
+    /* float: right; */
+    color: #4582de;
+    background-color: #f0f0f0;
+    padding: 5px 20px;
+    /* border-radius: 25px; */
+    margin-right: 15px;
+    margin-left: 15px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.indent_status i{
+  font-size: 12px;
+}
+
+
+.client_status{
+  position: absolute;
+  right: 277px;
+  top: 15px;
+  /* float: right; */
+  color: #4582de;
+  background-color: #f0f0f0;
+  padding: 5px 20px;
+  /* border-radius: 25px; */
+  margin-left: 10px;
+  font-size: 14px;
+}
+
+
+.applied_status{
+  position: absolute;
+  right: 150px;
+  top: 15px;
+  /* float: right; */
+  color: #4582de;
+  background-color: #f0f0f0;
+  padding: 5px 20px;
+  /* border-radius: 25px; */
+  margin-left: 10px;
+  font-size: 14px;
+}
+
+.error{
+  font-size: 12px;
+  font-style: italic;
+}
+
+.tab-content {
+  padding: 1.5rem;
+  border-radius: 1px;
+  background: #FFF;
+}
+
+.nav-tabs .nav-link {
+  border: none;
+}
+.nav-tabs {
+  border: none;
+}
+
+
+
+.nav2 .nav-item2 button.active {
+  background-color: transparent;
+  color: var(--bs-danger) !important;
+}
+.nav2 .nav-item2 button.active::after {
+  content: "";
+  border-right: 4px solid var(--bs-danger);
+  height: 100%;
+  position: absolute;
+  right: -1px;
+  top: 0;
+  border-radius: 5px 0 0 5px;
+}
+
+
+
+
+
+.candidate-stage {
+  background: #f1f1f1;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-align: left;
+  display: flex;
+}
+.candidate-stage .screening-icon {
+  margin-right: 10px;
+  border-right: 1px solid #cccccc;
+  padding-right: 10px;
+}
+.candidate-stage .screening-icon img {
+  width: 40px;
+  margin-top: 0px;
+  padding: 8px;
+}
+
+
+
+
+.item {
+    width: auto;
+    height: auto;
+    margin: 10px auto;
+    border: 1px solid #eaeaea;
+    padding: 10px;
+  }
+  
+  .fb-item {
+    width: auto;
+    height: auto;
+    margin: 0 0 10px 0;
+    border: 1px solid #eaeaea;
+    padding: 10px;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+  }
+  
+  .gravatar {
+    width: 100px;
+    height: 90px;
+  }
+  .gravatar-title {
+    width: 89%;
+    padding: 10px;
+    height: 80px;
+  }
+  
+  .first-section-wrapper,
+  .second-section-wrapper {
+    width: 100%;
+    height: auto;
+    flex: 1;
+  }
+  
+  .first-section-wrapper {
+    display: inline-flex;
+  }
+  
+  .second-section-wrapper {
+    margin-top: 30px;
+  }
+  
+  .wrapper {
+    width: 100%;
+    flex: 1;
+  }
+  
+  .item-with-background {
+    background: #121212;
+    padding: 10px;
+  }
+  
+  .loader {
+    line-height: 1;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    background: rgb(239, 241, 246) no-repeat;
+    background-color: rgb(239, 241, 246);
+    line-height: 1;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .content-loaded-image {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    background-color: rgb(174, 174, 174);
+    margin: 5px;
+    border-radius: 50%;
+  }
+  
+  .gravatar-title-name {
+    margin-top: 0;
+    width: 200px;
+    border-radius: 0;
+    height: 15px;
+    margin-bottom: 15px;
+    font-size: 18px;
+  }
+  
+  .gravatar-description {
+    width: 170px;
+    border-radius: 0;
+    height: 15px;
+    font-size: 12px;
+  }  
+
+
+  .appaly_btn{
+    float: right;
+  
+    padding: 6.4px 20px;
+    border-radius: 25px;
+    margin-left: 10px;
+    font-size: 14px;
+  }

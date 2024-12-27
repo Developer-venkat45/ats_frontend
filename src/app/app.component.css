@@ -1,0 +1,22 @@
+
+::ng-deep .p-button{
+    background-color: rgb(237, 28, 36);
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+    border-radius: 26px;
+    padding: 8px 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    width: fit-content;
+    border: none;
+    margin-right: 10px;
+}
+
+::ng-deep .p-confirm-dialog-reject{
+    background-color: #f0f0f0;
+    color: #262626;
+}
+
+:ng-deep .p-button:focus {
+    outline: 0px auto -webkit-focus-ring-color;
+}

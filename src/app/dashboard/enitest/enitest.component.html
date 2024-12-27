@@ -1,0 +1,366 @@
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+              <div class="breadcrumb nav">
+                  <span class="breadcrumb-item">
+                      <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+                  </span>
+                  <span class="breadcrumb-item">
+                      <a class="breadcrumb-link" [routerLink]="['/job']">Jobs</a>
+                  </span>
+                  <span class="breadcrumb-item">
+                      <a class="breadcrumb-link" [routerLink]="['/job_details', indentId]">{{indentData?.jobTitle}}</a>
+                  </span>
+                  <span class="breadcrumb-item">
+                      <a class="breadcrumb-link" >E&I</a>
+                  </span>
+              </div>
+          </div>
+        </div>
+        @if(isAllow){
+            @if(submitButton){
+                <div class="bg-white mb-4 rounded">
+                    <div class="row p-3">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-1" tooltipPosition="top" pTooltip="Candidate Image">
+                                    <a class="text-primary" href="candidateprofile/{{myProfileData?._id}}">
+                                        <img src="https://tms.tmivirtually.com/docs/trainer/image/1683046513Trainer_IMG.jpg" style="width: 52px; height: 52px; border-radius: 100%; border: 4px solid #f0f8ff;"> 
+                                    </a>
+                                </div>
+                                <div class="col-md-8" style="margin-top: 10px;">
+                                    <h6 style="margin-left: -40px; ">
+                                        <a class="text-primary" tooltipPosition="top" pTooltip="Candidate Name" href="candidateprofile/{{myProfileData?._id}}">{{myProfileData?.name}}</a>
+                                        <br>
+                                        <span tooltipPosition="top" pTooltip="Candidate Mobile Number">{{myProfileData?.mobile}}</span>
+                                    </h6>
+                                </div>
+                                @if(apiResponse){
+                                    <div class="col-md-3">
+                                        <p class="text-black text-right mb-0"><b>Source:</b> <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg"> Gemini AI</p>
+                                        <p style="float: right;"><b>AI Score: </b><span><span class="fir-count">{{theAIscore}}</span><span class="sec-count">10</span></span></p>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        @if(apiResponse){
+                            <div class="col-md-12">
+                                <div class="can_stage rounded">
+                                    <div class="row">
+                                        <p><b>Explanation: </b> {{explanation}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div class="col-md-12 mt-3">
+                            @if(apiResponse){
+                            }@else{
+                            <p>Click on apply button to generate the profile score for this position and the explanation on the candidate suitability.</p>
+                            }
+                            @if(isLoading2){
+                                <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Processing...</span></button>
+                            }@else{
+                                <button type="button" (click)="generateScore()" class="btn postjob-btn" type="button"><i class="fa-regular fa-paper-plane"></i> {{uploadBtnText}}</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                @if(apiResponse){
+                    <div class="row">
+                        <form [formGroup]="enaditest">
+                            @if(indentData?.referrals==true){
+                                @if(loginRoleName !='Partner SPOC - Manager'){
+                                <div class="bg-white p-3 rounded mb-4">
+                                        
+                                <p class="mb-4 mt-4">Is this an Employee Referral? <input class="form-check-input" type="checkbox" (change)="onCheckBoxChange($event)"></p>
+                                        
+                                @if(employeeDetailsTab){
+                                    <h5 class="text-danger mb-3 mt-3">Employee Details:</h5>
+                                    <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Name of the Employee <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" placeholder="Enter Full Name of the Employee" formControlName="referName">
+                                                        <div class="text-danger pt-2 error" *ngIf="enaditest.controls.referName.invalid && (enaditest.controls.referName.touched || enaditest.controls.referName.dirty || isFormSubmited3)" >
+                                                            <span *ngIf="enaditest.controls.referName.errors?.['required']">* This field is required</span>
+                                                            <span *ngIf="enaditest.controls.referName.errors?.['alphabet']">Please enter only alphabets'</span>
+                                                            <span *ngIf="enaditest.controls.referName.errors?.['maxlength']">* Maximum 50 character should allowed'</span> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                            
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Email </label>
+                                                        <input type="text" class="form-control" placeholder="Enter Email" formControlName="referEmail">
+                                                        <div class="text-danger pt-1 error" *ngIf="enaditest.controls.referEmail.invalid && (enaditest.controls.referEmail.touched || enaditest.controls.referEmail.dirty || isFormSubmited3)" >
+                                                            <span *ngIf="enaditest.controls.referEmail.errors?.['emailvalidate']">Please enter valid email id'</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                            
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Mobile </label>
+                                                        <input type="text" class="form-control" placeholder="Enter Mobile Number" formControlName="referMobile" maxlength="10">
+                                                        <div class="text-danger pt-1 error" *ngIf="enaditest.controls.referMobile.invalid && (enaditest.controls.referMobile.touched || enaditest.controls.referMobile.dirty || isFormSubmited3)" >
+                                                            <span *ngIf="enaditest.controls.referMobile.errors?.['onlynumber']">Please enter valid mobile number'</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Employee ID <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" placeholder="Enter Employee ID" formControlName="referEmployeId">
+                                                        <div class="text-danger pt-1 error" *ngIf="enaditest.controls.referEmployeId.invalid && (enaditest.controls.referEmployeId.touched || enaditest.controls.referEmployeId.dirty || isFormSubmited3)" >
+                                                            <span *ngIf="enaditest.controls.referEmployeId.errors?.['required']">* This field is required</span>
+                                                            <span *ngIf="enaditest.controls.referEmployeId.errors?.['alphanumaric']">Please enter only Alphanumeric Characters'</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Employee Location <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" placeholder="Enter Employee Location" formControlName="referEmployeLocation">
+                                                        <div class="text-danger pt-1 error" *ngIf="enaditest.controls.referEmployeLocation.invalid && (enaditest.controls.referEmployeLocation.touched || enaditest.controls.referEmployeLocation.dirty || isFormSubmited3)" >
+                                                            <span *ngIf="enaditest.controls.referEmployeLocation.errors?.['required']">* This field is required</span>
+                                                            <span *ngIf="enaditest.controls.referEmployeLocation.errors?.['alphabet']">Please enter only alphabets'</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                            
+                                                <!-- <div class="col-md-2">
+                                                    <div class="submit-btn" style="margin-top: 33px;">
+                                                        @if(isLoading){
+                                                            <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Processing...</span></button>
+                                                        }@else{
+                                                            <button type="button" (click)="resumeUpload()" class="btn postjob-btn" type="button"><i class="fa-regular fa-paper-plane"></i> {{uploadBtnText}}</button>
+                                                        }
+                                                    </div>
+                                                </div> -->
+                                            </div>
+                                    </div>
+                                    }
+                                </div>
+                                }
+                            }
+                            <div class="step-form">
+                                <div class="step-boder">
+                                    
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <div class="form-heading-div" style="background-color: #cfd9e6;">
+                                                    <h4>Complete E&I (Eligibility & Interest) to apply for the job, <a href="job_details/{{indentId}}" class="text-black">{{indentData?.jobTitle}}</a></h4>
+                                                    <p class="text-black"><b>Category: </b>
+                                                        <ng-container *ngFor="let cat of selectedEandi?.category; let i = index">
+                                                            <span>{{ cat }}</span><span *ngIf="i < selectedEandi?.category.length - 1">, </span>
+                                                        </ng-container>
+                                                    </p>
+                                                </div>
+                                            </div>
+                            
+                                            <div class="question-div">
+                                                <div class="row mb-4">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group" style="margin-bottom: 0;">
+                                                            <label class="control-label">Select the job location you are applying for <span class="text-danger">*</span></label>
+                                                            <p-autoComplete 
+                                                            formControlName="uploadLocation"
+                                                            [dropdown]="true"
+                                                            [forceSelection]="true"
+                                                            [suggestions]="filteredLocation"
+                                                            (completeMethod)="search($event)"
+                                                            placeholder="Search location" 
+                                                            />
+                                                        </div>
+                                                        <div class="text-danger pt-2 error" *ngIf="enaditest.controls.uploadLocation.invalid && (enaditest.controls.uploadLocation.touched || enaditest.controls.uploadLocation.dirty || isFormSubmited3)" >
+                                                            <span *ngIf="enaditest.controls.uploadLocation.errors?.['required']">* This field is required</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+    
+                                                <div class="row" formArrayName="answers">
+                                
+                                                    <ng-container *ngFor="let question of questions.controls; let i = index" [formGroupName]="i">
+                                                    <div class="col-md-12 questionoptiondiv">
+                                                        <div class="row">
+                                                        @if(selectedEandi.questions[i]?.visibility == true){
+                                                            <div class="col-md-12 mb-3">
+                                                            <div class="question-heading rounded">
+                                                                <label class="control-label mb-0">Q. {{ question.get('question')?.value | titlecase}} @if(selectedEandi.questions[i]?.unit){ (In {{selectedEandi.questions[i]?.unit}}) } <span class="text-danger">*</span></label>
+                                                            </div>
+                                                            </div>
+                                                        }
+                                                        @if(selectedEandi.questions[i]?.fieldType == "generic question"){
+                                                            @if(selectedEandi.questions[i]?.inputType == "mcq"){
+                                                            <div class="col-md-12 mb-3">
+                                                                <div class="options-div">
+                                                                @for(option of selectedEandi.questions[i]?.options; track $index){
+                                                                    <label>
+                                                                    {{ 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[$index] }}: 
+                                                                    <input type="radio" style="cursor: pointer;" [formControlName]="'answer'" [value]="option.option"> {{ option.option }}
+                                                                    </label>
+                                                                    <br>
+                                                                }
+                                                                <div class="text-danger pt-2 error" *ngIf="question.get('answer')?.invalid && (question.get('answer')?.touched || question.get('answer')?.dirty || isFormSubmited3)">
+                                                                    <span *ngIf="question.get('answer')?.errors?.['required']">* This field is required</span>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            }
+                                                            @if(selectedEandi.questions[i]?.inputType == "msq"){
+                                                            <div class="col-md-12 mb-3">
+                                                                <div class="options-div">
+                                                                @for(option of selectedEandi.questions[i]?.options; track $index){
+                                                                    <label>
+                                                                    {{ 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[$index] }}: 
+                                                                    <input type="checkbox" style="cursor: pointer;" (change)="onCheckboxChange($event, i, option.option)"> {{ option.option }}
+                                                                    </label>
+                                                                    <br>
+                                                                }
+                                                                <div class="text-danger pt-2 error" *ngIf="question.get('answer')?.invalid && (question.get('answer')?.touched || question.get('answer')?.dirty || isFormSubmited3)">
+                                                                    <span *ngIf="question.get('answer')?.errors?.['required']">* This field is required</span>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            }
+                                                            @if(selectedEandi.questions[i]?.inputType == "nq"){
+                                                            <div class="col-md-12 mb-3">
+                                                                <div class="options-div">
+                                                                <input type="number" class="form-control" [formControlName]="'answer'" placeholder="Enter your answer">
+                                                                <div class="text-danger pt-2 error" *ngIf="question.get('answer')?.invalid && (question.get('answer')?.touched || question.get('answer')?.dirty || isFormSubmited3)">
+                                                                    <span *ngIf="question.get('answer')?.errors?.['required']">* This field is required</span>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            }
+                                                            @if(selectedEandi.questions[i]?.inputType == "ddq"){
+                                                            <div class="col-md-12 mb-3">
+                                                                <div class="options-div">
+                                                                <select class="form-control" formControlName="answer">
+                                                                    <option value="">Select Your Answer</option>
+                                                                    @for(option of selectedEandi.questions[i]?.options; track $index){
+                                                                    <option value="{{ option.option }}">{{ option.option }}</option>
+                                                                    }
+                                                                </select>
+                                                                <div class="text-danger pt-2 error" *ngIf="question.get('answer')?.invalid && (question.get('answer')?.touched || question.get('answer')?.dirty || isFormSubmited3)">
+                                                                    <span *ngIf="question.get('answer')?.errors?.['required']">* This field is required</span>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            }
+                                                            @if(selectedEandi.questions[i]?.inputType == "diq"){
+                                                            <div class="col-md-12 mb-3">
+                                                                <div class="options-div">
+                                                                <input type="date" class="form-control" placeholder="Enter your answer" [formControlName]="'answer'">
+                                                                <div class="text-danger pt-2 error" *ngIf="question.get('answer')?.invalid && (question.get('answer')?.touched || question.get('answer')?.dirty || isFormSubmited3)">
+                                                                    <span *ngIf="question.get('answer')?.errors?.['required']">* This field is required</span>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            }
+                                                        }
+    
+                                                        @if(selectedEandi.questions[i]?.fieldType == "candidate field"){
+                                                            @if(selectedEandi.questions[i]?.inputType == "skill" && selectedEandi.questions[i]?.visibility == true){
+                                                            <div class="col-md-12 mb-3">
+                                                                <div class="options-div">
+                                                                @for(option of selectedEandi.questions[i].options; track $index){
+                                                                    <label>
+                                                                    {{ 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[$index] }}: 
+                                                                    <input type="checkbox" style="cursor: pointer;" (change)="onCheckboxChange($event, i, option.option)"> {{ option.option }}
+                                                                    </label>
+                                                                    <br>
+                                                                }
+                                                                <div class="text-danger pt-2 error" *ngIf="question.get('answer')?.invalid && (question.get('answer')?.touched || question.get('answer')?.dirty || isFormSubmited3)">
+                                                                    <span *ngIf="question.get('answer')?.errors?.['required']">* This field is required</span>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            }
+                                                            @if(selectedEandi.questions[i]?.inputType == "hqs" && selectedEandi.questions[i]?.visibility == true){
+                                                            <div class="col-md-12 mb-3">
+                                                                <div class="options-div">
+                                                                @for(option of selectedEandi.questions[i]?.options; track $index){
+                                                                    <label>
+                                                                    {{ 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[$index] }}: 
+                                                                    <input type="checkbox" style="cursor: pointer;" (change)="onCheckboxChange($event, i, option.option)"> {{ option.option }}
+                                                                    </label>
+                                                                    <br>
+                                                                }
+                                                                <div class="text-danger pt-2 error" *ngIf="question.get('answer')?.invalid && (question.get('answer')?.touched || question.get('answer')?.dirty || isFormSubmited3)">
+                                                                    <span *ngIf="question.get('answer')?.errors?.['required']">* This field is required</span>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            }
+                                                        }
+                            
+                                                        </div>
+                                                    </div>
+                                                    </ng-container>
+                                
+                                                </div>
+                                            </div>
+                                        </div>
+                        
+                                        <div class="col-md-12">
+                                            <div class="question-div" style="padding: 0 30px;">
+                                                <p>{{apiMessage3}}</p>
+                                                <p class="text-danger" style="margin-left: -10px;">{{overallFormValid3}}</p>
+                                            </div>
+                                        </div>
+                        
+                                        <!-- <p>{{enaditest.value | json}}</p> -->
+                                    
+                                        <div class="row mb-3">
+                                            <div class="col-md-12" style="margin-left: 15px;">
+                                                <div class="submit-btn">
+                                                    @if(isLoading){
+                                                        <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                                                    }@else{
+                                                        <button class="btn postjob-btn" (click)="submitAssessment()"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                }
+            }
+            @else{
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div class="card" style="width: 100%;">
+                        <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;"><i class="checkmark">✓</i>
+                        </div>
+                        <h1>Profile has been submitted successfully!</h1> 
+                        <p>This profile has been submitted for the {{indentData?.jobTitle}} indent. </p>
+                        <p>Click <a [routerLink]="['/candidate_details', candidateId, indentId]"> here</a> to view your candidate details.</p>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+        }@else{
+          <div class="row">
+            <div class="alert alert-danger" role="alert">
+              <p class="mb-0"><i class="fa-solid fa-triangle-exclamation"></i> Please complete your <span><a routerLink="/myaccount" class="text-primary">profile</a></span> to apply for this Job.</p>
+              <!-- @for(message of invalidField; track $index){
+                <p>{{message}}</p>
+              } -->
+            </div>
+          </div>
+        }
+      
+    </div>
+  </div>
+
+  <p-toast />

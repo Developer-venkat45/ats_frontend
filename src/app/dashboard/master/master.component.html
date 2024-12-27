@@ -1,0 +1,109 @@
+<p-toast></p-toast>
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="row mb-2">
+                    <div class=" container col-md-12">
+                        <div class="breadcrumb nav" style="display: flex;align-items: center;height: 35px;position: relative;">
+                            <span class="breadcrumb-item">
+                                <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i>
+                                    Home</a>
+                            </span>
+                            <span class="breadcrumb-item">
+                                <a class="breadcrumb-link" [routerLink]="['/master']">Master</a>
+                            </span>
+                            <span  style="margin-left:20px;cursor:pointer;color:white;position: absolute;right: 0;top:0;" >
+                                <a class="postjob-btn" (click)="addFieldDialog()"><i class="fa-regular fa-plus"></i> Add new master</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <p-table #dt2 [value]="masterlist" dataKey="id"  [loading]="loading" [rows]="10"
+                    [tableStyle]="{ 'min-width': '50rem' }"
+                    [globalFilterFields]="['type']">
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <p-iconField iconPosition="left" class="ml-auto">
+                                <p-inputIcon><i class="pi pi-search"></i></p-inputIcon>
+                                <input pInputText type="text"
+                                    (input)="dt2.filterGlobal($any($event).target.value, 'contains')"
+                                    placeholder="Search type" />
+                            </p-iconField>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>#</th>
+                            <th pSortableColumn="type" style="width:20%"> Type <p-sortIcon field="subject" /></th>
+                            <th>Count</th>
+                            <th>isEditable</th>
+                            <th>Action</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-user let-i="rowIndex">
+                        <tr>
+                            <td>{{i + 1}}</td>
+                            <td>{{ user.type }}</td>
+                            <td>{{ user.data?.length ?? 0 }}</td>
+                            <td *ngIf="user.isEditable">
+                                <i class="fas fa-check text-success"></i>
+                            </td>
+                            <td *ngIf="!user.isEditable">
+                                <i class="fas fa-times text-danger"></i>
+                            </td>
+                            <td>
+                                <a *ngIf="user.isEditable" class="" (click)="goToMasterData(user.type,user.data)" style="cursor: pointer;"><i
+                                        class="fa fa-edit text-info"></i></a>
+                                <a *ngIf="!user.isEditable" ><i
+                                        class="fa fa-edit text-secondary"></i></a>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+</div>
+</div>
+
+<div *ngIf="isAddFieldDialogActive" style="margin:0;padding:0">
+    <p-dialog header={{addFieldDialogHeader}} [modal]="true" [(visible)]="addDialogVisible" [style]="{ width: '50rem' }"
+        [maximizable]="true" [draggable]="false">
+            <label for="type" class="font-semibold w-6rem">Type</label>
+            <input pInputText id="type" class="flex-auto"
+                autocomplete="off" [(ngModel)]="type" [value]="type" style="margin-bottom: 10px;" placeholder="Enter a type"/>
+            <label for="data" class="font-semibold w-6rem">Data</label>
+            @if(values.length>0){
+            <ul style="display:flex;flex-wrap: wrap;margin-bottom:10px;">
+                @for(value of values;track value;let ind=$index){
+                <li style="list-style: none;color: rgb(60, 60, 60);font-size: 14px;background-color: rgb(229, 231, 235);border-radius: 5px;padding:2px 8px;margin:2px 5px;">
+                   <span>{{value}}</span>
+                   <span><i class="fas fa-times " style="color: rgb(60, 60, 60);cursor: pointer;padding-left: 4px;display: inline-block;font-size: 10px;" (click)="removeDataVal(ind)"></i></span>
+                </li>
+                }
+            </ul>
+            }
+            <div style="display: flex;justify-content: center;align-items: flex-start;">
+                        <p-chips [(ngModel)]="values" id="data" placeholder="Enter data" ></p-chips>
+                        <p-button  [style]="{ 'margin-left': '2px' }"  label="Add" (click)="addMasterData()"/>
+            </div>
+            <p for="isEditable"  style="margin-bottom:0;" id="label">Editable</p>
+            <label style="display:inline-block;">
+                <input type="radio" name="isEditable" [(ngModel)]="isEditable" value="yes" >
+                Yes
+            </label>
+            <label style="margin-left:10px;display:inline-block;">
+                <input type="radio" name="isEditable" [(ngModel)]="isEditable" value="no" checked>
+                No
+            </label>
+            @if(this.err){
+            @for(error of this.repeatedValues;track error;let ind=$index){
+            <div style="font-size: 14px;font-style: italic;" class="text-danger">{{error}}</div>
+            }
+            }
+            <div class="flex justify-content-end gap-2" style="padding-top: 15px;">
+                <p-button label="Submit" (click)="checkErr()" />
+            </div>
+    </p-dialog>
+</div>
+

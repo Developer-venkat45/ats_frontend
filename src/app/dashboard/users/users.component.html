@@ -1,0 +1,633 @@
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+
+
+                <div class="row mb-2">
+                    <div class=" container col-md-6">
+                        <div class="breadcrumb nav">
+                            <span class="breadcrumb-item">
+                                <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+                            </span>
+                            <span class="breadcrumb-item">
+                                <a class="breadcrumb-link" [routerLink]="['/users']">Dashboard Users</a>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        @if(isShown){
+                            <div class="submit-btn" style="float: right;">
+                                <button class="btn postjob-btn" (click)="addUserDiv()"><i class="fa-regular fa-plus"></i> Add user</button>
+                            </div>
+                        }
+                        <div class="submit-btn" style="float: right; margin-right: 15px;">
+                            <button class="btn postjob-btn" (click)="allRoles()"><i class="fa-regular fa-user"></i> Roles</button>
+                        </div>
+
+                        <!-- <div class="submit-btn" style="float: right; margin-right: 15px;">
+                            <button class="btn postjob-btn" (click)="addNewRole()"><i class="fa-regular fa-user"></i> Add New Roles</button>
+                        </div> -->
+                    </div>
+                </div>
+
+                <p-table #dt2 [value]="profileList"
+                dataKey="id"
+                [paginator]="true"
+                [loading]="loading"
+                [rows]="10"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                [rowsPerPageOptions]="[10, 25, 50, 100, 500]"
+                [globalFilterFields]="['name', 'email', 'mobile', 'role']"
+                >
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <p-iconField iconPosition="left" class="ml-auto">
+                                <p-inputIcon><i class="pi pi-search"></i></p-inputIcon>
+                                <input
+                                    pInputText
+                                    type="text"
+                                    (input)="dt2.filterGlobal($any($event).target.value, 'contains')"
+                                    placeholder="Search keyword" />
+                            </p-iconField>
+                        </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>#</th>
+                            <th pSortableColumn="name" style="width:20%"> Name <p-sortIcon field="name" /></th>
+                            <th pSortableColumn="username" style="width:20%"> Username <p-sortIcon field="username" /></th>
+                            <th pSortableColumn="email" style="width:20%"> Email <p-sortIcon field="email" /></th>
+                            <th pSortableColumn="mobile" style="width:20%"> Mobile <p-sortIcon field="mobile" /></th>
+                            <th pSortableColumn="role" style="width:20%"> Role <p-sortIcon field="role" /></th>
+                            <th>Action</th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-user let-i="rowIndex">
+                        <tr>
+                            <td>{{i+1}}</td>
+                            <td class="text-primary" (click)="showUserDetails(user)">{{ user.name }}</td>
+                            <td>{{ user.username}}</td>
+                            <td>{{ user.email}}</td>
+                            <td>{{ user.mobile }}</td>
+                            <td>{{ user.role_text }}</td>
+                            <td>
+                                <a class="" (click)="showEditModal(user)" style="cursor: pointer;"><i class="fa fa-edit text-info"></i></a> &nbsp;
+                                <i [ngClass]="{'fa-eye': user.status === 1, 'fa-eye-slash': user.status === 0}" class="fa" (click)="confirmStatusChange(user)"></i>
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="emptymessage">
+                        <tr><td colspan="7" class="text-center">No record found.</td></tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-toast />
+
+<p-dialog header="Edit User" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}">
+    <form [formGroup]="editUserAccount">
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Role <span class="text-danger">*</span></label>
+                    <select class="form-control" formControlName="role_id" (change)="onUserRoleChnage($event)">
+                        <option selected="selected" value="">Select Role</option>
+                        <option value="1">Super Admin</option>
+                        <option value="2">CRCM</option>
+                        <option value="3">BU Head</option>
+                        <option value="4">MIS Admin</option>
+                        <option value="5">Central Recruiter</option>
+                        <option value="6">Project Manager</option>
+                        <option value="7">Recruiter</option>
+                        <option value="8">Client SPOC</option>
+                    </select>
+                    <div class="text-danger pt-2 error" *ngIf="editUserAccount.controls.role_id.invalid && (editUserAccount.controls.role_id.touched || editUserAccount.controls.role_id.dirty || isFormSubmited4)" >
+                        <span *ngIf="editUserAccount.controls.role_id.errors?.['required']">* This field is required</span>
+                    </div>
+                </div>
+            </div>
+
+
+
+            @if(showClient){
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Client</label>
+                        <select class="form-control" formControlName="client_id" (change)="getEditClientDetails($event)">
+                            <option selected="selected" value="">Select Client</option>
+                            @for(item of clientList; track $index ){
+                                <option value="{{item._id}}">{{item.name}}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            }
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Full Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter full name" formControlName="name">
+                    <div class="text-danger pt-2 error" *ngIf="editUserAccount.controls.name.invalid && (editUserAccount.controls.name.touched || editUserAccount.controls.name.dirty || isFormSubmited4)" >
+                        <span *ngIf="editUserAccount.controls.name.errors?.['required']">* This field is required</span>
+                        <span *ngIf="editUserAccount.controls.name.errors?.['alphaSpace'] &&  !editUserAccount.controls.name.errors?.['required']">Please enter only alphabets'</span>
+                        <span *ngIf="editUserAccount.controls.name.errors?.['maxlength']">* Maximum 50 character should allowed'</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Mobile <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter mobile number" formControlName="mobile">
+                    <div class="text-danger pt-2 error" *ngIf="editUserAccount.controls.mobile.invalid && (editUserAccount.controls.mobile.touched || editUserAccount.controls.mobile.dirty || isFormSubmited4)" >
+                        <span *ngIf="editUserAccount.controls.mobile.errors?.['required']">* This field is required</span>
+                        <span *ngIf="editUserAccount.controls.mobile.errors?.['onlynumber'] &&  !editUserAccount.controls.mobile.errors?.['required']">Please enter valid mobile number'</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Company</label>
+                    <input type="text" class="form-control" placeholder=" Enter Company Name" formControlName="company">
+                    <div class="text-danger pt-2 error" *ngIf="editUserAccount.controls.company.invalid && (editUserAccount.controls.company.touched || editUserAccount.controls.company.dirty || isFormSubmited2)" >
+                        <span *ngIf="editUserAccount.controls.company.errors?.['maxlength']">* Maximum 50 character should allowed'</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Department</label>
+                    <input type="text" class="form-control" placeholder="Enter department" formControlName="department">
+                    <div class="text-danger pt-2 error" *ngIf="editUserAccount.controls.department.invalid && (editUserAccount.controls.department.touched || editUserAccount.controls.department.dirty || isFormSubmited2)" >
+                        <span *ngIf="editUserAccount.controls.department.errors?.['maxlength']">* Maximum 50 character should allowed'</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Designation <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter designation" formControlName="designation">
+                    <div class="text-danger pt-2 error" *ngIf="editUserAccount.controls.designation.invalid && (editUserAccount.controls.designation.touched || editUserAccount.controls.designation.dirty || isFormSubmited4)" >
+                        <span *ngIf="editUserAccount.controls.designation.errors?.['required']">* This field is required</span>
+                        <span *ngIf="editUserAccount.controls.designation.errors?.['pattern'] &&  !editUserAccount.controls.designation.errors?.['required']" class="text-danger">Allowed: alphabets, spaces, '-', '(', ')'</span>
+                        <span *ngIf="editUserAccount.controls.designation.errors?.['maxlength']">* Maximum 50 character should allowed'</span>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <label class="form-check-label">Gender</label>
+            <div class="col-md-6">
+                <div class="form-check form-check-inline">
+                    <input name="collapsible-address-type" class="form-check-input" type="radio" value="Male" name="gender" formControlName="gender">
+                    <label class="form-check-label" for="collapsible-address-type-home">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input name="collapsible-address-type" class="form-check-input" type="radio" value="Female" name="gender" formControlName="gender">
+                    <label class="form-check-label" for="collapsible-address-type-office"> Female </label>
+                </div>
+            </div>
+
+        </div>
+
+        <hr class="hr"/>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Zone <span class="text-danger">*</span></label>
+                    <select class="form-control" formControlName="zone" (change)="getStateOnZoneChnage($event)">
+                        <option selected="selected" value="">Select Zone</option>
+                        <option value="East">East</option>
+                        <option value="West">West</option>
+                        <option value="North">North</option>
+                        <option value="South">South</option>
+                    </select>
+                    <div class="text-danger pt-2 error" *ngIf="editUserAccount.controls.zone.invalid && (editUserAccount.controls.zone.touched || editUserAccount.controls.zone.dirty || isFormSubmited4)" >
+                        <span *ngIf="editUserAccount.controls.zone.errors?.['required']">* This field is required</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">State <span class="text-danger">*</span></label>
+                    <select class="form-control" formControlName="state" (change)="getCityOnStateChnage($event)">
+                        <option value="">Select State</option>
+                        @for(state of stateData; track $index){
+                            <option value="{{state.name}}">{{state.name}}</option>
+                        }
+                    </select>
+                    <div class="text-danger pt-2 error" *ngIf="editUserAccount.controls.state.invalid && (editUserAccount.controls.state.touched || editUserAccount.controls.state.dirty || isFormSubmited4)" >
+                        <span *ngIf="editUserAccount.controls.state.errors?.['required']">* This field is required</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">City <span class="text-danger">*</span></label>
+                    <select class="form-control" formControlName="city">
+                        <option value="">Select City</option>
+                        @for(city of cityData; track $index){
+                            <option value="{{city.name}}">{{city.name}}</option>
+                        }
+                    </select>
+                    <div class="text-danger pt-2 error" *ngIf="editUserAccount.controls.city.invalid && (editUserAccount.controls.city.touched || editUserAccount.controls.city.dirty || isFormSubmited4)" >
+                        <span *ngIf="editUserAccount.controls.city.errors?.['required']">* This field is required</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Pincode <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter Pincode" formControlName="pincode">
+                    <div class="text-danger pt-2 error" *ngIf="editUserAccount.controls.pincode.invalid && (editUserAccount.controls.pincode.touched || editUserAccount.controls.pincode.dirty || isFormSubmited4)" >
+                        <span *ngIf="editUserAccount.controls.pincode.errors?.['required']">* This field is required</span>
+                        <span *ngIf="editUserAccount.controls.pincode.errors?.['pattern'] &&  !editUserAccount.controls.pincode.errors?.['required']">Please enter valid pincode'</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Address</label>
+                    <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter your full address" formControlName="address"></textarea>
+                </div>
+            </div>
+
+            <!-- <input type="text" formControlName="updateUserId"> -->
+
+        </div>
+        <!-- <p>{{editUserAccount.valid | json}}</p>
+        <p>{{editUserAccount.value | json}}</p> -->
+        <p class="text-danger">{{overallFormValid4}}</p>
+        <p class="text-info">{{apiMessage4}}</p>
+        <div class="row">
+            <div class="col-md-12">
+                <p id="message"></p>
+                <div class="submit-btn">
+                    @if(isLoading){
+                        <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                    }@else{
+                        <button class="btn postjob-btn" type="button" (click)="updateUser();"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </form>
+</p-dialog>
+
+
+<p-dialog header="User Details" [(visible)]="displayModalUser" [modal]="true" [style]="{width: '50vw'}">
+
+    <div class="card card-action mb-4">
+        <div class="card-body">
+            <div class="d-flex align-items-start align-items-sm-center gap-4">
+
+                @if(userDetailsData?.image != null && userDetailsData?.image !=''){
+                    <img src="{{baseAPIURL}}{{userDetailsData?.image}}" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar">
+                }@else{
+                    <img src="../../../assets/images/user.jpg" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar">
+                }
+
+            </div>
+
+            <div class="row">
+                <div class="col-xl-7 col-12">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Name:</dt>
+                    <dd class="col-sm-8">{{userDetailsData?.name}}</dd>
+
+                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Username:</dt>
+                    <dd class="col-sm-8">{{userDetailsData?.username}}</dd>
+
+                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Email:</dt>
+                    <dd class="col-sm-8">{{userDetailsData?.email}}</dd>
+
+                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Mobile:</dt>
+                    <dd class="col-sm-8">{{userDetailsData?.mobile}}</dd>
+
+                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Role:</dt>
+                    <dd class="col-sm-8">{{userDetailsData?.role_text}}</dd>
+                </dl>
+                </div>
+                <div class="col-xl-5 col-12">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Company:</dt>
+                    <dd class="col-sm-8">{{userDetailsData?.company}}</dd>
+
+                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Department:</dt>
+                    <dd class="col-sm-8">{{userDetailsData?.department}}</dd>
+
+                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Designation:</dt>
+                    <dd class="col-sm-8">{{userDetailsData?.designation}}</dd>
+
+                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Gender:</dt>
+                    <dd class="col-sm-8">{{userDetailsData?.gender}}</dd>
+                </dl>
+                </div>
+            </div>
+
+            <hr class="hr">
+            <div class="row">
+                <div class="col-xl-6 col-12">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">State:</dt>
+                    <dd class="col-sm-8">{{userDetailsData?.state}}</dd>
+
+                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">City:</dt>
+                    <dd class="col-sm-8">{{userDetailsData?.city}}</dd>
+
+                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Pincode:</dt>
+                    <dd class="col-sm-8">{{userDetailsData?.pincode}}</dd>
+
+                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Address:</dt>
+                    <dd class="col-sm-8">{{userDetailsData?.address}}</dd>
+
+                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Zone:</dt>
+                    <dd class="col-sm-8">{{userDetailsData?.zone}}</dd>
+                </dl>
+                </div>
+                <div class="col-xl-6 col-12">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Status:</dt>
+                    <dd class="col-sm-8">{{ userDetailsData?.status == 1 ? 'Active' : 'In Active' }}</dd>
+
+                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Last Login Time:</dt>
+                    <dd class="col-sm-8">{{userDetailsData?.last_login}}</dd>
+
+                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Last Login Ip:</dt>
+                    <dd class="col-sm-8">{{userDetailsData?.last_login_ip}}</dd>
+
+                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Failed Login Count:</dt>
+                    <dd class="col-sm-8">{{userDetailsData?.failed_login_count}}</dd>
+                </dl>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</p-dialog>
+
+
+<p-dialog header="Add User" [(visible)]="displayModalAdd" [modal]="true" [style]="{width: '50vw'}">
+    <form [formGroup]="addNewUser">
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Role <span class="text-danger">*</span></label>
+                    <select class="form-control" formControlName="role_id" (change)="onRoleChnage($event)">
+                        <option selected value="">Select Role</option>
+                        @if(isOption){
+                            <option value="1">Super Admin</option>
+                            <option value="2">CRCM</option>
+                            <option value="3">BU Head</option>
+                        }
+                        @if(isOption3){
+                            <option value="4">MIS Admin</option>
+                        }
+                        @if(isOption){
+                            <option value="5">Central Recruiter</option>
+                        }
+                        @if(isOption3){
+                            <option value="6">Project Manager</option>
+                        }
+                        @if(isOption || isOption2){
+                            <option value="7">Recruiter</option>
+                        }
+                        <option value="8">Client SPOC</option>
+                        <option value="10">Partner Admin - Internal</option>
+                        <option value="11">Partner SPOC - Recruiter</option>
+                        <option value="12">Partner SPOC - Manager</option>
+                        <option value="13">Finance Admin</option>
+                    </select>
+                    <div class="text-danger pt-2 error" *ngIf="addNewUser.controls.role_id.invalid && (addNewUser.controls.role_id.touched || addNewUser.controls.role_id.dirty || isFormSubmited2)" >
+                        <span *ngIf="addNewUser.controls.role_id.errors?.['required']">* This field is required</span>
+                    </div>
+                </div>
+            </div>
+
+            @if(showPartner){
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Partner</label>
+                        <select class="form-control" formControlName="partner_id" (change)="getPartnerDetails($event)">
+                            <option selected="selected" value="">Select Partner</option>
+                            @for(item of partnerList; track $index ){
+                                <option value="{{item._id}}">{{item.vendorName}}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            }
+
+
+            @if(showClient){
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Client</label>
+                        <select class="form-control" formControlName="client_id" (change)="getClientDetails($event)">
+                            <option selected="selected" value="">Select Client</option>
+                            @for(item of clientList; track $index ){
+                                <option value="{{item._id}}">{{item.name}}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            }
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Full Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter Full Name" formControlName="name">
+                    <div class="text-danger pt-2 error" *ngIf="addNewUser.controls.name.invalid && (addNewUser.controls.name.touched || addNewUser.controls.name.dirty || isFormSubmited2)" >
+                        <span *ngIf="addNewUser.controls.name.errors?.['required']">* This field is required</span>
+                        <span *ngIf="addNewUser.controls.name.errors?.['alphaSpace'] && !addNewUser.controls.name.errors?.['required']">Please enter only alphabets'</span>
+                        <span *ngIf="addNewUser.controls.name.errors?.['maxlength']">* Maximum 150 character should allowed'</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Username <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter Username" formControlName="username">
+                    <div class="text-danger pt-2 error" *ngIf="addNewUser.controls.username.invalid && (addNewUser.controls.username.touched || addNewUser.controls.username.dirty || isFormSubmited2)" >
+                        <span *ngIf="addNewUser.controls.username.errors?.['required']">* This field is required</span>
+                        <span *ngIf="addNewUser.controls.username.errors?.['alphanumaric'] &&  !addNewUser.controls.username.errors?.['required']">Please enter Alphanumeric values'</span>
+                        <span *ngIf="addNewUser.controls.username.errors?.['maxlength']">* Maximum 50 character should allowed</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Email <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter Email Id" formControlName="email" >
+                    <div class="text-danger pt-2 error" *ngIf="addNewUser.controls.email.invalid && (addNewUser.controls.email.touched || addNewUser.controls.email.dirty || isFormSubmited2)" >
+                        <span *ngIf="addNewUser.controls.email.errors?.['required']">* This field is required</span>
+                        <span *ngIf="addNewUser.controls.email.errors?.['emailvalidate'] &&  !addNewUser.controls.email.errors?.['required']">Please enter valid email id'</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Mobile <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter Mobile Number" formControlName="mobile" maxLength="10">
+                    <div class="text-danger pt-2 error" *ngIf="addNewUser.controls.mobile.invalid && (addNewUser.controls.mobile.touched || addNewUser.controls.mobile.dirty || isFormSubmited2)" >
+                        <span *ngIf="addNewUser.controls.mobile.errors?.['required']">* This field is required</span>
+                        <span *ngIf="addNewUser.controls.mobile.errors?.['onlynumber'] &&  !addNewUser.controls.mobile.errors?.['required']">Please enter valid mobile number'</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Company</label>
+                    <input type="text" class="form-control" placeholder="Enter Company Name" formControlName="company">
+                    <div class="text-danger pt-2 error" *ngIf="addNewUser.controls.company.invalid && (addNewUser.controls.company.touched || addNewUser.controls.company.dirty || isFormSubmited2)" >
+                        <span *ngIf="addNewUser.controls.company.errors?.['maxlength']">* Maximum 150 character should be allowed'</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Department</label>
+                    <input type="text" class="form-control" placeholder="Enter Department" formControlName="department">
+                    <div class="text-danger pt-2 error" *ngIf="addNewUser.controls.department.invalid && (addNewUser.controls.department.touched || addNewUser.controls.department.dirty || isFormSubmited2)" >
+                        <span *ngIf="addNewUser.controls.department.errors?.['maxlength']">* Maximum 150 character should be allowed'</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Designation <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter Designation" formControlName="designation">
+                    <div class="text-danger pt-2 error" *ngIf="addNewUser.controls.designation.invalid && (addNewUser.controls.designation.touched || addNewUser.controls.designation.dirty || isFormSubmited2)" >
+                        <span *ngIf="addNewUser.controls.designation.errors?.['required']">* This field is required</span>
+                        <span *ngIf="addNewUser.controls.designation.errors?.['maxlength']">* Maximum 150 character should be allowed'</span>
+                    </div>
+                </div>
+            </div>
+
+            <label class="form-check-label">Gender</label>
+            <div class="col-md-6">
+                <div class="form-check form-check-inline">
+                    <input name="collapsible-address-type" class="form-check-input" type="radio" value="Male" name="gender" checked="" formControlName="gender">
+                    <label class="form-check-label" for="collapsible-address-type-home">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input name="collapsible-address-type" class="form-check-input" type="radio" value="Female" name="gender" formControlName="gender">
+                    <label class="form-check-label" for="collapsible-address-type-office"> Female </label>
+                </div>
+            </div>
+        </div>
+
+        <hr class="hr"/>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Zone <span class="text-danger">*</span></label>
+                    <select class="form-control" formControlName="zone" (change)="getStateOnZoneChnage($event)">
+                        <option value="">Select Zone</option>
+                        <option value="East">East</option>
+                        <option value="West">West</option>
+                        <option value="North">North</option>
+                        <option value="South">South</option>
+                    </select>
+                    <div class="text-danger pt-2 error" *ngIf="addNewUser.controls.zone.invalid && (addNewUser.controls.zone.touched || addNewUser.controls.zone.dirty || isFormSubmited2)" >
+                        <span *ngIf="addNewUser.controls.zone.errors?.['required']">* This field is required</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">State <span class="text-danger">*</span></label>
+                    <select class="form-control" formControlName="state" (change)="getCityOnStateChnage($event)">
+                        <option value="">Select State</option>
+                        @for(state of stateData; track $index){
+                            <option value="{{state.name}}">{{state.name}}</option>
+                        }
+                    </select>
+                    <div class="text-danger pt-2 error" *ngIf="addNewUser.controls.state.invalid && (addNewUser.controls.state.touched || addNewUser.controls.state.dirty || isFormSubmited2)" >
+                        <span *ngIf="addNewUser.controls.state.errors?.['required']">* This field is required</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">City <span class="text-danger">*</span></label>
+                    <select class="form-control" formControlName="city">
+                        <option value="">Select City</option>
+                        @for(city of cityData; track $index){
+                            <option value="{{city.name}}">{{city.name}}</option>
+                        }
+                    </select>
+                    <div class="text-danger pt-2 error" *ngIf="addNewUser.controls.city.invalid && (addNewUser.controls.city.touched || addNewUser.controls.city.dirty || isFormSubmited2)" >
+                        <span *ngIf="addNewUser.controls.city.errors?.['required']">* This field is required</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Pincode <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter Pincode" formControlName="pincode" maxlength="6"> 
+                    <div class="text-danger pt-2 error" *ngIf="addNewUser.controls.pincode.invalid && (addNewUser.controls.pincode.touched || addNewUser.controls.pincode.dirty || isFormSubmited2)" >
+                        <span *ngIf="addNewUser.controls.pincode.errors?.['required']">* This field is required</span>
+                        <span *ngIf="addNewUser.controls.pincode.errors?.['pattern'] &&  !addNewUser.controls.pincode.errors?.['required']">Please enter valid pincode'</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Address</label>
+                    <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter your full address" formControlName="address"></textarea>
+                    <span *ngIf="addNewUser.controls.address.errors?.['maxlength']" class="text-danger">Maximum 500 character should allowed'</span>
+
+                </div>
+            </div>
+        </div>
+        <!-- {{addNewUser.value | json}} -->
+        <p class="text-danger">{{overallFormValid2}}</p>
+        <p class="text-info">{{apiMessage2}}</p>
+        <div class="row">
+            <div class="col-md-12">
+                <p id="message"></p>
+                <div class="submit-btn">
+                    @if(isLoading){
+                        <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                    }@else{
+                        <button type="button" (click)="insertUser();" class="btn postjob-btn" type="button"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </form>
+</p-dialog>
+
+
+
+
+<!-- Add New Roles -->
+<p-dialog header="All Users Roles" [(visible)]="displayModalRole" [modal]="true" [style]="{width: '50vw'}">
+    <div class="card flex justify-content-center custom-table">
+        <p-organizationChart [value]="roleMaster" class="custom-tdd" />
+    </div>
+</p-dialog>

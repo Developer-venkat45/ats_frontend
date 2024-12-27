@@ -1,0 +1,138 @@
+<section class="section p-t60 mt-5 p-b60 content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Add Form</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="text" [(ngModel)]="extraField" [ngModelOptions]="{ standalone: true }" class="form-control" placeholder="Form Name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 position-relative" >
+                                <input 
+                                  type="text" 
+                                  [value]="dbTable()" 
+                                  (input)="updateDbTableFromInput($event)"
+                                  [(ngModel)]="db_table" [ngModelOptions]="{ standalone: true }"
+                                  class="form-control" 
+                                  placeholder="Enter DB table name" 
+                                  (mousedown)="dbclick()"
+                                  (focus)="toggleDropdown(true)"
+                                  (document:click)="onDocumentClick($event)"
+                                  required>
+                                <div class="dropdown-menu" style="display: block;" *ngIf="dropdownOpen">
+                                  @for (option of filteredOptions(); track $index) {
+                                    <a class="dropdown-item" (mousedown)="selectOption(option)">{{ option }}</a>
+                                  }
+                                </div>
+                              </div>
+                              
+                              <div class="col-md-6 position-relative" >
+                                <input 
+                                  type="text" 
+                                  [value]="dbTable2()" 
+                                  (input)="updateDbTableFromInput2($event)"
+                                  [(ngModel)]="db_category" [ngModelOptions]="{ standalone: true }"
+                                  class="form-control" 
+                                  placeholder="Enter Category optional" 
+                                  (mousedown)="catclick()"
+                                  (focus)="toggleDropdown2(true)"
+                                  required>
+                                <div class="dropdown-menu" style="display: block;" *ngIf="dropdownOpen2">
+                                  @for (option of filteredOptions2(); track $index) {
+                                    <a class="dropdown-item" (mousedown)="selectOption2(option)">{{ option }}</a>
+                                  }
+                                </div>
+                              </div>
+                              
+                            <!-- <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="text" [(ngModel)]="db_table" [ngModelOptions]="{ standalone: true }" class="form-control" placeholder="Enter DB table name" required>
+                                </div>
+                            </div> -->
+                        </div>
+                        <hr class="hr"/>
+                        <div class="row mt-4">
+                            @for (input of inputs; track $index) {
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="text" [(ngModel)]="input.field1" [ngModelOptions]="{ standalone: true }" placeholder="label name" class="form-control" required>
+                                    </div>
+                                </div>
+
+                                @if (input.field3 !== 'radio') {
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="text" [(ngModel)]="input.field2" [ngModelOptions]="{ standalone: true }" placeholder="Placeholder Text" class="form-control" required>
+                                        </div>
+                                    </div>
+                                }
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <select class="form-control" [(ngModel)]="input.field3" [ngModelOptions]="{ standalone: true }" (change)="onField3Change($index)">
+                                            <option value="" disabled selected>Select field type</option>
+                                            <option value="text">text</option>
+                                            <option value="number">number</option>
+                                            <option value="options">select</option>
+                                            <option value="multi_select">multi select</option>
+                                            <option value="file">file</option>
+                                            <option value="button">Button</option>
+                                            <option value="radio">radio</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                @if (input.field3 === 'options' || input.field3 === 'multi_select') {
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <select class="form-control" [(ngModel)]="input.subOptions" [ngModelOptions]="{ standalone: true }">
+                                                <option value="" disabled selected>Select sub option</option>
+                                                @for (opt of masters; track $index) {
+                                                    <option [value]="opt.type">{{opt.type}}</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (input.field3 === 'radio') {
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @for (label of input.radioLabels; track $index) {
+                                                <input type="text" class="form-control mb-2" [(ngModel)]="label.value" placeholder="Label">
+                                            }
+                                            <button type="button" class="btn btn-secondary" (click)="addRadioLabel($index)">Add Label</button>
+                                        </div>
+                                    </div>
+                                }
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>
+                                            <input type="checkbox" [(ngModel)]="input.required" [ngModelOptions]="{ standalone: true }">
+                                            Required
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="submit-btn">
+                                    <button class="postjob-btn" type="button" (click)="removeRow($index)">X</button>
+                                </div>
+                            } @empty {
+                                <div>No inputs available.</div>
+                            }
+                        </div>
+                    </div>
+                    <button (click)="addRow()">Add Row</button>
+                    <button (click)="submit()">Submit All</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

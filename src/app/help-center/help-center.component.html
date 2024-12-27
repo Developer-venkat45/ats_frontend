@@ -1,0 +1,50 @@
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="step-form rounded">
+                <div class="row">
+                    <h5 class="text-danger py-3 background" (click)="onShowClick(0)">
+                        How to Login & Forgot Password. 
+                        @if(currentItem == 0){<i class="fa-solid fa-play"></i>}
+                    </h5>
+                </div>
+                <hr class="hr"/>
+
+                <div class="row">
+                    <h5 class="text-danger py-3 background" (click)="onShowClick(1)">
+                        How to View the Jobs & Filter the required Job.
+                        @if(currentItem == 1){<i class="fa-solid fa-play"></i>}</h5>
+                </div>
+                <hr class="hr"/>
+
+                <div class="row">
+                    <h5 class="text-danger py-3 background" (click)="onShowClick(2)">
+                        How to upload candidates for a job.
+                        @if(currentItem == 2){<i class="fa-solid fa-play"></i>}</h5>
+                </div>
+                <hr class="hr"/>
+
+                <div class="row">
+                    <h5 class="text-danger py-3 background" (click)="onShowClick(3)">
+                        How to Change the Status of the Candidate for the Job.
+                        @if(currentItem == 3){<i class="fa-solid fa-play"></i>}</h5>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-md-9">
+            <div class="step-form rounded">
+                <div class="row">
+                
+                    <h5 class="text-danger py-2">{{activeTitle}}</h5>
+                    <div style="max-width: 60rem;">
+                        <video src="{{activeLink}}" type="vedio/mp4" class="card-img-top " controls></video>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+

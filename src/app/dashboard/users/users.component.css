@@ -1,0 +1,39 @@
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* .form-control {
+    width: 100%;
+    height: 50px;
+    padding: 15px;
+    border: none;
+    background-color: #f0f6fe;
+    border-radius: 10px;
+} */
+
+
+
+::ng-deep .p-organizationchart-table td {
+    border-color: #cccccc;
+    border-style: revert-layer;
+    border-width: 1px;
+  }
+
+
+  ::ng-deep .p-datatable-header{
+    text-align: right;
+  }
+  
+.checkbox_styles{
+  width: 65%;
+  display: flex;
+  justify-content: space-between;
+}
+.validationMessage{
+  font-size: 12px;
+}
+.error{
+  font-size: 12px;
+  font-style: italic;
+}

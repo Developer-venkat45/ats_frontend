@@ -1,0 +1,320 @@
+
+
+
+<!-- CONTENT START -->
+<div class="page-content">
+    <div class="section-full site-bg-white">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-3 col-lg-2 col-md-3 tmi-log-reg-media-wrap-custom">
+                    <div class="tmi-log-reg-head mb-4">
+                        <a href="/">
+                            <div class="tmi-log-reg-logo">
+                                <img src="https://tminetwork.com/wp-content/themes/tminetwork-theme/assets/images/TMI_Network.png" style="width: 120px; height: auto; margin-bottom: 50px;">
+                                <span class="log-reg-form-title">Register as a Partner</span>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="tmi-forgot-wrap">
+                                    <div class="form-group mb-3">
+                                        <p>Already have an account? <a href="login" class="site-text-primary">Login</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-9 col-lg-10 col-md-9 tmi-log-reg-media-wrap-right">
+                    <div class="tmi-log-reg-form-wrap tmi-log-reg-media" style="padding: 0;">
+                        <div class="tmi-log-reg-inner" style="padding: 10px 0;">
+                            <div class="step-form" style="border: 0;">
+                                <form [formGroup]="insertNewRegisterPartner">
+                                    <h5 class="text-danger mb-4">Register as Partner</h5>
+                                    <div class="row">
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Partner Category <span class="text-danger">*</span></label>
+                                                <select class="form-control" formControlName="partnerCategory" (change)="getPartnerFields($event)">
+                                                    <option selected="selected" value="">Select Partner Category</option>
+                                                    <option value="Freelancer">Freelancer</option>
+                                                    <option value="Recruitment Firm">Recruitment Firm</option>
+                                                    <!-- <option value="Campus">Campus</option>
+                                                    <option value="NGO">NGO</option>
+                                                    <option value="Training Institute">Training Institute</option>
+                                                    <option value="NSDC">NSDC</option>
+                                                    <option value="Other">Other</option> -->
+                                                </select>
+                                                <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.partnerCategory.invalid && (insertNewRegisterPartner.controls.partnerCategory.touched || insertNewRegisterPartner.controls.partnerCategory.dirty || isFormSubmited)" >
+                                                    <span *ngIf="insertNewRegisterPartner.controls.partnerCategory.errors?.['required']">* This field is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div formGroupName="source" class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Referred By <span class="text-danger">*</span></label>
+                                                <select class="form-control" formControlName="options" (change)="getReferredFields($event)">
+                                                    <option selected="selected" value="">Select Referred By</option>
+                                                    <option value="Email">Email</option> 
+                                                    <option value="WhatsApp">WhatsApp</option>
+                                                    <option value="Facebook">Facebook</option>
+                                                    <option value="LinkedIn">LinkedIn</option>
+                                                    <option value="Instagram">Instagram</option>
+                                                    <option value="SMS">SMS</option>
+                                                    <option value="Poster/Pamphlet">Poster/Pamphlet</option>
+                                                    <option value="Others">Others</option>
+                                                </select>
+                                                <!-- <input type="text" class="form-control" placeholder="Enter Referred By Name" formControlName="referredBy"> -->
+                                                <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.source.controls.options.invalid && (insertNewRegisterPartner.controls.source.controls.options.touched || insertNewRegisterPartner.controls.source.controls.options.dirty || isFormSubmited)" >
+                                                    <span *ngIf="insertNewRegisterPartner.controls.source.controls.options.errors?.['required']">* This field is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @if(selectedReferredType == "Others"){
+                                        <div formGroupName="source" class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Referred Type<span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" placeholder="Enter Referred Type" formControlName="others">
+                                                <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.source.controls.others.invalid && (insertNewRegisterPartner.controls.source.controls.others.touched || insertNewRegisterPartner.controls.source.controls.others.dirty || isFormSubmited)" >
+                                                    <span *ngIf="insertNewRegisterPartner.controls.source.controls.others.errors?.['required']">* This field is required</span>
+                                                    <!-- <span *ngIf="insertNewRegisterPartner.controls.vendorName.errors?.['alphabet'] &&  !insertNewRegisterPartner.controls.vendorName.errors?.['required']" class="text-danger">Please enter alphabets'</span> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        }
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Form Filled By <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" placeholder="Enter Full Name" formControlName="vendorName">
+                                                <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.vendorName.invalid && (insertNewRegisterPartner.controls.vendorName.touched || insertNewRegisterPartner.controls.vendorName.dirty || isFormSubmited)" >
+                                                    <span *ngIf="insertNewRegisterPartner.controls.vendorName.errors?.['required']">* This field is required</span>
+                                                    <span *ngIf="insertNewRegisterPartner.controls.vendorName.errors?.['alphabet'] &&  !insertNewRegisterPartner.controls.vendorName.errors?.['required']" class="text-danger">Please enter alphabets'</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        <label class="control-label">{{label}} <span class="text-danger"> *</span></label>
+                                                        <input type="file" class="form-control" (change)="onPartnerSelected($event)" formControlName="partnerLogo" accept="image/*">
+                                                        <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.partnerLogo.invalid && (insertNewRegisterPartner.controls.partnerLogo.touched || insertNewRegisterPartner.controls.partnerLogo.dirty || isFormSubmited)" >
+                                                            <span *ngIf="insertNewRegisterPartner.controls.partnerLogo.errors?.['required']">* This field is required</span>
+                                                        </div>                                
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <img *ngIf="partnerImageUrl" [src]="partnerImageUrl" alt="Image Preview" style="height: 80px; width: 80px;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                        
+                                        
+                                        @if(slectedPartnerType != "Freelancer"){
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label">Company Name <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Enter Company Name (registered Firm Name)" formControlName="firmName">
+                                                    <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.firmName.invalid && (insertNewRegisterPartner.controls.firmName.touched || insertNewRegisterPartner.controls.firmName.dirty || isFormSubmited)" >
+                                                        <span *ngIf="insertNewRegisterPartner.controls.firmName.errors?.['required']">* This field is required</span>
+                                                        <span *ngIf="insertNewRegisterPartner.controls.firmName.errors?.['alphanumaric'] &&  !insertNewRegisterPartner.controls.firmName.errors?.['required']" class="text-danger">Please enter alphabets'</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                            
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label">Full Name of the MD/Proprietor <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Enter Full Name of the MD/Proprietor" formControlName="mdName">
+                                                    <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.mdName.invalid && (insertNewRegisterPartner.controls.mdName.touched || insertNewRegisterPartner.controls.mdName.dirty || isFormSubmited)" >
+                                                        <span *ngIf="insertNewRegisterPartner.controls.mdName.errors?.['required']">* This field is required</span>
+                                                        <span *ngIf="insertNewRegisterPartner.controls.mdName.errors?.['alphabet'] &&  !insertNewRegisterPartner.controls.mdName.errors?.['required']" class="text-danger">Please enter alphabets'</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                            
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label">Designation <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Enter Designation" formControlName="designation">
+                                                    <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.designation.invalid && (insertNewRegisterPartner.controls.designation.touched || insertNewRegisterPartner.controls.designation.dirty || isFormSubmited)" >
+                                                        <span *ngIf="insertNewRegisterPartner.controls.designation.errors?.['required']">* This field is required</span>
+                                                        <span *ngIf="insertNewRegisterPartner.controls.designation.errors?.['alphabet'] &&  !insertNewRegisterPartner.controls.designation.errors?.['required']" class="text-danger">Please enter alphabets'</span>
+                                                        <span *ngIf="insertNewRegisterPartner.controls.designation.errors?.['maxlength']">* Maximum 150 character should be allowed'</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label">Date of Incorporation<span class="text-danger"> *</span></label>
+                                                    <p-calendar formControlName="dateOfIncorporation" dateFormat='dd/mm/yy' placeholder="dd/mm/yyyy" showIcon="true" [iconDisplay]="'input'" appendTo="body"  />
+                                                    <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.dateOfIncorporation.invalid && (insertNewRegisterPartner.controls.dateOfIncorporation.touched || insertNewRegisterPartner.controls.dateOfIncorporation.dirty || isFormSubmited)" >
+                                                        <span *ngIf="insertNewRegisterPartner.controls.dateOfIncorporation.errors?.['required']">* This field is required</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Contact Number-1 (WhatsApp) <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" placeholder="Enter Primary Contact Number" formControlName="primaryContactNumber" maxlength="10">
+                                                <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.primaryContactNumber.invalid && (insertNewRegisterPartner.controls.primaryContactNumber.touched || insertNewRegisterPartner.controls.primaryContactNumber.dirty || isFormSubmited)" >
+                                                    <span *ngIf="insertNewRegisterPartner.controls.primaryContactNumber.errors?.['required']">* This field is required</span>
+                                                    <span *ngIf="insertNewRegisterPartner.controls.primaryContactNumber.errors?.['onlynumber']" class="text-danger">Please enter Contact number'</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                        
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Contact Number-2 (if any)</label>
+                                                <input type="text" class="form-control" placeholder="Enter Alternative Contact Number" formControlName="secondaryContactNumber" maxlength="10">
+                                                <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.secondaryContactNumber.invalid && (insertNewRegisterPartner.controls.secondaryContactNumber.touched || insertNewRegisterPartner.controls.secondaryContactNumber.dirty || isFormSubmited)" >
+                                                    <!-- <span *ngIf="insertNewRegisterPartner.controls.secondaryContactNumber.errors?.['required']">* This field is required</span> -->
+                                                    <span *ngIf="insertNewRegisterPartner.controls.secondaryContactNumber.errors?.['onlynumber']" class="text-danger">Please enter Contact number'</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                        
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Primary Email Id <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" placeholder="Enter Primary Email Id" formControlName="primaryEmailId">
+                                                <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.primaryEmailId.invalid && (insertNewRegisterPartner.controls.primaryEmailId.touched || insertNewRegisterPartner.controls.primaryEmailId.dirty || isFormSubmited)" >
+                                                    <span *ngIf="insertNewRegisterPartner.controls.primaryEmailId.errors?.['required']">* This field is required</span>
+                                                    <span *ngIf="insertNewRegisterPartner.controls.primaryEmailId.errors?.['emailvalidate']" class="text-danger">Please enter valid Email address'</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                        
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Secondary Email Id (If Any)</label>
+                                                <input type="text" class="form-control" placeholder="Enter Secondary Email Id" formControlName="secondaryEmailId">
+                                                <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.secondaryEmailId.invalid && (insertNewRegisterPartner.controls.secondaryEmailId.touched || insertNewRegisterPartner.controls.secondaryEmailId.dirty || isFormSubmited)" >
+                                                    <!-- <span *ngIf="insertNewRegisterPartner.controls.secondaryEmailId.errors?.['required']">* This field is required</span> -->
+                                                    <span *ngIf="insertNewRegisterPartner.controls.secondaryEmailId.errors?.['emailvalidate']" class="text-danger">Please enter valid Email address'</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                        
+                                        <!-- <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Type of Partner <span class="text-danger">*</span></label>
+                                                <select class="form-control" formControlName="partnerType">
+                                                    <option selected="selected" value="">Select Partner Type</option>
+                                                    <option value="Free Sourcing">Free Sourcing</option>
+                                                    <option value="Paid Sourcing">Paid Sourcing</option>
+                                                </select>
+                                                <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.partnerType.invalid && (insertNewRegisterPartner.controls.partnerType.touched || insertNewRegisterPartner.controls.partnerType.dirty || isFormSubmited)" >
+                                                    <span *ngIf="insertNewRegisterPartner.controls.partnerType.errors?.['required']">* This field is required</span>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                        
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Recruitment Presence <span class="text-danger">*</span></label>
+                                                <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="stateData2" [placeholder]="'Select State'" formControlName="recruitmentPresence"></ng-multiselect-dropdown>
+                                                <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.recruitmentPresence.invalid && (insertNewRegisterPartner.controls.recruitmentPresence.touched || insertNewRegisterPartner.controls.recruitmentPresence.dirty || isFormSubmited)" >
+                                                    <span *ngIf="insertNewRegisterPartner.controls.recruitmentPresence.errors?.['required']">* This field is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                        
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Industries which you are hiring currently? <span class="text-danger">*</span></label>
+                                                <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="jobIndustryData" formControlName="currentlyHiringIndustries"></ng-multiselect-dropdown>
+                                                <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.currentlyHiringIndustries.invalid && (insertNewRegisterPartner.controls.currentlyHiringIndustries.touched || insertNewRegisterPartner.controls.currentlyHiringIndustries.dirty || isFormSubmited)" >
+                                                    <span *ngIf="insertNewRegisterPartner.controls.currentlyHiringIndustries.errors?.['required']">* This field is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Position Levels which you are hiring currently? <span class="text-danger">*</span></label>
+                                                <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="positionLevel" formControlName="positionLevel"></ng-multiselect-dropdown>
+                                                <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.positionLevel.invalid && (insertNewRegisterPartner.controls.positionLevel.touched || insertNewRegisterPartner.controls.positionLevel.dirty || isFormSubmited)" >
+                                                    <span *ngIf="insertNewRegisterPartner.controls.positionLevel.errors?.['required']">* This field is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Roles you are currently working? <span class="text-danger">*</span></label>
+                                                <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="roleData" formControlName="currentlyWorkingRoles"></ng-multiselect-dropdown>
+                                                <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.currentlyWorkingRoles.invalid && (insertNewRegisterPartner.controls.currentlyWorkingRoles.touched || insertNewRegisterPartner.controls.currentlyWorkingRoles.dirty || isFormSubmited)" >
+                                                    <span *ngIf="insertNewRegisterPartner.controls.currentlyWorkingRoles.errors?.['required']">* This field is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                        
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Employee Count of the Partner Company? <span class="text-danger">*</span></label>
+                                                <input type="string" class="form-control" placeholder="Please enter no of employees" formControlName="employeeCount">
+                                                <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.employeeCount.invalid && (insertNewRegisterPartner.controls.employeeCount.touched || insertNewRegisterPartner.controls.employeeCount.dirty || isFormSubmited)" >
+                                                    <span *ngIf="insertNewRegisterPartner.controls.employeeCount.errors?.['required']">* This field is required</span>
+                                                    <span *ngIf="insertNewRegisterPartner.controls.employeeCount.errors?.['maxlength']">* Maximum 5 character should be allowed'</span>
+                                                    <span *ngIf="insertNewRegisterPartner.controls.employeeCount.errors?.['digits']" class="text-danger">Please enter a valid integer greater than 1</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Date of Birth<span class="text-danger"> *</span></label>
+                                                <p-calendar formControlName="dateOfBirth" dateFormat='dd/mm/yy' placeholder="dd/mm/yyyy" showIcon="true" [iconDisplay]="'input'" appendTo="body"  />
+                                                <div class="text-danger pt-2 error" *ngIf="insertNewRegisterPartner.controls.dateOfBirth.invalid && (insertNewRegisterPartner.controls.dateOfBirth.touched || insertNewRegisterPartner.controls.dateOfBirth.dirty || isFormSubmited)" >
+                                                    <span *ngIf="insertNewRegisterPartner.controls.dateOfBirth.errors?.['required']">* This field is required</span>
+                                                    <span *ngIf="insertNewRegisterPartner.controls.dateOfBirth.errors?.['minAge']">* You must be at least 18 years old'</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                       
+                        
+                                    </div>
+                        
+                                    <div class="alert alert-info" role="alert">
+                                        <p class="mb-0"><b>Note: </b>After successful registration, an Email with verification link will be sent to your primary Email Id.</p>
+                                    </div>
+                        
+                                    
+                                    <!-- <p class="text-danger">{{overallFormValid}}</p> 
+                                    <p class="text-danger">{{apiMessage}}</p> -->
+                                    <!-- {{insertNewRegisterPartner.valid | json}}
+                                    <p>{{insertNewRegisterPartner.value | json}}</p> -->
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p id="message"></p>
+                                            <div class="submit-btn">
+                                                @if(isLoading){
+                                                    <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                                                }@else{
+                                                    <button type="button" class="btn postjob-btn" (click)="insertRegisterPartner();" type="button"><i class="fa-regular fa-paper-plane"></i> REGISTER</button>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- CONTENT END -->
+
+<p-toast />

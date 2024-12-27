@@ -1,0 +1,1336 @@
+<!-- <app-navbar></app-navbar> -->
+
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        @if(loader){
+                            <div class="fb-item py-5" style="height: 400px;">
+                                <div class="first-section-wrapper">
+                                    <div class="gravatar-title">
+                                        <div>
+                                            <ngx-skeleton-loader [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="second-section-wrapper" style="margin-top: -30px;">
+                                    <div class="wrapper">
+                                        <ngx-skeleton-loader count="1" appearance="circle" [theme]="{ width: '95%', height: '60px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+        
+                                <div class="second-section-wrapper" style="margin-top: 10;">
+                                    <div class="wrapper">
+                                        <ngx-skeleton-loader count="1" appearance="circle" [theme]="{ width: '95%', height: '60px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+        
+                                <div class="second-section-wrapper" style="margin-top: 10px;">
+                                    <div class="wrapper">
+                                        <ngx-skeleton-loader count="1" appearance="circle" [theme]="{ width: '95%', height: '60px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @else{
+                            <div class="filter-heading">
+                                <div class="breadcrumb nav">
+                                    <span class="breadcrumb-item">
+                                        <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+                                    </span>
+                                    <span class="breadcrumb-item">
+                                        <a class="breadcrumb-link" [routerLink]="['/candidate']">Candidate</a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="side-bar bg-white p-3 rounded" style="margin-top: 30px;">
+                                <div class="sidebar-elements search-bx">
+                                    <div class="form-group mb-4">
+                                        <h4 class="section-head-small mb-2"><i class="fa-solid fa-filter"></i> All Filters</h4>
+                                        <h4 class="section-head-small reset-filter mb-2" tooltipPosition="top" pTooltip="Reset Filters" (click)="resetFilter()"><i class="fa-solid fa-retweet"></i></h4>
+                                        <hr class="hr"/>
+                                    </div>
+                                    <div class="form-group mb-4 mt-3">
+                                        <h4 class="section-head-small mb-2">Name</h4>
+                                        <div class="input-group">
+                                            <input tooltipPosition="left" pTooltip="Search Candidate Name" tooltipEvent="focus" type="text" class="form-control" placeholder="Candidate Name" [(ngModel)]="searchName" (blur)="searchCanName()">
+                                        </div>
+                                    </div>
+                                    <hr class="hr"/>
+                                    <div class="form-group mb-4">
+                                        <h4 class="section-head-small mb-2">Mobile</h4>
+                                        <div class="input-group">
+                                            <input tooltipPosition="left" pTooltip="Search Mobile" tooltipEvent="focus" type="text" name="query" class="form-control" placeholder="Candidate Mobile" [(ngModel)]="searchMobile" (blur)="searchCanMobile()">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <h4 class="section-head-small mb-2">RAG Tag</h4>
+                                        <select class="wt-select-bar-large selectpicker" [(ngModel)]="searchRagTag" (change)="searchCanRagTag($event)">
+                                            <option value="">Select Tag</option>
+                                            <option value="green">Green</option>
+                                            <option value="amber">Amber</option>
+                                            <option value="red">Red</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <h4 class="section-head-small mb-2">Uploaded Location</h4>
+                                        <select class="wt-select-bar-large selectpicker" [(ngModel)]="searchUploadedLocation" (change)="searchCanLocation($event)">
+                                            <option value="">Select Location</option>
+                                            @for(location of indentData?.indentStep2?.advLocation; track $index){
+                                                <option value="{{location}}">{{location}}</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group mb-4">
+                                        <h4 class="section-head-small mb-2">Stage</h4>
+                                        <select class="wt-select-bar-large selectpicker" [(ngModel)]="searchUploadedStage" (change)="searchCanStage($event)">
+                                            <option value="">Select Stage</option>
+                                            @for(stages of indentStaging2; track $index){
+                                                <option value="{{stages.stageName}}">{{stages.stageName | titlecase}}</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <h4 class="section-head-small mb-2">Sub Stage</h4>
+                                        <select class="wt-select-bar-large selectpicker" [(ngModel)]="searchUploadedSubStage" (change)="searchCanSubStage($event)">
+                                            <option value="">Select Sub Stage</option>
+                                            @if (indentStaging2 && indentStaging2[stageKey]) {
+                                                    @for(staged of indentStaging2[stageKey]?.details; track $index){
+                                                        @if(staged.status){
+                                                            @if(staged.displayName == "E And I Done"){
+                                                                <option value="EandIdone">{{staged.displayName}}</option>
+                                                            }@else{
+                                                                <option value="{{staged.displayName}}">{{staged.displayName}}</option>
+                                                            }
+                                                        }
+                                                    }
+                                            }
+                                            
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <h4 class="section-head-small mb-2">Source</h4>
+                                        <select class="wt-select-bar-large selectpicker" [(ngModel)]="searchSource" (change)="searchCanSource($event)">
+                                            <option value="">Select Source</option>
+                                            <option value="12">Partner</option>
+                                            <option value="7">Recruiter</option>
+                                        </select>
+                                    </div>
+
+                                    <hr class="hr" />
+                                    <div class="form-group">
+                                        <div class="submit-btn mt-2" style="margin-left: 165px;">
+                                            <button class="btn postjob-btn btn2" (click)="onSearchSubmit()"> Submit</button>
+                                        </div>
+                                    </div>
+                                    <!-- <hr class="hr"/>
+                                    <div class="form-group mb-4">
+                                        <h4 class="section-head-small mb-2">Education</h4>
+                                        <div class="input-group">
+                                            <input tooltipPosition="left" pTooltip="Search Education" tooltipEvent="focus" type="text" name="location" class="form-control" placeholder="Candidate Education" [(ngModel)]="searchEducation" (keyup)="searchCanEducation()">
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+
+                @if(loader){
+                    @for(iteam of getNumberArray(loaderCount); track $index){
+                    <div class="fb-item">
+                        <div class="first-section-wrapper">
+                            <div class="gravatar">
+                                <ngx-skeleton-loader appearance="circle" [theme]="{ width: '80px', height: '80px' }"></ngx-skeleton-loader>
+                            </div>
+                            <div class="gravatar-title">
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{ width: '170px', 'border-radius': '0', height: '15px' }"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="second-section-wrapper">
+                            <div class="wrapper">
+                                <ngx-skeleton-loader
+                                [theme]="{
+                                    'width': '80%',
+                                    'border-radius': '0',
+                                    'height': '10px',
+                                    'margin-bottom': '10px'
+                                }"
+                                ></ngx-skeleton-loader>
+                            </div>
+                        
+                            <div class="wrapper">
+                                <ngx-skeleton-loader
+                                count="4"
+                                appearance="circle"
+                                [theme]="{
+                                width: '23%',
+                                height: '70px',
+                                'border-radius': '10px'
+                                }"
+                            >
+                            </ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                }@else{
+                    <div class="product-filter-wrap d-flex justify-content-between align-items-center m-b20">
+                        <span class="">Showing {{fetchedRecord}} Candidates</span>
+                        @if(showChangeBtn){
+                            <a class="postjob-btn text-white" tooltipPosition="top" pTooltip="Change Selected Candidates Stage" (click)="updateCanStage2()"><i class="fa-regular fa-edit"></i> Change Stage</a>
+                        }
+                        <form class="woocommerce-ordering tmi-filter-select" method="get">
+                            <select class="wt-select-bar-2 selectpicker" (change)="onSelectChange($event)">
+                                <option value="10">Show 10</option>
+                                <option value="20">Show 20</option>
+                                <option value="30">Show 30</option>
+                                <option value="40">Show 40</option>
+                                <option value="50">Show 50</option>
+                                <option value="60">Show 60</option>
+                            </select>
+                        </form>
+                    </div>
+                    @if(indentId){
+                        <div class="tmi-jobs-list-wrap">
+                            <ul>
+                                <li>
+                                    <div class="srp-jobtuple-wrapper" data-job-id="141220500637">
+                                        <div class="cust-job-tuple layout-wrapper lay-2 sjw__tuple rounded">
+                                            <div class=" row1">
+                                                <a tooltipPosition="top" pTooltip="Indent Title" class="title" routerLink="/job_details/{{indentData?._id}}">{{indentData?.indentStep1?.jobTitle}}</a>
+                                            </div>
+
+                                            <div class=" row2">
+                                                <span class="comp-dtls-wrap">
+                                                        @if(indentData?.indentStep1?.hideClient == false){
+                                                            @if(indentData?.client[0]){
+                                                                <p class="comp-name mw-25" tooltipPosition="top" pTooltip="Client Name" style="margin-right: 15px;"><i class="fa-solid fa-building-ngo"></i> {{indentData?.client[0]?.name}}</p>
+                                                            }
+                                                        }
+                                                    <p class="comp-name mw-25" tooltipPosition="top" pTooltip="Job Code" style="margin-right: 15px;"><i class="fa-solid fa-file"></i> {{indentData?.indentStep1?.jobCode}}</p>
+                                                    <p class="comp-name mw-25" tooltipPosition="top" pTooltip="Indent Type"><i class="fa-solid fa-briefcase"></i> {{indentData?.indentStep1?.jobType}}</p>
+                                                </span>
+                                            </div>
+
+                                        
+                                            <div class="locationfilterdiv">
+                                                @for(location of locationCount; track $index){
+                                                <p class="location-filter" (click)="searchCanLocation2(location.location)">{{location.location}}&nbsp;({{location.count}})</p>
+                                                }
+                                            </div>
+
+                                            <div class="row6">  
+                                                <span tooltipPosition="left" pTooltip="Posted On" class="job-post-day"><i class="fa-regular fa-clock"></i> {{indentData?.posted_on}} || {{indentData?.created_at | date: 'dd MMM, yyyy'}}</span>
+                                            </div>
+
+                                            <hr>
+                                            <div class="row7">
+                                                <div class="cand-stages">
+                                                    <div class="row">
+                                                        
+                                                        <div class="col-md-3">
+                                                            
+                                                            <div class="candidate-stage" (click)="op.toggle($event)" style="cursor: pointer;">
+                                                                <div class="screening-icon">
+                                                                    <img src="../../../assets/images/candidate_screen.png" >
+                                                                </div>
+                                                                <div class="candidate-stage-details">
+                                                                    <h4>{{countData?.stage_count?.screening || 0}}</h4>
+                                                                    <h5>Screening</h5>
+                                                                </div>
+                                                            </div>
+                                                            
+
+                                                            <div class="card flex justify-content-center">
+                                                                <p-overlayPanel #op>
+                                                                    <div class="flex flex-column gap-3 w-25rem">
+                                                                        @if (indentStaging2 && indentStaging2[0]) {
+                                                                        @for(stages of indentStaging2[0]?.details; track $index){
+                                                                            @if(stages.status){
+                                                                                @if(stages.displayName == "E And I Done"){
+                                                                                    <div class="resume rounded">
+                                                                                        <p class="mb-0" style="cursor: pointer;" (click)="searchCanSubStage2('screening','EandIdone')">{{stages.displayName}}: &nbsp; <span class="applied-indent-count">{{ countData?.stage_subField_count?.screening?.['E And I Done'] }}</span></p>
+                                                                                    </div>
+                                                                                }@else{
+                                                                                    <div class="resume rounded">
+                                                                                        <p class="mb-0" style="cursor: pointer;" (click)="searchCanSubStage2('screening',stages.displayName)">{{stages.displayName}}: &nbsp; <span class="applied-indent-count">{{ countData?.stage_subField_count?.screening[stages?.displayName] }}</span></p>
+                                                                                    </div>
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        }
+                                                                    </div>
+                                                                </p-overlayPanel>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-3">
+                                                            <div class="candidate-stage" (click)="op3.toggle($event)" style="cursor: pointer;">
+                                                                <div class="screening-icon">
+                                                                    <img src="../../../assets/images/interview.png" >
+                                                                </div>
+                                                                <div class="candidate-stage-details">
+                                                                    <h4>{{countData?.stage_count?.interview || 0}}</h4>
+                                                                    <h5>Interview</h5>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="card flex justify-content-center">
+                                                                <p-overlayPanel #op3>
+                                                                    <div class="flex flex-column gap-3 w-25rem">
+                                                                        @if (indentStaging2 && indentStaging2[1]) {
+                                                                        @for(stages of indentStaging2[1]?.details; track $index){
+                                                                            @if(stages.status){
+                                                                                <div class="resume rounded">
+                                                                                    <p class="mb-0" style="cursor: pointer;" (click)="searchCanSubStage2('interview',stages.displayName)">{{stages.displayName}}: &nbsp; <span class="applied-indent-count">{{ countData?.stage_subField_count?.interview[stages?.displayName] }}</span></p>
+                                                                                </div>
+                                                                            }
+                                                                        }
+                                                                        }
+                                                                    </div>
+                                                                </p-overlayPanel>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-3">
+                                                            
+                                                            <div class="candidate-stage" (click)="op4.toggle($event)" style="cursor: pointer;">
+                                                                <div class="screening-icon"  >
+                                                                    <img src="../../../assets/images/job-offer.png" >
+                                                                </div>
+                                                                <div class="candidate-stage-details">
+                                                                    <h4>{{countData?.stage_count?.offer || 0}}</h4>
+                                                                    <h5>Offer</h5>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="card flex justify-content-center">
+                                                                <p-overlayPanel #op4>
+                                                                    <div class="flex flex-column gap-3 w-25rem">
+                                                                        @if (indentStaging2 && indentStaging2[2]) {
+                                                                        @for(stages of indentStaging2[2]?.details; track $index){
+                                                                            @if(stages.status){
+                                                                                <div class="resume rounded">
+                                                                                    <p class="mb-0" style="cursor: pointer;" (click)="searchCanSubStage2('offer',stages.displayName)">{{stages.displayName}}: &nbsp; <span class="applied-indent-count">{{ countData?.stage_subField_count?.offer[stages?.displayName] }}</span></p>
+                                                                                </div>
+                                                                            }
+                                                                        }
+                                                                        }
+                                                                    </div>
+                                                                </p-overlayPanel>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="candidate-stage" (click)="op5.toggle($event)" style="cursor: pointer;">
+                                                                <div class="screening-icon">
+                                                                    <img src="../../../assets/images/hiring.png" >
+                                                                </div>
+                                                                <div class="candidate-stage-details">
+                                                                    <h4>{{countData?.stage_count?.hire || 0}}</h4>
+                                                                    <h5>Hire</h5>
+                                                                </div>
+                                                            </div>
+                                                            
+
+                                                            <div class="card flex justify-content-center">
+                                                                <p-overlayPanel #op5>
+                                                                    <div class="flex flex-column gap-3 w-25rem">
+                                                                        @if (indentStaging2 && indentStaging2[3]) {
+                                                                        @for(stages of indentStaging2[3]?.details; track $index){
+                                                                            @if(stages.status){
+                                                                                <div class="resume rounded">
+                                                                                    <p class="mb-0" style="cursor: pointer;" (click)="searchCanSubStage2('hire',stages.displayName)">{{stages.displayName}}: &nbsp; <span class="applied-indent-count">{{ countData?.stage_subField_count?.hire[stages?.displayName] }}</span></p>
+                                                                                </div>
+                                                                            }
+                                                                        }
+                                                                        }
+                                                                    </div>
+                                                                </p-overlayPanel>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        @if(totalRecord > 0){
+                            
+                            @for(iteam of recommData.candidates; track $index){
+                                <div class="can_stage mt-3 rounded">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-1" tooltipPosition="top" pTooltip="Candidate Image">
+                                                    <a class="text-primary" [routerLink]="['/candidate_details', iteam.candidate_id, indentId]">
+                                                        <img src="https://tms.tmivirtually.com/docs/trainer/image/1683046513Trainer_IMG.jpg" style="width: 52px; height: 52px; border-radius: 100%; border: 4px solid #f0f8ff;"> 
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-4" style="margin-left: -17px; margin-top: 10px;">
+                                                    <h6>
+                                                        <a class="text-primary" tooltipPosition="top" pTooltip="Candidate Name" [routerLink]="['/candidate_details', iteam.candidate_id, indentId]">{{iteam.name}}</a>
+                                                        @if(isShown){
+                                                        <!-- <span> &nbsp; <input class="form-check-input cancheck" type="checkbox" (change)="onCanChecked(iteam.candidate_id, $event)"></span> -->
+                                                        }
+                                                        <br>
+                                                        <span tooltipPosition="top" pTooltip="Candidate Mobile Number">{{iteam.mobile}}</span>
+                                                    </h6>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <div class="submit-btn" style="float: right; margin-right: -20px;">
+                                                        <div class="product-filter-wrap d-flex justify-content-between align-items-center m-b20">
+                                                            <p>
+                                                                <b>Current Stage: &nbsp; </b> <span class="parentStage">{{iteam.stage | titlecase}}</span><span class="currentStage">{{iteam.childStage | titlecase}}</span> 
+                                                                @if(isShown){
+                                                                    @if(recommData?.indentStep5?.screening?.onlineAssessment?.status == false || recommData[0]?.indentStep5?.screening?.manualAssessment?.status == false){
+                                                                        @if(iteam.childStage != 'Scored'){
+                                                                            <span class="editbtn" (click)="updateCanStage(iteam.candidate_id, iteam.stage, iteam.childStage)"><i class="fa-regular fa-edit"></i></span>
+                                                                        }
+                                                                    }@else if(recommData?.indentStep5?.screening?.onlineAssessment?.status == true || recommData[0]?.indentStep5?.screening?.manualAssessment?.status == true){
+                                                                        @if(iteam.childStage == 'Online Assessment'){
+                                                                            <span class="editbtn" (click)="updateCanStage(iteam.candidate_id, iteam.stage, iteam.childStage)"><i class="fa-regular fa-edit"></i></span>
+                                                                        }
+                                                                    }
+                                                                }
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        
+                                        <div class="row my-3" style="box-sizing: content-box;">
+                                            <div class="col-sm-6 col-lg-3">
+                                                <div class="card card-border-shadow-primary h-100" style="background-color: #F0f0f0;">
+                                                    <div class="card-body">
+                                                        <div class="d-flex align-items-center mb-2 pb-1">
+                                                            <div class="avatar me-2">
+                                                                <span class="avatar-initial rounded bg-label-primary"><i class="fa-solid fa-golf-ball-tee"></i></span>
+                                                            </div>
+                                                            <h4 class="ms-1 mb-0">AI Score</h4>
+                                                        </div>
+                                                        <p class="mb-0">{{ getScorePercentage(iteam.score)}}</p>
+                                                        <p class="small mb-0"><b>Source:</b> <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" width="20px"> Gemini AI</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6 col-lg-3">
+                                                <div class="card card-border-shadow-warning h-100" style="background-color: #F0f0f0;">
+                                                    <div class="card-body" style="position: relative;">
+                                                        <div class="d-flex align-items-center mb-2 pb-1">
+                                                            <div class="avatar me-2">
+                                                                <span class="avatar-initial rounded bg-label-warning"><i class="fa-solid fa-graduation-cap"></i></span>
+                                                            </div>
+                                                            <h4 class="ms-1 mb-0">E&I</h4>
+                                                        </div>
+                                                        @if(iteam.ragTag){
+                                                            <p class="mb-1">{{iteam.scorePercentage}} %</p>
+                                                        }@else{
+                                                            <button class="btn btn-danger">Pending</button>
+                                                        }
+                                                        @if(iteam.ragTag){
+                                                            @if(iteam.ragTag == "green"){
+                                                                <div id="custribbon" class="greentag">
+                                                                    <span class="custcontent greentagborder"></span>
+                                                                </div>
+                                                            }
+                                                            @if(iteam.ragTag == "amber"){
+                                                                <div id="custribbon" class="warningtag">
+                                                                    <span class="custcontent warningtagborder"></span>
+                                                                </div>
+                                                            }
+                                                            @if(iteam.ragTag == "red"){
+                                                                <div id="custribbon" class="dangertag">
+                                                                    <span class="custcontent dangertagborder"></span>
+                                                                </div>
+                                                            }
+                                                        }
+                                                    </div>
+                                                    <!-- @if(iteam.ragTag){
+                                                    <div class="cover-ribbon">
+                                                        <div class="cover-ribbon-inside" style="background: green;"> &nbsp; </div>
+                                                     </div>
+                                                    } -->
+
+                                                    
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6 col-lg-3">
+                                                <div class="card card-border-shadow-warning h-100" style="background-color: #F0f0f0;">
+                                                    <div class="card-body">
+                                                        <div class="d-flex align-items-center mb-2 pb-1">
+                                                            <div class="avatar me-2">
+                                                                <span class="avatar-initial rounded bg-label-warning"><i class="fa-solid fa-graduation-cap"></i></span>
+                                                            </div>
+                                                            <h4 class="ms-1 mb-0">Education</h4>
+                                                        </div>
+                                                        @if(iteam.education != ''){
+                                                            <p class="mb-1">{{iteam.education[0].qualification}}</p>
+                                                        }@else{
+                                                            <p class="mb-1">Not Available</p>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-lg-3">
+                                                <div class="card card-border-shadow-info h-100" style="background-color: #F0f0f0;">
+                                                    <div class="card-body">
+                                                        <div class="d-flex align-items-center mb-2 pb-1">
+                                                            <div class="avatar me-2">
+                                                                <span class="avatar-initial rounded bg-label-info"><i class="fa-solid fa-briefcase"></i></span>
+                                                            </div>
+                                                            <h4 class="ms-1 mb-0">Experience</h4>
+                                                        </div>
+                                                        <p class="mb-1">{{iteam.totWorkExp || "0"}} Years</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        
+                                        <div class="row mt-3" tooltipPosition="left" pTooltip="Associated Indent">
+                                            <div class="col-md-6">
+                                                @if(iteam.auth != 'self'){
+                                                    @if(iteam.source.role_id == 12){
+                                                        <p class="mb-0"><b>Source: </b> <a [routerLink]="['/partner-details', iteam.source.partner_id]" target="_blank" class="link-primary">{{iteam.source.partner_firm_name}}</a></p>
+                                                        <p class="mb-0"><b>Source Type: </b>Partner</p>
+                                                    }@else{
+                                                        <p class="mb-0"><b>Source Name: </b>{{iteam.source.name}}</p>
+                                                        <p class="mb-0"><b>Source Role: </b>{{iteam.source.role_name}}</p>
+                                                    }
+                                                }@else{
+                                                    <p class="mb-0"><b>Source Name: </b>Self Registration</p>
+                                                }
+                                                <p class="mb-0"><b>Uploaded On: </b>{{iteam.created_at+'Z' | date: 'dd MMM, yyyy hh:mm:ss a'}}</p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p class="mb-0"><b>Indent Title:</b> <a [routerLink]="['/job_details', indentId]" class="link-primary"> {{recommData.jobTitle}}</a> </p>
+                                                <p class="mb-0"><b>Uploaded Location:</b> {{iteam.location}}</p>
+                                            </div>
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                            }
+                            <div class="row pt-2">
+                                <div class="col-md-8">
+                                    <p>Showing {{startIndex2}} to {{endIndex2}} of {{filterdRecord}} entries</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="cuspagi" style="float: right;">
+                                        <nav aria-label="...">
+                                            <ul class="pagination">
+                                                <li class="page-item {{isDisabled}}"><button class="page-link" (click)="prevPage()">Previous</button></li>
+                                                <li class="page-item active" aria-current="page"><a class="page-link" >{{currentPage}}</a></li>
+                                                <li class="page-item {{isDisabled2}}"><button class="page-link text-danger" (click)="nextPage()">Next</button></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        }@else{
+                            <div class="col-md-12">
+                                <div class="empty_state rounded">
+                                    <i class="fa-solid fa-face-surprise"></i>
+                                    <h3 class="">No records</h3>
+                                    <p>There are no records found</p>
+                                </div>
+                            </div>
+                        }
+                    }@else{
+                        @if(totalRecord > 0){
+                            @for(iteam of recommData; track $index){
+                                <div class="can_stage mt-3 rounded">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-1" tooltipPosition="top" pTooltip="Candidate Image">
+                                                    <a class="text-primary" [routerLink]="['/candidateprofile', iteam._id]">
+                                                        <img src="https://tms.tmivirtually.com/docs/trainer/image/1683046513Trainer_IMG.jpg" style="width: 52px; height: 52px; border-radius: 100%; border: 4px solid #f0f8ff;"> 
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-6" style="margin-left: -17px; margin-top: 10px;">
+                                                    <h6>
+                                                        <a class="text-primary" tooltipPosition="top" pTooltip="Candidate Name" [routerLink]="['/candidateprofile', iteam._id]">{{iteam.name}}</a>
+                                                        <br>
+                                                        <span tooltipPosition="top" pTooltip="Candidate Mobile Number">{{iteam.mobile}}</span>
+                                                    </h6>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+        
+                                        
+                                        <div class="row my-3">
+                                            <div class="col-sm-6 col-lg-3">
+                                                <div class="card card-border-shadow-primary h-100" style="background-color: #F0f0f0;">
+                                                    <div class="card-body">
+                                                        <div class="d-flex align-items-center mb-2 pb-1">
+                                                            <div class="avatar me-2">
+                                                                <span class="avatar-initial rounded bg-label-primary"><i class="fa-solid fa-golf-ball-tee"></i></span>
+                                                            </div>
+                                                            <h4 class="ms-1 mb-0">Summary</h4>
+                                                        </div>
+                                                        <p class="mb-1" tooltipPosition="left" pTooltip="{{ iteam.candidate_summary}}">{{ iteam.candidate_summary | slice:0:40}}...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-lg-3">
+                                                <div class="card card-border-shadow-warning h-100" style="background-color: #F0f0f0;">
+                                                    <div class="card-body">
+                                                        <div class="d-flex align-items-center mb-2 pb-1">
+                                                            <div class="avatar me-2">
+                                                                <span class="avatar-initial rounded bg-label-warning"><i class="fa-solid fa-graduation-cap"></i></span>
+                                                            </div>
+                                                            <h4 class="ms-1 mb-0">Education</h4>
+                                                        </div>
+                                                        @if(iteam.education){
+                                                        <p class="mb-1">{{iteam.education[0].qualification}}</p>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-lg-3">
+                                                <div class="card card-border-shadow-danger h-100" style="background-color: #F0f0f0;">
+                                                    <div class="card-body">
+                                                        <div class="d-flex align-items-center mb-2 pb-1">
+                                                            <div class="avatar me-2">
+                                                                <span class="avatar-initial rounded bg-label-danger"><i class="fa-solid fa-graduation-cap"></i></span>
+                                                            </div>
+                                                            <h4 class="ms-1 mb-0">Strengths</h4>
+                                                        </div>
+                                                        @if(iteam.strengths){
+                                                        <p class="mb-1">{{iteam.strengths[0] | slice:0:10}}...</p>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-lg-3">
+                                                <div class="card card-border-shadow-info h-100" style="background-color: #F0f0f0;">
+                                                    <div class="card-body">
+                                                        <div class="d-flex align-items-center mb-2 pb-1">
+                                                            <div class="avatar me-2">
+                                                                <span class="avatar-initial rounded bg-label-info"><i class="fa-solid fa-briefcase"></i></span>
+                                                            </div>
+                                                            <h4 class="ms-1 mb-0">Experience</h4>
+                                                        </div>
+                                                        <p class="mb-1">{{iteam.totWorkExp}} Months</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+        
+                                        <!-- <div class="col-md-12 mt-3" tooltipPosition="left" pTooltip="Associated Indent">
+                                            <p class="mb-0"><b>Indent Title:</b> {{recommData[0].jobTitle}}</p>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            }
+                        }@else{
+                            <div class="col-md-12">
+                                <div class="empty_state rounded">
+                                    <i class="fa-solid fa-face-surprise"></i>
+                                    <h3 class="">No records</h3>
+                                    <p>There are no records found</p>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-toast />
+
+<div class="card flex justify-content-center">
+    <p-dialog header="Edit Stage" 
+        [modal]="true" 
+        [(visible)]="visible" 
+        [style]="{ width: '25rem' }" 
+        [style]="{ width: '50rem' }" 
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" >
+
+        <form [formGroup]="updateCandidateStage">
+            <div class="step-form">
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Stage</label>
+                            <select class="form-control" formControlName="stage" (change)="stageChanged($event)">
+                                <option selected="selected" value="">Select Stage</option>
+                                @for(stages of indentStaging; track $index){
+                                    @if(thecurrentStage == "screening"){
+                                        @if(stages.stageName == "screening" || stages.stageName == "interview"){
+                                            <optgroup label="{{stages.stageName | titlecase}}">
+                                                @for(staged of stages.details; track $index){
+                                                    @if(staged.status){
+                                                        @if(staged.isSubmitted == false){
+                                                            @if(staged.displayName !== thechildstage){
+                                                            <option value="{{stages.stageName}}.{{staged.key}}">{{staged.displayName}}</option>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            </optgroup>
+                                        }
+                                    }
+                                    @if(thecurrentStage == "interview"){
+                                        @if(stages.stageName == "interview" || stages.stageName == "offer"){
+                                            <optgroup label="{{stages.stageName | titlecase}}">
+                                                @for(staged of stages.details; track $index){
+                                                    @if(staged.status){
+                                                        @if(staged.isSubmitted == false){
+                                                            @if(staged.displayName !== thechildstage){
+                                                            <option value="{{stages.stageName}}.{{staged.key}}">{{staged.displayName}}</option>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            </optgroup>
+                                        }
+                                    }
+                                    @if(thecurrentStage == "offer"){
+                                        @if(stages.stageName == "offer" || stages.stageName == "hire"){
+                                            <optgroup label="{{stages.stageName | titlecase}}">
+                                                @for(staged of stages.details; track $index){
+                                                    @if(staged.status){
+                                                        @if(staged.isSubmitted == false){
+                                                            @if(staged.displayName !== thechildstage){
+                                                            <option value="{{stages.stageName}}.{{staged.key}}">{{staged.displayName}}</option>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            </optgroup>
+                                        }
+                                    }
+                                    @if(thecurrentStage == "hire"){
+                                        @if(stages.stageName == "hire"){
+                                            <optgroup label="{{stages.stageName | titlecase}}">
+                                                @for(staged of stages.details; track $index){
+                                                    @if(staged.status){
+                                                        @if(staged.isSubmitted == false){
+                                                            @if(staged.displayName !== thechildstage){
+                                                            <option value="{{stages.stageName}}.{{staged.key}}">{{staged.displayName}}</option>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            </optgroup>
+                                        }
+                                    }
+                                }
+                            </select>
+                            <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.stage.invalid && (updateCandidateStage.controls.stage.touched || updateCandidateStage.controls.stage.dirty || isFormSubmited)" >
+                                <span *ngIf="updateCandidateStage.controls.stage.errors?.['required']">* This field is required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if(candidateParentStageSelected == "screening.rejected"){
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Reason for Rejection<span class="text-danger">*</span></label>
+                                    <select class="form-control" formControlName="screeningRejectReason">
+                                        <option value="">Select Reason</option>
+                                        <option value="Duplicate on Client Portal">Duplicate on Client Portal</option>
+                                        <option value="Lack of Required Skills">Lack of Required Skills</option>
+                                        <option value="Overqualified">Overqualified</option>
+                                        <option value="Lack of Technical Knowledge">Lack of Technical Knowledge</option>
+                                        <option value="Insufficient Experience">Insufficient Experience</option>
+                                        <option value="Industry Experience">Industry Experience</option>
+                                        <option value="Job Role Unfit">Job Role Unfit</option>
+                                        <option value="Cultural Unfit">Cultural Unfit</option>
+                                        <option value="Communication Skills">Communication Skills</option>
+                                        <option value="Unable to join within the given timeframe">Unable to join within the given timeframe</option>
+                                        <option value="Accepted Other Offer">Accepted Other Offer</option>
+                                        <option value="Location Constraints">Location Constraints</option>
+                                        <option value="Compensation Expectations">Compensation Expectations</option>
+                                        <option value="Not Interested">Not Interested</option>
+                                    </select>
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.screeningRejectReason.invalid && (updateCandidateStage.controls.screeningRejectReason.touched || updateCandidateStage.controls.screeningRejectReason.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.screeningRejectReason.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if(candidateParentStageSelected == "screening.hold"){
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Reason for Hold<span class="text-danger">*</span></label>
+                                    <select class="form-control" formControlName="screeningHoldReason">
+                                        <option value="">Select Reason</option>
+                                        <option>Could not able to connect</option>
+                                        <option>No Vacancy for the location</option>
+                                        <option>Candidate need sometime</option>
+                                        <option>Others</option>
+                                    </select>
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.screeningHoldReason.invalid && (updateCandidateStage.controls.screeningHoldReason.touched || updateCandidateStage.controls.screeningHoldReason.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.screeningHoldReason.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if(candidateParentStageSelected == "interview.candidatesScheduled" || candidateParentStageSelected == "interview.candidateRescheduled"){
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Interview Date <span class="text-danger">*</span></label>
+                                    <!-- <input type="date" class="form-control" placeholder="Interview Date" formControlName="interviewDate"> -->
+                                    <p-calendar formControlName="interviewDate" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" showIcon="true" [iconDisplay]="'input'" appendTo="body" [minDate]="minDate"  />
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.interviewDate.invalid && (updateCandidateStage.controls.interviewDate.touched || updateCandidateStage.controls.interviewDate.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.interviewDate.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Start Time </label>
+                                    <input type="time" class="form-control" placeholder="Interview Time" formControlName="startTime">
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.startTime.invalid && (updateCandidateStage.controls.startTime.touched || updateCandidateStage.controls.startTime.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.startTime.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">End Time </label>
+                                    <input type="time" class="form-control" placeholder="End Time" formControlName="endTime">
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.endTime.invalid && (updateCandidateStage.controls.endTime.touched || updateCandidateStage.controls.endTime.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.endTime.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Mode of Interview <span class="text-danger">*</span></label>
+                                    <select class="form-control" formControlName="interviewMode" (change)="modeChanged($event)">
+                                        <option value="">Select Mode</option>
+                                        <option value="In-Person">In-Person</option>
+                                        <option value="Telephonic">Telephonic</option>
+                                        <option value="Virtual">Virtual</option>
+                                    </select>
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.interviewMode.invalid && (updateCandidateStage.controls.interviewMode.touched || updateCandidateStage.controls.interviewMode.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.interviewMode.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            @if(selectMode2){
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Link of Video Interview <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Link of Video Interview" formControlName="videoInterview">
+                                        <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.videoInterview.invalid && (updateCandidateStage.controls.videoInterview.touched || updateCandidateStage.controls.videoInterview.dirty || isFormSubmited)" >
+                                            <span *ngIf="updateCandidateStage.controls.videoInterview.errors?.['required']">* This field is required</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if(selectMode){
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Address <span class="text-danger">*</span></label>
+                                        <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter address" formControlName="interviewAddress"></textarea>
+                                        <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.interviewAddress.invalid && (updateCandidateStage.controls.interviewAddress.touched || updateCandidateStage.controls.interviewAddress.dirty || isFormSubmited)" >
+                                            <span *ngIf="updateCandidateStage.controls.interviewAddress.errors?.['required']">* This field is required</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Interviewer Name</label>
+                                    <input type="text" class="form-control" placeholder="Interviewer Name" formControlName="interviewerName">
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.interviewerName.invalid && (updateCandidateStage.controls.interviewerName.touched || updateCandidateStage.controls.interviewerName.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.interviewerName.errors?.['alphabet']">Please enter only alphabets'</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Interviewer Email Id</label>
+                                    <input type="text" class="form-control" placeholder="Interviewer Email ID" formControlName="interviewerEmail">
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.interviewerEmail.invalid && (updateCandidateStage.controls.interviewerEmail.touched || updateCandidateStage.controls.interviewerEmail.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.interviewerEmail.errors?.['emailvalidate']">Please enter valid email address'</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if(candidateParentStageSelected== "interview.interviewSelected"){
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Actual Date of Interview <span class="text-danger">*</span></label>
+                                    <!-- <input type="date" class="form-control" placeholder="Actual Date of Interview" formControlName="selectedActualInterviewDate"> -->
+                                    <p-calendar formControlName="selectedActualInterviewDate" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" showIcon="true" [iconDisplay]="'input'" appendTo="body"  />
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.selectedActualInterviewDate.invalid && (updateCandidateStage.controls.selectedActualInterviewDate.touched || updateCandidateStage.controls.selectedActualInterviewDate.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.selectedActualInterviewDate.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    }
+                    @if(candidateParentStageSelected== "interview.interviewRejected"){
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Actual Date of Interview <span class="text-danger">*</span></label>
+                                    <!-- <input type="date" class="form-control" placeholder="Actual Date of Interview" formControlName="actualInterviewDate"> -->
+                                    <p-calendar formControlName="actualInterviewDate" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" showIcon="true" [iconDisplay]="'input'" appendTo="body"  />
+
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.actualInterviewDate.invalid && (updateCandidateStage.controls.actualInterviewDate.touched || updateCandidateStage.controls.actualInterviewDate.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.actualInterviewDate.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Reason for Rejection<span class="text-danger">*</span></label>
+                                    <select class="form-control" formControlName="rejectReason">
+                                        <option value="">Select Reason</option>
+                                        <option value="Lack of Required Skills">Lack of Required Skills</option>
+                                        <option value="Overqualified">Overqualified</option>
+                                        <option value="Lack of Technical Knowledge">Lack of Technical Knowledge</option>
+                                        <option value="Insufficient Experience">Insufficient Experience</option>
+                                        <option value="Industry Experience">Industry Experience</option>
+                                        <option value="Job Role Unfit">Job Role Unfit</option>
+                                        <option value="Cultural Unfit">Cultural Unfit</option>
+                                        <option value="Communication Skills">Communication Skills</option>
+                                        <option value="Unable to join within the given timeframe">Unable to join within the given timeframe</option>
+                                        <option value="Accepted Other Offer">Accepted Other Offer</option>
+                                        <option value="Location Constraints">Location Constraints</option>
+                                        <option value="Compensation Expectations">Compensation Expectations</option>
+                                        <option value="Not Interested">Not Interested</option>
+                                    </select>
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.rejectReason.invalid && (updateCandidateStage.controls.rejectReason.touched || updateCandidateStage.controls.rejectReason.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.rejectReason.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if(candidateParentStageSelected== "interview.interviewHold"){
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Actual Date of Interview <span class="text-danger">*</span></label>
+                                    <!-- <input type="date" class="form-control" placeholder="Actual Date of Interview" formControlName="actualInterviewHoldDate"> -->
+                                    <p-calendar formControlName="actualInterviewHoldDate" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" showIcon="true" [iconDisplay]="'input'" appendTo="body"  />
+
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.actualInterviewHoldDate.invalid && (updateCandidateStage.controls.actualInterviewHoldDate.touched || updateCandidateStage.controls.actualInterviewHoldDate.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.actualInterviewHoldDate.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Reason for Hold<span class="text-danger">*</span></label>
+                                    <select class="form-control" formControlName="rejectHoldReason">
+                                        <option value="">Select Reason</option>
+                                        <option value="Comparison with Other candidates">Comparison with Other candidates</option>
+                                        <option value="Pending decision approval">Pending decision approval</option>
+                                        <option value="Role Clarification">Role Clarification</option>
+                                        <option value="Budget Allocation">Budget Allocation</option>
+                                        <option value="Internal Process Delays">Internal Process Delays</option>
+                                        <option value="Strategic Alignment">Strategic Alignment</option>
+                                        <option value="Pending Project Requirements">Pending Project Requirements</option>
+                                    </select>
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.rejectHoldReason.invalid && (updateCandidateStage.controls.rejectHoldReason.touched || updateCandidateStage.controls.rejectHoldReason.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.rejectHoldReason.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if(candidateParentStageSelected== "offer.offerReleased"){
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Offer Date <span class="text-danger">*</span></label>
+                                    <!-- <input type="date" class="form-control" placeholder="Enter Offer Date" formControlName="offerDate"> -->
+                                    <p-calendar formControlName="offerDate" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" showIcon="true" [iconDisplay]="'input'" appendTo="body"  />
+
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.offerDate.invalid && (updateCandidateStage.controls.offerDate.touched || updateCandidateStage.controls.offerDate.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.offerDate.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Tentative Date of Joining <span class="text-danger">*</span></label>
+                                    <!-- <input type="date" class="form-control" placeholder="Enter Tentative Date of Joining" formControlName="tentativeJoiningDate"> -->
+                                    <p-calendar formControlName="tentativeJoiningDate" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" showIcon="true" [iconDisplay]="'input'" appendTo="body"  />
+
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.tentativeJoiningDate.invalid && (updateCandidateStage.controls.tentativeJoiningDate.touched || updateCandidateStage.controls.tentativeJoiningDate.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.tentativeJoiningDate.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Work Location <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Enter Work Location" formControlName="workLocation">
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.workLocation.invalid && (updateCandidateStage.controls.workLocation.touched || updateCandidateStage.controls.workLocation.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.workLocation.errors?.['required']">* This field is required</span>
+                                        <span *ngIf="updateCandidateStage.controls.workLocation.errors?.['alphanumaric']">Please enter only alphanumarics values'</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Offered CTC (Per annum) <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Enter Offered CTC" formControlName="offeredCTC">
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.offeredCTC.invalid && (updateCandidateStage.controls.offeredCTC.touched || updateCandidateStage.controls.offeredCTC.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.offeredCTC.errors?.['required']">* This field is required</span>
+                                        <span *ngIf="updateCandidateStage.controls.offeredCTC.errors?.['alphanumaric']">Please enter only alphanumarics values'</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Offered Perks (If any) <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter Offered Perks" formControlName="offeredPerks"></textarea>
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.offeredPerks.invalid && (updateCandidateStage.controls.offeredPerks.touched || updateCandidateStage.controls.offeredPerks.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.offeredPerks.errors?.['required']">* This field is required</span>
+                                        <span *ngIf="updateCandidateStage.controls.offeredPerks.errors?.['alphanumaric']">Please enter only alphanumarics values'</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    }
+                    @if(candidateParentStageSelected== "offer.documentsNotSubmitted"){
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Reason for Not Submitted<span class="text-danger">*</span></label>
+                                    <select class="form-control" formControlName="documentsNotSubmitted">
+                                        <option value="">Select Reason</option>
+                                        <option value="Accepted Another Offer">Accepted Another Offer</option>
+                                        <option value="Career Growth">Career Growth</option>
+                                        <option value="Company Culture">Company Culture</option>
+                                        <option value="Company Reputation">Company Reputation</option>
+                                        <option value="Compensation Issue">Compensation Issue</option>
+                                        <option value="Contract Terms">Contract Terms</option>
+                                        <option value="Counteroffer from current employer">Counteroffer from current employer</option>
+                                        <option value="Documents Not Available">Documents Not Available</option>
+                                        <option value="Job Role Misalignment">Job Role Misalignment</option>
+                                        <option value="Job Security">Job Security</option>
+                                        <option value="Lack of Access">Lack of Access</option>
+                                        <option value="Location Issue">Location Issue</option>
+                                        <option value="Personal Reasons">Personal Reasons</option>
+                                        <option value="Relocation Issue">Relocation Issue</option>
+                                        <option value="Timings Issue">Timings Issue</option>
+                                        <option value="Work-life Balance">Work-life Balance</option>
+                                    </select>
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.documentsNotSubmitted.invalid && (updateCandidateStage.controls.documentsNotSubmitted.touched || updateCandidateStage.controls.documentsNotSubmitted.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.documentsNotSubmitted.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if(candidateParentStageSelected== "offer.offerRejected"){
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Reason for Reject<span class="text-danger">*</span></label>
+                                    <select class="form-control" formControlName="offerRejected">
+                                        <option value="">Select Reason</option>
+                                        <option value="Accepted Another Offer">Accepted Another Offer</option>
+                                        <option value="Career Growth">Career Growth</option>
+                                        <option value="Company Culture">Company Culture</option>
+                                        <option value="Company Reputation">Company Reputation</option>
+                                        <option value="Compensation Issue">Compensation Issue</option>
+                                        <option value="Contract Terms">Contract Terms</option>
+                                        <option value="Counteroffer from current employer">Counteroffer from current employer</option>
+                                        <option value="Job Security">Job Security</option>
+                                        <option value="Location Issue">Location Issue</option>
+                                        <option value="Personal Reasons">Personal Reasons</option>
+                                        <option value="Relocation Issue">Relocation Issue</option>
+                                        <option value="Timings Issue">Timings Issue</option>
+                                        <option value="Work-life Balance">Work-life Balance</option>
+                                        <option value="BGV Negative">BGV Negative</option>
+                                    </select>
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.offerRejected.invalid && (updateCandidateStage.controls.offerRejected.touched || updateCandidateStage.controls.offerRejected.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.offerRejected.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if(candidateParentStageSelected== "offer.offerHold"){
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Reason for Reject<span class="text-danger">*</span></label>
+                                    <select class="form-control" formControlName="offerHold">
+                                        <option value="">Select Reason</option>
+                                        <option value="Approval Pending">Approval Pending</option>
+                                        <option value="Budget Constraints">Budget Constraints</option>
+                                        <option value="Candidate Background Check">Candidate Background Check</option>
+                                        <option value="Hiring Freeze">Hiring Freeze</option>
+                                        <option value="Internal Restructuring">Internal Restructuring</option>
+                                        <option value="Legal/Compliance Issues">Legal/Compliance Issues</option>
+                                        <option value="Operational Issues">Operational Issues</option>
+                                        <option value="Project Delays">Project Delays</option>
+                                        <option value="Role Reevaluation">Role Reevaluation</option>
+                                    </select>
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.offerHold.invalid && (updateCandidateStage.controls.offerHold.touched || updateCandidateStage.controls.offerHold.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.offerHold.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @if(candidateParentStageSelected== "hire.joinedYet"){
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Date of Joining<span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" formControlName="dateofJoining">
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.dateofJoining.invalid && (updateCandidateStage.controls.dateofJoining.touched || updateCandidateStage.controls.dateofJoining.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.dateofJoining.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Work Location<span class="text-danger">*</span></label>
+                                    <input type="text" placeholder="Enter Work Location" class="form-control" formControlName="workHirelocation">
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.workHirelocation.invalid && (updateCandidateStage.controls.workHirelocation.touched || updateCandidateStage.controls.workHirelocation.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.workHirelocation.errors?.['required']">* This field is required</span>
+                                        <span *ngIf="updateCandidateStage.controls.workHirelocation.errors?.['alphaSpace']">Please Enter only alphabets'</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Employee Code<span class="text-danger">*</span></label>
+                                    <input type="text" placeholder="Enter Employee Code" class="form-control" formControlName="employeeCode">
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.employeeCode.invalid && (updateCandidateStage.controls.employeeCode.touched || updateCandidateStage.controls.employeeCode.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.employeeCode.errors?.['required']">* This field is required</span>
+                                        <span *ngIf="updateCandidateStage.controls.employeeCode.errors?.['alphanumaric']">Please enter only alphanumarics values'</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Designation<span class="text-danger">*</span></label>
+                                    <input type="text" placeholder="Enter Designation" class="form-control" formControlName="designation">
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.designation.invalid && (updateCandidateStage.controls.designation.touched || updateCandidateStage.controls.designation.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.designation.errors?.['required']">* This field is required</span>
+                                        <span *ngIf="updateCandidateStage.controls.designation.errors?.['alphaSpace']">Please Enter only alphabets'</span>
+                                        <span *ngIf="updateCandidateStage.controls.designation.errors?.['maxlength']">* Only 150 characters should be allowed'</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if(candidateParentStageSelected== "hire.joinedLeft"){
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Date of Leaving<span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" formControlName="dateofleaving">
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.dateofleaving.invalid && (updateCandidateStage.controls.dateofleaving.touched || updateCandidateStage.controls.dateofleaving.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.dateofleaving.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Reason for Leaving<span class="text-danger">*</span></label>
+                                    <select class="form-control" formControlName="rasonforLeaving">
+                                        <option value="">Select Reason</option>
+                                        <option>Relocation</option>
+                                        <option>Health reasons</option>
+                                        <option>Better Opportunity</option>
+                                        <option>Career Growth</option>
+                                        <option>Job Role</option>
+                                        <option>Work-life Balance</option>
+                                        <option>Job Security</option>
+                                        <option>Management issue</option>
+                                        <option>Culture Fit</option>
+                                        <option>Job Fit</option>
+                                        <option>Compensation</option>
+                                        <option>Work Environment</option>
+                                        <option>Commute</option>
+                                    </select>
+                                    <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.rasonforLeaving.invalid && (updateCandidateStage.controls.rasonforLeaving.touched || updateCandidateStage.controls.rasonforLeaving.dirty || isFormSubmited)" >
+                                        <span *ngIf="updateCandidateStage.controls.rasonforLeaving.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Comment <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter comment" formControlName="comment"></textarea>
+                            <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.comment.invalid && (updateCandidateStage.controls.comment.touched || updateCandidateStage.controls.comment.dirty || isFormSubmited)" >
+                                <span *ngIf="updateCandidateStage.controls.comment.errors?.['required']">* This field is required</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <p>{{updateCandidateStage.valid}}</p> -->
+            <!-- <p>stage:{{updateCandidateStage.controls.stage.valid}}</p>
+
+            <p>commnet:{{updateCandidateStage.controls.comment.valid}}</p>
+
+            <p>1.screening</p>
+            <p>Reason for Rejection:{{updateCandidateStage.controls.screeningRejectReason.valid}}</p>
+            <p>screeningHoldReason:{{updateCandidateStage.controls.screeningHoldReason.valid}}</p>
+
+            <p>2.Interview</p>
+            <p>interviewDate:{{updateCandidateStage.controls.interviewDate.valid}}</p>
+            <p>startTime:{{updateCandidateStage.controls.startTime.valid}}</p>
+            <p>interviewMode:{{updateCandidateStage.controls.interviewMode.valid}}</p>
+            <p>videoInterview:{{updateCandidateStage.controls.videoInterview.valid}}</p>
+            <p>interviewAddress:{{updateCandidateStage.controls.interviewAddress.valid}}</p>
+            <p>interviewerName:{{updateCandidateStage.controls.interviewerName.valid}}</p>
+            <p>interviewerEmail:{{updateCandidateStage.controls.interviewerEmail.valid}}</p>
+            <p>selectedActualInterviewDate:{{updateCandidateStage.controls.selectedActualInterviewDate.valid}}</p>
+            <p>actualInterviewDate:{{updateCandidateStage.controls.actualInterviewDate.valid}}</p>
+            <p>interviewRejected:{{updateCandidateStage.controls.rejectReason.valid}}</p>
+
+            <p>3.Hold</p>
+            <p>actualInterviewHoldDate:{{updateCandidateStage.controls.actualInterviewHoldDate.valid}}</p>
+            <P>interviewHold:{{updateCandidateStage.controls.rejectHoldReason.valid}}</P>
+
+            <P>4.Offer</P>
+            <p>offerDate:{{updateCandidateStage.controls.offerDate.valid}}</p>
+            <p>tentativeJoiningDate:{{updateCandidateStage.controls.tentativeJoiningDate.valid}}</p>
+            <p>workLocation:{{updateCandidateStage.controls.workLocation.valid}}</p>
+            <p>offeredCTC:{{updateCandidateStage.controls.offeredCTC.valid}}</p>
+            <p>offeredPerks:{{updateCandidateStage.controls.offeredPerks.valid}}</p>
+            <p>documentsNotSubmitted reason:{{updateCandidateStage.controls.documentsNotSubmitted.valid}}</p>
+            <p>offerRejected reason:{{updateCandidateStage.controls.offerRejected.valid}}</p>
+            <p>offerHold:{{updateCandidateStage.controls.offerHold.valid}}</p>
+
+            <P>5.Hire</P>
+            <p>dateofJoining:{{updateCandidateStage.controls.dateofJoining.valid}}</p>
+            <p>workHirelocation:{{updateCandidateStage.controls.workHirelocation.valid}}</p>
+            <p>employeeCode:{{updateCandidateStage.controls.employeeCode.valid}}</p>
+            <p>designation:{{updateCandidateStage.controls.designation.valid}}</p>
+            <p>dateofleaving:{{updateCandidateStage.controls.dateofleaving.valid}}</p>
+            <p>rasonforLeaving:{{updateCandidateStage.controls.rasonforLeaving.valid}}</p> -->
+
+
+            <p class="text-danger">{{overallFormValid4}}</p> 
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="message"></p>
+                    <div class="submit-btn">
+                        @if(isLoading){
+                            <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                        }@else{
+                            <button type="button" (click)="updateStage();" class="btn postjob-btn" type="button"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+</div>
+
+
+<div class="card flex justify-content-center">
+    <p-dialog header="Edit Stage for multiple candidates" 
+        [modal]="true" 
+        [(visible)]="visible2" 
+        [style]="{ width: '25rem' }" 
+        [style]="{ width: '50rem' }" 
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" >
+
+        <form [formGroup]="updateCandidateStage">
+            <div class="step-form">
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Stage</label>
+                            <select class="form-control" formControlName="stage" (change)="stageChanged($event)">
+                                <option selected="selected" value="">Select Stage</option>
+                                @for(stages of indentStaging; track $index){
+                                    <optgroup label="{{stages.stageName}}">
+                                        @for(staged of stages.details; track $index){
+                                            @if(staged.isSubmitted == false){
+                                                <option value="{{stages.stageName}}.{{staged.key}}">{{staged.displayName}}</option>
+                                            }
+                                        }
+                                    </optgroup>
+                                }
+                            </select>
+                            <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.stage.invalid && (updateCandidateStage.controls.stage.touched || updateCandidateStage.controls.stage.dirty || isFormSubmited)" >
+                                <span *ngIf="updateCandidateStage.controls.stage.errors?.['required']">* This field is required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mt-4">
+                        <div class="form-group">
+                            <label class="control-label">Comment <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter comment" formControlName="comment"></textarea>
+                            <div class="text-danger pt-2 error" *ngIf="updateCandidateStage.controls.comment.invalid && (updateCandidateStage.controls.comment.touched || updateCandidateStage.controls.comment.dirty || isFormSubmited)" >
+                                <span *ngIf="updateCandidateStage.controls.comment.errors?.['required']">* This field is required</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-danger">{{overallFormValid4}}</p> 
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="message"></p>
+                    <div class="submit-btn">
+                        @if(isLoading){
+                            <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                        }@else{
+                            <button type="button" (click)="updateMultiCanStage();" class="btn postjob-btn" type="button"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+</div>

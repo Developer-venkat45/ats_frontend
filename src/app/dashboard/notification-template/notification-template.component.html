@@ -1,0 +1,673 @@
+<div id="selectedBox">Selected</div>
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray" *ngIf="isTablevisible">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="row mb-2">
+                    <div class=" container col-md-6">
+                        <div class="breadcrumb nav">
+                            <span class="breadcrumb-item">
+                                <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+                            </span>
+                            <span class="breadcrumb-item">
+                                <a class="breadcrumb-link" [routerLink]="['/template']">Notification Template</a>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="submit-btn" style="float: right; margin-right: 15px;">
+                            <button class="btn postjob-btn" (click)="addNotifications()"><i class="fa-regular fa-plus"></i> Notification Template</button>
+                        </div>
+                    </div>
+                </div>
+                <p-table #dt2 [value]="NotifyList" 
+                    dataKey="id"
+                    [paginator]="true"
+                    [loading]="loading"
+                    [rows]="100"
+                    [tableStyle]="{ 'min-width': '50rem' }"
+                    [rowsPerPageOptions]="[10, 25, 50, 100, 500]"
+                    [globalFilterFields]="['name', 'email', 'mobile', 'role']">
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <p-iconField iconPosition="left" class="ml-auto">
+                                <p-inputIcon><i class="pi pi-search"></i></p-inputIcon>
+                                <input pInputText type="text" (input)="dt2.filterGlobal($any($event).target.value, 'contains')" placeholder="Search keyword" />
+                            </p-iconField>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>#</th>
+                            <th pSortableColumn="subject" style="width:20%"> Subject <p-sortIcon field="subject" /></th>
+                            <th pSortableColumn="Notify_type" style="width:20%"> Notification Type <p-sortIcon field="Notify_type" /></th>
+                            <th pSortableColumn="module" style="width:20%"> Module <p-sortIcon field="module" /></th>
+                            <th pSortableColumn="process" style="width:20%"> Process <p-sortIcon field="process" /></th>
+                            
+                            <th>Action</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-user let-i="rowIndex">
+                        <tr>
+                            <td>{{i + 1}}</td>
+                            <td class="text-primary" (click)="showEditModal(user)">{{ user.subject ?? "..." }}</td>
+                            <td>{{ user.Notify_type }}</td>
+                            <td>{{ user.module }}</td>
+                            <td>{{ user.process ?? "..." }}</td>
+                            <td>
+                                <a class="" (click)="showEditModal(user)" ><i class="fa fa-edit text-info"></i></a> &nbsp;
+                                <i [ngClass]="{'fa-eye': user.status === true, 'fa-eye-slash': user.status === false}" class="fa" (click)="confirmStatusChange2(user)" ></i>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="section-full p-t60 mt-5 p-b150 site-bg-gray" *ngIf="isFormvisible">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="step-form rounded" style="position: relative;">
+                    <form [formGroup]="addNotification">
+                        <div class="row">
+                            <h4 class="text-danger mb-3">Insert Notification</h4>
+                                    <div class="col-md-8">
+                                        <label class="form-check-label">Notification Type<span class="text-danger">*</span></label><br>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input "   type="radio" value="email"  id="email" formControlName="Notify_type" checked (change)="tempVarFunc()" >
+                                            <label for="email" class="form-check-label "  >Email</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input "   type="radio" value="whatsapp" id="whatsapp" formControlName="Notify_type" (change)="tempVarFunc()">
+                                            <label for="whatsapp" class="form-check-label">WhatsApp</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input "   type="radio"  id="web_notification"  value="web_notification" formControlName="Notify_type" (change)="tempVarFunc()">
+                                            <label for="web_notification" class="form-check-label">Web Notification</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input " type="radio" id="email_bulk" value="email_bulk"
+                                                formControlName="Notify_type" (change)="tempVarFunc()">
+                                            <label for="email_bulk" class="form-check-label ">Email Bulk</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input " type="radio" id="whatsapp_bulk" value="whatsapp_bulk"
+                                                formControlName="Notify_type" (change)="tempVarFunc()">
+                                            <label for="whatsapp_bulk" class="form-check-label ">Whatsapp Bulk</label>
+                                        </div>
+                                    </div>
+                            
+                                <div class="col-md-4">
+                                    <label class="form-check-label">Status<span class="text-danger">*</span></label><br>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input"   type="radio" value="1" formControlName="status" id="active" checked>
+                                        <label for="active" class="form-check-label"  >Active</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input"   type="radio" value="2" formControlName="status" id="inactive">
+                                        <label for="inactive" class="form-check-label"  >Inactive</label>
+                                    </div>
+                                    <div class="text-danger pt-2">
+                                        <span>{{ statuserror }}</span>
+                                    </div>
+                                </div>
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="module" class="control-label">Module<span class="text-danger">*</span></label>
+                                    <input id="module"  type="text" class="form-control" placeholder="Enter Module" formControlName="module" (keyup)="tempVarFunc()">
+                                    <div class="text-danger pt-2 error" *ngIf="addNotification.controls.module.invalid && (addNotification.controls.module.touched || addNotification.controls.module.dirty || isFormSubmited2)" >
+                                        <span *ngIf="addNotification.controls.module.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            @if(addNotification.controls.Notify_type.value?.toLowerCase()!=="email_bulk" && addNotification.controls.Notify_type.value?.toLowerCase()!=="whatsapp_bulk" ){
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="action" class="control-label">Action<span class="text-danger">*</span></label>
+                                        <input id="action" type="text" class="form-control" placeholder="Enter Action" formControlName="action" (keyup)="tempVarFunc()">
+                                        <div class="text-danger pt-2 error"
+                                            *ngIf="addNotification.controls.action.invalid && (addNotification.controls.action.touched || addNotification.controls.action.dirty || isFormSubmited2)">
+                                            <span *ngIf="addNotification.controls.action.errors?.['required']">* This field is required</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="process" class="control-label">Process<span class="text-danger">*</span></label>
+                                        <input id="process" type="text" class="form-control" placeholder="Enter Process" formControlName="process" (keyup)="tempVarFunc()">
+                                        <div class="text-danger pt-2 error"
+                                            *ngIf="addNotification.controls.process.invalid && (addNotification.controls.process.touched || addNotification.controls.process.dirty || isFormSubmited2)">
+                                            <span *ngIf="addNotification.controls.process.errors?.['required']">* This field is required</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                          
+                           @if(addNotification.controls.Notify_type.value?.toLowerCase()==="email" || addNotification.controls.Notify_type.value?.toLowerCase()==="email_bulk"){
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="subject" class="control-label">Subject<span class="text-danger">*</span></label>
+                                                    <input id="subject" type="text" class="form-control" placeholder="Enter the Subject" formControlName="subject">
+                                                    <div class="text-danger pt-2">
+                                                        <span>{{ subjecterror }}</span>
+                                                    </div>
+                                                    <div class="text-danger pt-2 error"
+                                                        *ngIf="addNotification.controls.subject.invalid && (addNotification.controls.subject.touched || addNotification.controls.subject.dirty || isFormSubmited2)">
+                                                        <span *ngIf="addNotification.controls.subject.errors?.['required']">* This field is required</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="fromemail" class="control-label">From Email</label>
+                                                <input id="fromemail" type="text" class="form-control" placeholder="Enter From Email" formControlName="fromemail">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="cc" class="control-label">Email CC</label>
+                                                <input id="cc" type="text" class="form-control" placeholder="Enter the Email CC" formControlName="cc">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="bc" class="control-label">Email BC</label>
+                                                <input id="bc" type="text" class="form-control" placeholder="Enter the Email BC" formControlName="bc">
+                                            </div>
+                                        </div>                         
+                           }
+                            @if(addNotification.controls.Notify_type.value?.toLowerCase()==="whatsapp" || addNotification.controls.Notify_type.value?.toLowerCase()==="whatsapp_bulk"){
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="channelId" class="control-label">Channel Id<span class="text-danger">*</span></label>
+                                                <input id="channelId" type="text" class="form-control" placeholder="Enter the channel Id" formControlName="channelId">
+                                                <div class="text-danger pt-2">
+                                                    <span>{{ subjecterror }}</span>
+                                                </div>
+                                                <div class="text-danger pt-2 error"
+                                                    *ngIf="addNotification.controls.channelId.invalid && (addNotification.controls.channelId.touched || addNotification.controls.channelId.dirty || isFormSubmited2)">
+                                                    <span *ngIf="addNotification.controls.channelId.errors?.['required']">* This field is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="namespace" class="control-label">Namespace<span class="text-danger">*</span></label>
+                                                <input id="namespace" type="text" class="form-control" placeholder="Enter the namespace" formControlName="namespace">
+                                                <div class="text-danger pt-2">
+                                                    <span>{{ subjecterror }}</span>
+                                                </div>
+                                                <div class="text-danger pt-2 error"
+                                                    *ngIf="addNotification.controls.namespace.invalid && (addNotification.controls.namespace.touched || addNotification.controls.namespace.dirty || isFormSubmited2)">
+                                                    <span *ngIf="addNotification.controls.namespace.errors?.['required']">* This field is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="templateName" class="control-label">Template Name<span class="text-danger">*</span></label>
+                                                <input id="templateName" type="text" class="form-control" placeholder="Enter the template name" formControlName="templateName">
+                                                <div class="text-danger pt-2">
+                                                    <span>{{ subjecterror }}</span>
+                                                </div>
+                                                <div class="text-danger pt-2 error"
+                                                    *ngIf="addNotification.controls.templateName.invalid && (addNotification.controls.templateName.touched || addNotification.controls.templateName.dirty || isFormSubmited2)">
+                                                    <span *ngIf="addNotification.controls.templateName.errors?.['required']">* This field is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="variables" class="control-label" style="display: block;" [ngStyle]="templateVariables.length===0? {'margin-bottom':' -10px'} :  {'margin-bottom':' -3px'} ">Template Variables</label>
+                                                @if(templateVariables.length>0){
+                                                     <ul class="ul">
+                                                         @for(variable of templateVariables;track variable;let ind=$index){
+                                                              <li class="li">
+                                                                    <span>{{variable}}</span>
+                                                                    <span>
+                                                                        <i class="fas fa-times "
+                                                                            style="color: rgb(60, 60, 60);cursor: pointer;padding-left: 4px;display: inline-block;font-size: 10px;"
+                                                                            (click)="removeDataVal(ind)"></i>
+                                                                    </span>
+                                                              </li>
+                                                         }
+                                                     </ul>
+                                                }
+                                                <input id="variables" type="text" class="form-control" placeholder="Add template variable"
+                                                    formControlName="variables"  style="display:inline-block;width:70%;">
+                                                <span  class="col-md-1 pt-3" style="display:inline-block;margin-left: 5px;;">
+                                                    <button class="btn btn-primary" style="margin-top: -2px;" [disabled]="addNotification.controls.variables.value===''" (click)="addVariable()">Add</button></span>
+                                            </div>
+                                        </div>
+                            }
+                            @if(addNotification.controls.Notify_type.value?.toLowerCase()==="web_notification"){
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="subject" class="control-label">Subject<span class="text-danger">*</span></label>
+                                                <input id="subject" type="text" class="form-control" placeholder="Enter the Subject" formControlName="subject">
+                                                <div class="text-danger pt-2">
+                                                    <span>{{ subjecterror }}</span>
+                                                </div>
+                                                <div class="text-danger pt-2 error"
+                                                    *ngIf="addNotification.controls.subject.invalid && (addNotification.controls.subject.touched || addNotification.controls.subject.dirty || isFormSubmited2)">
+                                                    <span *ngIf="addNotification.controls.subject.errors?.['required']">* This field is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="title" class="control-label">Title<span class="text-danger">*</span></label>
+                                                <input id="title" type="text" class="form-control" placeholder="Enter Title" formControlName="title">
+                                                <div class="text-danger pt-2 error"
+                                                    *ngIf="addNotification.controls.title.invalid && (addNotification.controls.title.touched || addNotification.controls.title.dirty || isFormSubmited2)">
+                                                    <span *ngIf="addNotification.controls.title.errors?.['required']">* This field is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <div class="col-md-6">
+                                        <label class="form-check-label">Priority<span class="text-danger">*</span></label><br>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input"    type="radio" value="Low" formControlName="priority" checked id="low">
+                                            <label for="low" class="form-check-label"   >Low</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input"    type="radio" value="Medium" formControlName="priority" id="medium">
+                                            <label for="medium" class="form-check-label"   >Medium</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input"    type="radio" value="High" formControlName="priority" id="high">
+                                            <label for="high" class="form-check-label"   >High</label>
+                                        </div>
+                                        <div class="text-danger pt-2 error"
+                                            *ngIf="addNotification.controls.priority.invalid && (addNotification.controls.priority.touched || addNotification.controls.priority.dirty || isFormSubmited2)">
+                                            <span *ngIf="addNotification.controls.priority.errors?.['required']">* This field is required</span>
+                                        </div>
+                                    </div>
+                            }          
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @if(addNotification.controls.Notify_type.value?.toLowerCase()==="email"){
+                                <label for="body" class="control-label">Email Body<span class="text-danger">*</span></label>
+                                }
+                                @if(addNotification.controls.Notify_type.value?.toLowerCase()==="web_notification"){
+                                <label for="body" class="control-label">Web Notification Body<span class="text-danger">*</span></label>
+                                }
+                                @if(addNotification.controls.Notify_type.value?.toLowerCase()==="email_bulk"){
+                                <label for="body" class="control-label">Email Bulk Body<span class="text-danger">*</span></label>
+                                }
+                
+                                <div class="NgxEditor__Wrapper" *ngIf="addNotification.controls.Notify_type.value?.toLowerCase()!=='whatsapp' &&addNotification.controls.Notify_type.value?.toLowerCase()!=='whatsapp_bulk'">
+                                    <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" [colorPresets]="colorPresets"></ngx-editor-menu>
+                                    <ngx-editor [editor]="editor" [ngModel]="html" formControlName="body"
+                                        [placeholder]="'Type here...'" id="body"></ngx-editor>
+                                </div>
+                                <div class="text-danger pt-2 error"
+                                    *ngIf="addNotification.controls.body.invalid && (addNotification.controls.body.touched || addNotification.controls.body.dirty || isFormSubmited2) && (addNotification.controls.Notify_type.value?.toLowerCase()!=='whatsapp' && addNotification.controls.Notify_type.value?.toLowerCase()!=='whatsapp_bulk' )">
+                                    <span *ngIf="addNotification.controls.body.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>                 
+                     
+                        @if(tempVar != ""){
+                            <div class="col-md-12">
+                                <p class="mb-0"><b>Supported data fields:</b></p>
+                                <p>
+                                    @for(t of tempVar;let idx = $index; track idx){
+                                    @if(idx<tempVar.length-1){ 
+                                       <span class="hover-text" tooltipPosition="top" [pTooltip]="'Click to copy text'" [tooltipEvent]="'hover'" (click)="copyText(t,idx)" >{{t}}</span>
+                                        <span>,</span>
+                                        }
+                                        @else {
+                                        <span class="hover-text" tooltipPosition="top" [pTooltip]="'Click to copy text'" [tooltipEvent]="'hover'"
+                                        (click)="copyText(t,idx)">{{t}}</span>
+                                        }
+                                        }
+                                </p>
+                            </div>
+                        }
+                          
+                            <div class="col-md-12">
+                                <div class="text-danger pt-2">
+                                    <span>{{ bodyerror }}</span>
+                                </div>
+                                <p class="text-danger">{{ apiMessage2 }}</p>
+                                <div class="submit-btn">
+                                    <button type="button" (click)="insertNotification();" class="btn postjob-btn"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" (click)="backtotable();" class="btn postjob-btn crossbtn"><i class="fa fa-times"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="section-full p-t60 mt-5 p-b150 site-bg-gray" *ngIf="isUpdateFormvisible">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="step-form rounded" style="position: relative;">
+                    <form [formGroup]="editNotification">
+                        <div class="row">
+                            <h4 class="text-danger">Update Notification</h4>
+
+                            <div class="col-md-8">
+                                <label class="form-check-label">Notification Type<span class="text-danger">*</span></label><br>
+                                <div class="form-check form-check-inline">
+                                    <input id="email" class="form-check-input" type="radio" value="email" formControlName="Notify_type" checked (change)="tempVarFunc()">
+                                    <label   for="email" class="form-check-label">Email</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input id="whatsapp" class="form-check-input" type="radio" value="whatsapp" formControlName="Notify_type" (change)="tempVarFunc()">
+                                    <label for="whatsapp" class="form-check-label">WhatsApp</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input id="web_notification" class="form-check-input" type="radio" value="web_notification" formControlName="Notify_type" (change)="tempVarFunc()">
+                                    <label for="web_notification" class="form-check-label">Web Notification</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input " type="radio" id="email_bulk" value="email_bulk" formControlName="Notify_type" (change)="tempVarFunc()">
+                                    <label for="email_bulk" class="form-check-label ">Email Bulk</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input " type="radio" id="whatsapp_bulk" value="whatsapp_bulk"
+                                        formControlName="Notify_type" (change)="tempVarFunc()">
+                                    <label for="whatsapp_bulk" class="form-check-label ">Whatsapp Bulk</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-check-label">Status<span class="text-danger">*</span></label><br>
+                                <div class="form-check form-check-inline">
+                                    <input id="active" class="form-check-input" type="radio" value="1" formControlName="status" checked>
+                                    <label for="active" class="form-check-label">Active</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input id="inactive" class="form-check-input" type="radio" value="2" formControlName="status">
+                                    <label for="inactive"  class="form-check-label">Inactive</label>
+                                </div>
+                                <div class="text-danger pt-2">
+                                    <span>{{ statuserror }}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Module<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="module" placeholder="Enter Module" formControlName="module" (keyup)="tempVarFunc()">
+                                    <div class="text-danger pt-2 error" *ngIf="editNotification.controls.module.invalid && (editNotification.controls.module.touched || editNotification.controls.module.dirty || isFormSubmited2)" >
+                                        <span *ngIf="editNotification.controls.module.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                          
+                          @if(editNotification.controls.Notify_type.value?.toLowerCase()!=="email_bulk" &&
+                            editNotification.controls.Notify_type.value?.toLowerCase()!=="whatsapp_bulk" ){
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Action<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="action" placeholder="Enter Action" formControlName="action" (keyup)="tempVarFunc()">
+                                        <div class="text-danger pt-2 error"
+                                            *ngIf="editNotification.controls.action.invalid && (editNotification.controls.action.touched || editNotification.controls.action.dirty || isFormSubmited2)">
+                                            <span *ngIf="editNotification.controls.action.errors?.['required']">* This field is required</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Process<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="process" placeholder="Enter Process" formControlName="process" (keyup)="tempVarFunc()">
+                                        <div class="text-danger pt-2 error"
+                                            *ngIf="editNotification.controls.process.invalid && (editNotification.controls.process.touched || editNotification.controls.process.dirty || isFormSubmited2)">
+                                            <span *ngIf="editNotification.controls.process.errors?.['required']">* This field is required</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+
+                            @if(editNotification.controls.Notify_type.value?.toLowerCase()==="email" || editNotification.controls.Notify_type.value?.toLowerCase()==="email_bulk"){
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="subject" class="control-label">Subject<span class="text-danger">*</span></label>
+                                        <input id="subject" type="text" class="form-control" placeholder="Enter the Subject" formControlName="subject">
+                                        <div class="text-danger pt-2">
+                                            <span>{{ subjecterror }}</span>
+                                        </div>
+                                        <div class="text-danger pt-2 error"
+                                            *ngIf="editNotification.controls.subject.invalid && (editNotification.controls.subject.touched || editNotification.controls.subject.dirty || isFormSubmited2)">
+                                            <span *ngIf="editNotification.controls.subject.errors?.['required']">* This field is required</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Email CC</label>
+                                    <input type="text" class="form-control" placeholder="Enter Email CC" formControlName="cc">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Email BC</label>
+                                    <input type="text" class="form-control" placeholder="Enter the Email BC" formControlName="bc">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="fromemail" class="control-label">From Email</label>
+                                    <input id="fromemail" type="text" class="form-control" placeholder="Enter From Email"
+                                        formControlName="fromemail">
+                                </div>
+                            </div>
+                            
+                        }
+
+                            @if(editNotification.controls.Notify_type.value?.toLowerCase()==="whatsapp" || editNotification.controls.Notify_type.value?.toLowerCase()==="whatsapp_bulk"){
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="channelId" class="control-label">Channel Id<span class="text-danger">*</span></label>
+                                    <input id="channelId" type="text" class="form-control" placeholder="Enter the channel Id"
+                                        formControlName="channelId">
+                                    <div class="text-danger pt-2">
+                                        <span>{{ subjecterror }}</span>
+                                    </div>
+                                    <div class="text-danger pt-2 error"
+                                        *ngIf="editNotification.controls.channelId.invalid && (editNotification.controls.channelId.touched || editNotification.controls.channelId.dirty || isFormSubmited2)">
+                                        <span *ngIf="editNotification.controls.channelId.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="namespace" class="control-label">Namespace<span class="text-danger">*</span></label>
+                                    <input id="namespace" type="text" class="form-control" placeholder="Enter the namespace"
+                                        formControlName="namespace">
+                                    <div class="text-danger pt-2">
+                                        <span>{{ subjecterror }}</span>
+                                    </div>
+                                    <div class="text-danger pt-2 error"
+                                        *ngIf="editNotification.controls.namespace.invalid && (editNotification.controls.namespace.touched || editNotification.controls.namespace.dirty || isFormSubmited2)">
+                                        <span *ngIf="editNotification.controls.namespace.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="templateName" class="control-label">Template Name<span class="text-danger">*</span></label>
+                                    <input id="templateName" type="text" class="form-control" placeholder="Enter the Subject"
+                                        formControlName="templateName">
+                                    <div class="text-danger pt-2">
+                                        <span>{{ subjecterror }}</span>
+                                    </div>
+                                    <div class="text-danger pt-2 error"
+                                        *ngIf="editNotification.controls.templateName.invalid && (editNotification.controls.templateName.touched || editNotification.controls.templateName.dirty || isFormSubmited2)">
+                                        <span *ngIf="editNotification.controls.templateName.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="variables" class="control-label" style="display: block;"
+                                            [ngStyle]="templateVariables.length===0? {'margin-bottom':' -10px'} :  {'margin-bottom':' -3px'} ">Template
+                                            Variables</label>
+                                        @if(templateVariables.length>0){
+                                        <ul class="ul">
+                                            @for(variable of templateVariables;track variable;let ind=$index){
+                                            <li class="li">
+                                                <span>{{variable}}</span>
+                                                <span>
+                                                    <i class="fas fa-times "
+                                                        style="color: rgb(60, 60, 60);cursor: pointer;padding-left: 4px;display: inline-block;font-size: 10px;"
+                                                        (click)="removeDataVal(ind)"></i>
+                                                </span>
+                                            </li>
+                                            }
+                                        </ul>
+                                        }
+                                        <input id="variables" type="text" class="form-control" placeholder="Add template variable"
+                                            formControlName="variables" style="display:inline-block;width:70%;">
+                                        <span class="col-md-1 pt-3" style="display:inline-block;margin-left: 5px;;">
+                                            <button class="btn btn-primary" style="margin-top: -2px;"
+                                                [disabled]="editNotification.controls.variables.value===''" (click)="addVariable()">Add</button></span>
+                                    </div>
+                                </div>
+                            
+                            }
+
+                        @if(editNotification.controls.Notify_type.value?.toLowerCase()==="web_notification"){
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="subject" class="control-label">Subject<span class="text-danger">*</span></label>
+                                    <input id="subject" type="text" class="form-control" placeholder="Enter the Subject" formControlName="subject">
+                                    <div class="text-danger pt-2">
+                                        <span>{{ subjecterror }}</span>
+                                    </div>
+                                    <div class="text-danger pt-2 error"
+                                        *ngIf="editNotification.controls.subject.invalid && (editNotification.controls.subject.touched || editNotification.controls.subject.dirty || isFormSubmited2)">
+                                        <span *ngIf="editNotification.controls.subject.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="title" class="control-label">Title<span class="text-danger">*</span></label>
+                                <input id="title" type="text" class="form-control" placeholder="Enter Title" formControlName="title">
+                                <div class="text-danger pt-2 error"
+                                    *ngIf="editNotification.controls.title.invalid && (editNotification.controls.title.touched || editNotification.controls.title.dirty || isFormSubmited2)">
+                                    <span *ngIf="editNotification.controls.title.errors?.['required']">* This field is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="col-md-6">
+                            <label class="form-check-label">Priority<span class="text-danger">*</span></label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" value="Low" formControlName="priority" checked id="low">
+                                <label for="low" class="form-check-label">Low</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" value="Medium" formControlName="priority" id="medium">
+                                <label for="medium" class="form-check-label">Medium</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" value="High" formControlName="priority" id="high">
+                                <label for="high" class="form-check-label">High</label>
+                            </div>
+                            <div class="text-danger pt-2 error"
+                                *ngIf="editNotification.controls.priority.invalid && (editNotification.controls.priority.touched || editNotification.controls.priority.dirty || isFormSubmited2)">
+                                <span *ngIf="editNotification.controls.priority.errors?.['required']">* This field is required</span>
+                            </div>
+                        </div>
+                        }
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @if(editNotification.controls.Notify_type.value?.toLowerCase()==="email"){
+                                            <label class="control-label">Email Body<span class="text-danger">*</span></label>
+                                    }
+                                    @if(editNotification.controls.Notify_type.value?.toLowerCase()==="web_notification"){
+                                    <label class="control-label">Web Notification Body<span class="text-danger">*</span></label>
+                                    }
+                                    @if(editNotification.controls.Notify_type.value?.toLowerCase()==="email_bulk"){
+                                    <label class="control-label">Email Bulk Body<span class="text-danger">*</span></label>
+                                    }
+                                    <div class="NgxEditor__Wrapper"  *ngIf="editNotification.controls.Notify_type.value?.toLowerCase()!=='whatsapp' &&editNotification.controls.Notify_type.value?.toLowerCase()!=='whatsapp_bulk'">
+                                        <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" [colorPresets]="colorPresets"></ngx-editor-menu>
+                                        <ngx-editor [editor]="editor" formControlName="body"
+                                            [placeholder]="'Type here...'" id="body"></ngx-editor>
+                                    </div>
+                                    <div class="text-danger pt-2 error"
+                                        *ngIf="editNotification.controls.body.invalid && (editNotification.controls.body.touched || editNotification.controls.body.dirty || isFormSubmited2)  && (editNotification.controls.Notify_type.value?.toLowerCase()!=='whatsapp' && editNotification.controls.Notify_type.value?.toLowerCase()!=='whatsapp_bulk')">
+                                        <span *ngIf="editNotification.controls.body.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            @if(tempVar != ""){
+                                <div class="col-md-12">
+                                    <p class="mb-0"><b>Supported data fields:</b></p>
+                                    <p>
+                                        @for(t of tempVar;let idx = $index; track idx){
+                                          @if(idx<tempVar.length-1){ 
+                                            <span>
+                                                <span class="hover-text" tooltipPosition="top" [pTooltip]="'Click to copy text'" [tooltipEvent]="'hover'" (click)="copyText(t,idx)" [id]="'var-'+idx">{{t}}</span>
+                                                <span>,</span>
+                                            </span>
+                                            }
+                                          @else {
+                                            <span class="hover-text" tooltipPosition="top" [pTooltip]="'Click to copy text'" [tooltipEvent]="'hover'" (click)="copyText(t,idx)" [id]="'var-'+idx">{{t}}</span>
+                                            }
+                                            }
+                                    </p>
+                                </div>
+                            }   
+                            <div class="col-md-12">
+                                <div class="text-danger pt-2">
+                                    <span>{{ bodyerror }}</span>
+                                </div>
+                                <p class="text-danger">{{ apiMessage2 }}</p>
+                                <div >
+                                    <div class="submit-btn">
+                                        <button type="button" (click)="updateNotification2();" class="btn postjob-btn"><i class="fa-regular fa-paper-plane"></i> UPDATE</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <button type="button" (click)="backtotable();" class="btn postjob-btn crossbtn"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p-toast />

@@ -1,0 +1,86 @@
+.form-group {
+    margin-bottom: 20px;
+}
+div.skills ul li{
+    background-color: #f1f1f1;
+    padding: 1px 10px;
+    border-radius: 20px;
+    margin-right: 4px;
+    font-size: 12px;
+}
+.error{
+    font-size: 12px;
+    font-style: italic;
+}
+
+
+.form-heading-div{
+  background: #ecf0f5;
+  padding: 10px 15px 6px 15px;
+  border-radius: 5px 5px 0 0;
+  color: #FFFFFF;
+}
+.question-div{
+    padding: 15px 30px;
+    /* height: 300px;
+    overflow-y: scroll; */
+}
+.step-boder{
+  border-radius: 5px;
+  border: 1px solid #D3D8DD;
+  background-color: #FFFFFF;
+}
+
+.question-heading{
+  background-color: #f0f0f0;
+  padding: 10px;
+}
+.options-div{
+  padding: 10px;
+}
+
+
+.fir-count {
+  background: #0c60e6;
+  color: #ffffff;
+  padding: 2px 6px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  font-size: 13px;
+}
+
+.sec-count {
+  background: #28a745;
+  color: #ffffff;
+  padding: 2px 4px;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  margin-right: 0px;
+  font-size: 13px;
+}
+
+::ng-deep .p-autocomplete-dd{
+  width: 100%;
+}
+::ng-deep .p-autocomplete-input{
+  padding: 5px 0 5px 15px;
+}
+::ng-deep .p-autocomplete-items{
+  padding: 10px;
+  margin: 0;
+  line-height: 1.9;
+}
+:ng-ddep .p-autocomplete-items .p-autocomplete-item {
+  padding: 10px;
+}
+::ng-deep .p-autocomplete-dropdown.p-button-icon-only.p-button {
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+  border-radius: 0 5px 5px 0;
+  padding: 8px 24px;
+  white-space: nowrap;
+  overflow: hidden;
+  width: fit-content;
+  border: none;
+  margin-right: 10px;
+}

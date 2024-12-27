@@ -1,0 +1,234 @@
+.clint-info{
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.1);
+    padding: 12px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    background: rgba(200,200,200,0.1);
+}
+            
+.clint-info>.row{
+    margin-top:8px;
+}
+            
+.clint-info>span{
+    position: absolute;
+    left: 10px;
+    top: -16px;
+    font-size: 14px;
+    background: #ffffff;
+    border: 1px solid #f4ae00;
+    color: #f4ae00;
+    font-weight: 600;
+    line-height: 0;
+    padding-right: 8px;
+}
+            
+.clint-info>span>i{
+    margin-right: 6px;
+    background: #ffffff;
+    width: 36px;
+    height: 26px;
+    text-align: center;
+    padding: 5px 2px;
+    color: #f4ae00;
+    font-size: 14px;
+    border-right: 1px solid #f4ae00;
+}
+#passwordError{
+    color: red;
+}
+button[disabled]{
+    opacity: 0.5;
+    cursor: not-allowed;
+
+}
+/* .form-control {
+    font-size: 14px;
+    height: calc(2.25rem + -3px);
+    padding: 0.375rem 0.5rem;
+    color: #000;
+    background-color: #FFF;
+    border-radius: 5px;
+}
+label{
+    font-weight: bold;
+} */
+
+.step-form-left-panel .form-group{
+    margin-bottom: 18px;
+}
+
+.step-form-left-panel .form-group label.control-label{
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.step-form-left-panel .form-group .form-control{
+    border-radius: 6px;
+}
+
+
+
+
+.step-form .form-group{
+    margin-bottom: 18px;
+}
+
+.step-form .form-group label.control-label{
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.step-form .form-group .form-control{
+    border-radius: 6px;
+}
+
+
+.form-control {
+    appearance: auto;
+    color: #808385;
+}
+
+::placeholder {
+    color: #808385;
+  }
+
+
+.tab-content {
+    padding: 1.5rem;
+    border-radius: 1px;
+    background: #FFF;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+}
+.nav-tabs {
+    border: none;
+}
+.error{
+    font-size: 12px;
+    font-style: italic;
+    color: red;
+}
+
+
+.nav2 .nav-item2 button.active {
+    background-color: transparent;
+    color: var(--bs-danger) !important;
+  }
+  .nav2 .nav-item2 button.active::after {
+    content: "";
+    border-right: 4px solid var(--bs-danger);
+    height: 100%;
+    position: absolute;
+    right: -1px;
+    top: 0;
+    border-radius: 5px 0 0 5px;
+  }
+  
+
+.checkbox-input-class {
+    background: #f0f8ff;
+    padding: 15px 0 5px 15px;
+    border-radius: 7px;
+    margin-bottom: 15px;
+}
+
+
+
+.form-heading-div{
+    background: cornflowerblue;
+    padding: 10px 15px 6px 15px;
+    border-radius: 5px 5px 0 0;
+    color: #FFFFFF;
+}
+
+.step-boder{
+    border-radius: 5px;
+    border: 1px solid #D3D8DD;
+}
+
+.question-div{
+    padding: 15px 30px;
+    height: 300px;
+    overflow-y: scroll;
+}
+
+.panel-header{
+    background: #ecf0f5;
+    padding: 10px 0 10px 15px;
+    border-radius: 5px 5px 0 0;
+}
+.step-form{
+    border: 1px solid #ecf0f5;
+    padding: 15px;
+    border-radius: 0 0 5px 5px;
+}
+.step3panel{
+    border: 1px solid #ecf0f5;
+    padding: 15px;
+    border-radius: 0 0 5px 5px;
+}
+
+
+.option-group{
+    background-color: #F0f0f0;
+    padding: 15px;
+}
+
+
+
+
+::ng-deep .p-autocomplete-dd{
+    width: 100%;
+  }
+  ::ng-deep .p-autocomplete-input{
+    padding: 5px 0 5px 15px;
+  }
+  ::ng-deep .p-autocomplete-items{
+    padding: 10px;
+    margin: 0;
+    line-height: 1.9;
+  }
+  :ng-ddep .p-autocomplete-items .p-autocomplete-item {
+    padding: 10px;
+  }
+::ng-deep .p-autocomplete-dropdown.p-button-icon-only.p-button {
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+    border-radius: 0 5px 5px 0;
+    padding: 8px 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    width: fit-content;
+    border: none;
+    margin-right: 10px;
+}
+::ng-deep .p-autocomplete-multiple-container.p-component.p-inputtext{
+    padding: 10px;
+    margin: 0px;
+}
+
+::ng-deep .p-autocomplete-multiple-container.p-component.p-inputtext li{
+    padding: 2px 10px;
+    font-size: 14px;
+
+}
+::ng-deep .multiselect-dropdown .dropdown-btn .selected-item-container .selected-item {
+    background: #e5e7eb!important;
+    border: 1px solid #e5e7eb!important;
+    margin-right: 4px;
+    padding: 2px 10px!important;
+    color: #4b5563!important;
+    border-radius: 16px!important;
+    float: left;
+    max-width: none !important;
+    margin-bottom: 5px!important;
+    font-size: 13px !important;
+  }
+  ::ng-deep .selected-item a {
+    color: #4b5563 !important;
+    padding-left: 2px;
+  }

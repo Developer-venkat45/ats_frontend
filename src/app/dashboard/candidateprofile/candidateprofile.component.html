@@ -1,0 +1,370 @@
+<!-- OUR BLOG START -->
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class=" container col-md-12">
+        <div class="breadcrumb nav">
+            <span class="breadcrumb-item">
+                <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+            </span>
+            <span class="breadcrumb-item">
+                <a class="breadcrumb-link" [routerLink]="['/candidates']" >Candidates</a>
+            </span>
+            <span class="breadcrumb-item">
+                <a class="breadcrumb-link">Candidate Profile</a>
+            </span>
+        </div>
+    </div>
+    <div class="container emp-profile">
+        <div class="row">
+            <div class="col-md-3">
+                @if(loader){
+                    <div class="fb-item">
+                        <div class="first-section-wrapper">
+                            <div class="gravatar">
+                                <ngx-skeleton-loader appearance="" [theme]="{ width: '200px', height: '200px','margin-left': '20px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="gravatar-title">
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{width: '80px', 'border-radius': '0', height: '10px', 'margin-bottom': '10px','margin-left':'20px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{ width: '170px', 'border-radius': '0', height: '15px','margin-left':'20px' }"></ngx-skeleton-loader>
+                                </div>
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{width: '80px', 'border-radius': '0', height: '10px', 'margin-bottom': '10px','margin-left':'20px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{ width: '170px', 'border-radius': '0', height: '15px','margin-left':'20px' }"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="second-section-wrapper">
+                            <div class="wrapper">
+                                <ngx-skeleton-loader
+                                [theme]="{
+                                    'width': '40%',
+                                    'border-radius': '0',
+                                    'height': '10px',
+                                    'margin-bottom': '10px',
+                                    'margin-left':'20px'
+                                }"
+                                ></ngx-skeleton-loader>
+                            </div>
+                        
+                        </div>
+                    </div>
+                }@else{
+                <div class="profile-img">
+                    <img src="https://tms.tmivirtually.com/docs/trainer/image/1683046513Trainer_IMG.jpg" alt=""/>
+                </div>
+                <div class="profile-work">
+                    <!-- <p>WORK LINK</p>
+                    <a href="">Website Link</a><br/>
+                    <a href="">Bootsnipp Profile</a><br/>
+                    <a href="">Bootply Profile</a> -->
+
+                    <p class="text-danger">SKILLS</p>
+                    @for(skill of candidateData?.skills; track $index){
+                    <a href="">{{skill}}</a><br/>
+                    }
+                </div>
+            }
+            </div>
+
+            <div class="col-md-9">
+                @if(loader){
+                    <div class="fb-item">
+                        <div class="first-section-wrapper">
+                            <div class="gravatar-title">
+                                <div><ngx-skeleton-loader [theme]="{width: '80px', 'border-radius': '0', height: '10px', 'margin-bottom': '10px','margin-left':'20px'}"></ngx-skeleton-loader></div>
+                                <div><ngx-skeleton-loader [theme]="{ width: '170px', 'border-radius': '0', height: '15px','margin-left':'20px' }"></ngx-skeleton-loader></div>
+                                <div><ngx-skeleton-loader [theme]="{ width: '270px', 'border-radius': '0', height: '15px','margin-left':'20px' }"></ngx-skeleton-loader></div>
+                            </div>
+                        </div>
+                        <div class="second-section-wrapper">
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{'width': '90%','border-radius': '0','height': '10px','margin-bottom': '10px','margin-left':'20px'}"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                }@else{
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="profile-head">
+                                <h5>{{candidateData?.name}}</h5>
+                                <!-- <h6>Web Developer and Designer</h6> -->
+
+                                <div class="candidate-details">
+                                    <span class="exp-wrap">
+                                        <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-experience exp">
+                                            <span title="0-3 Yrs " class="expwdth"><i class="fa-solid fa-phone"></i> {{candidateData?.mobile}}</span>
+                                        </span>
+                                    </span>
+                                    <span class="sal-wrap ver-line">
+                                        <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-rupee sal">
+                                            <span title="Not disclosed " class=""><i class="fa-regular fa-envelope"></i> {{candidateData?.email}}</span>
+                                        </span>
+                                    </span>
+                                    <span class="loc-wrap ver-line">
+                                        <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                            <span title="Kochi " class="locWdth"><i class="fa-solid fa-location-dot"></i> {{candidateData?.state}} {{candidateData?.city}} {{candidateData?.address}}</span>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <p class="proile-rating">Total Experience : <span>{{candidateData?.totWorkExp}} (Years)</span></p>
+                        </div>
+                    </div>
+                    <hr>
+                }
+                <div class="row">
+                    <div class="col-md-12">
+                        @if(loader){
+                            <div class="fb-item">
+                                <div class="first-section-wrapper">
+                                    <div class="gravatar-title">
+                                        <div><ngx-skeleton-loader [theme]="{ width: '170px', 'border-radius': '0', height: '15px','margin-left':'20px' }"></ngx-skeleton-loader></div>
+                                        <div><ngx-skeleton-loader [theme]="{ width: '90%', 'border-radius': '0', height: '15px','margin-left':'20px' }"></ngx-skeleton-loader></div>
+                                    </div>
+                                </div>
+                                <div class="second-section-wrapper">
+                                    <div class="wrapper">
+                                        <ngx-skeleton-loader [theme]="{'width': '60%','border-radius': '0','height': '10px','margin-bottom': '10px','margin-left':'20px'}"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+                            </div>
+                        }@else{
+                            <h4>Summary</h4>
+                            <p>{{candidateData?.candidate_summary}}</p>
+                        }
+
+                        @if(loader){
+                            <div class="fb-item">
+                                <div class="first-section-wrapper">
+                                    <div class="gravatar-title">
+                                        <div><ngx-skeleton-loader [theme]="{width: '300px', 'border-radius': '0','margin-bottom': '10px', height: '15px'}"></ngx-skeleton-loader></div>
+                                    </div>
+                                </div>
+                                <div class="second-section-wrapper" style="margin-top: -20px;">
+                                    <div class="wrapper">
+                                        <ngx-skeleton-loader [theme]="{ width: '80%', 'border-radius': '0', height: '10px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                    </div>
+                                    <div class="wrapper">
+                                        <ngx-skeleton-loader [theme]="{ width: '90%', 'border-radius': '0', height: '10px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                    </div>
+                                    <div class="wrapper">
+                                        <ngx-skeleton-loader [theme]="{ width: '60%', 'border-radius': '0', height: '10px','margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+                            </div>
+                        }@else{
+                        <div class="can_tabs">
+                            <nav>
+                                <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
+                                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Resume</button>
+                                    <button class="nav-link" id="nav-document-tab" data-bs-toggle="tab" data-bs-target="#nav-document" type="button" role="tab" aria-controls="nav-document" aria-selected="false">Profile</button>
+                                    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Strengths</button>
+                                    <button class="nav-link" id="nav-jobs-tab" data-bs-toggle="tab" data-bs-target="#nav-jobs" type="button" role="tab" aria-controls="nav-jobs" aria-selected="false">Applied Jobs</button>
+                                    <!-- <button class="nav-link" id="nav-history-tab" data-bs-toggle="tab" data-bs-target="#nav-history" type="button" role="tab" aria-controls="nav-history" aria-selected="false">History</button> -->
+                                </div>
+                            </nav>
+                            <div class="tab-content p-3 border bg-light" id="nav-tabContent">
+                                <div class="tab-pane fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                    @if(candidateData?.resume_path){
+
+                                        @if(loginUserRole == 'Super Admin' || loginUserRole == 'Recruiter' || loginUserRole =='BU Head' || loginUserRole =='Project Manager' || loginUserRole =='CRCM' || loginUserRole=='Partner Admin - Internal'){
+                                            <button (click)="downloadPDF(candidateData?.resume_path, candidateData?.name)" class="btn btn-danger mb-3"><i class="fa fa-download"></i> Download PDF</button>
+                                            }
+                                    <pdf-viewer 
+                                    src="{{apiURL}}{{candidateData?.resume_path}}" 
+        
+                                    [rotation]="0"
+                                    [original-size]="false"
+                                    [show-all]="true"
+                                    [fit-to-page]="false"
+                                    [zoom]="1"
+                                    [zoom-scale]="'page-width'"
+                                    [stick-to-page]="false"
+                                    [render-text]="true"
+                                    [external-link-target]="'blank'"
+                                    [autoresize]="true"
+                                    [show-borders]="false"
+                                    style="width: 100%; height: 100vh;"
+        
+                                    >
+                                    </pdf-viewer>
+                                    }@else{
+                                        <p class="text-center py-5"><strong>Resume not uploaded</strong></p>
+                                    }
+                                </div>
+        
+                                <div class="tab-pane fade" id="nav-document" role="tabpanel" aria-labelledby="nav-document-tab">
+                                    <p><span><i class="fas fa-phone"></i></span><a href="tel:{{candidateData?.mobile}}" class="link-primary"><span class="twm-title"> {{candidateData?.mobile}}</span></a></p>
+                                    <p><span><i class="fas fa-envelope"></i></span><a href="mailto:{{candidateData?.email}}" class="link-primary"><span class="twm-title"> {{candidateData?.email}}</span></a></p>
+                                    <p><span><i class="fas fa-calendar"></i></span><span class="twm-title"> Date of Birth: {{candidateData?.dob || 'No Record Found'}}</span></p>
+        
+
+                                    <h5 class="text-danger mb-3">Education</h5>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Institute</th>
+                                                <th scope="col">Qualification</th>
+                                                <th scope="col">Passed On</th>
+                                                <th scope="col">Percentage</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for(education of candidateData?.education; track $index){
+                                                <tr>
+                                                    <th scope="row">{{$index+1}}</th>
+                                                    <td>{{education.institute}}</td>
+                                                    <td>{{education.qualification}}</td>
+                                                    <td>{{education.passedOn}}</td>
+                                                    <td>{{education.percentage}}</td>
+                                                </tr>
+                                            }
+                                            
+                                        </tbody>
+                                    </table>
+        
+                                    <h5 class="text-danger mb-3">Experience</h5>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Company Name</th>
+                                                <th scope="col">Designation</th>
+                                                <th scope="col">Working Status</th>
+                                                <th scope="col">Start Date</th>
+                                                <th scope="col">End Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for(experience of candidateData?.experience; track $index){
+                                                <tr>
+                                                    <th scope="row">{{$index+1}}</th>
+                                                    <td>{{experience.compName}}</td>
+                                                    <td>{{experience.designation}}</td>
+                                                    <td>{{experience.workingStatus}}</td>
+                                                    <td>{{experience.startdate}}</td>
+                                                    <td>{{experience.enddate}}</td>
+                                                </tr>
+                                            }
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+        
+                                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" >
+                                    <p><b>Strengths:</b></p>
+                                    @for(strength of candidateData?.strengths; track $index){
+                                        <p><i class="fa fa-circle circle"></i> {{strength}}</p>
+                                    }
+                                    <p>Source: <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg"> Gemini AI</p>
+                                </div>
+
+                                <div class="tab-pane fade" id="nav-jobs" role="tabpanel" aria-labelledby="nav-jobs-tab" >
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="tmi-jobs-list-wrap">
+                                                    <ul>
+                                                        @for(iteam of indentList; track $index){
+                                                        <li>
+                                                            <div class="srp-jobtuple-wrapper" data-job-id="141220500637">
+                                                                <div class="cust-job-tuple layout-wrapper lay-2 sjw__tuple rounded">
+                                                                    <div class="row1 mb-4">
+                                                                        <a tooltipPosition="top" pTooltip="Indent Title" class="title" routerLink="/job_details/{{iteam.indent_id}}">{{iteam.indent.indentStep1.jobTitle}}</a>
+                                                                        <p class="mb-0" style="position: absolute; right: 16px; top: 15px;"><b>Current Stage: </b> <span class="parentStage">{{iteam.stage | titlecase}}</span><span class="currentStage">{{iteam.childStage | titlecase}} {{iteam.indent.skilsList}}</span> </p>
+                                                                    </div>
+                                                                    @if(iteam.indent.indentStep1.hideClient == false){
+                                                                        @if(iteam.indent.clientDetails){
+                                                                            <div class=" row2">
+                                                                                <span class="comp-dtls-wrap">
+                                                                                    <p class="comp-name mw-25" tooltipPosition="top" pTooltip="Client Name">{{iteam.indent.clientDetails.name}}</p>
+                                                                                </span>
+                                                                            </div>
+                                                                        }
+                                                                    }
+                                                                    <div class=" row3">
+                                                                        <div class="job-details ">
+                                                                            <span class="exp-wrap">
+                                                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-experience exp">
+                                                                                    <span tooltipPosition="top" pTooltip="Experience" class="expwdth"><i class="fa-solid fa-briefcase"></i> {{iteam.indent.indentStep2.minExperience}} - {{iteam.indent.indentStep2.maxExperience}} Yrs</span>
+                                                                                </span>
+                                                                            </span>
+                                                                            <span class="sal-wrap ver-line">
+                                                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-rupee sal">
+                                                                                    <span tooltipPosition="top" pTooltip="Salary" class=""><i class="fa-solid fa-indian-rupee-sign"></i> {{iteam.indent.indentStep2.minSalary | currency:'INR' : '' : '1.0-0'}} - {{iteam.indent.indentStep2.maxSalary | currency:'INR':'':'1.0-0'}} Per {{iteam.indent.indentStep2.salaryUnit}}</span>
+                                                                                </span>
+                                                                            </span>
+                                                                            <span class="loc-wrap ver-line">
+                                                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                                                                    <span tooltipPosition="top" pTooltip="Vacancies" class="locWdth"><i class="fa-solid fa-suitcase"></i> {{iteam.indent.indentStep2.vacancies}}</span>
+                                                                                </span>
+                                                                            </span>
+                                                                            <span class="loc-wrap ver-line">
+                                                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                                                                    <span tooltipPosition="top" pTooltip="Job Location" class="locWdth"><i class="fa-solid fa-location-dot"></i> 
+                                                                                        <!-- {{iteam.indent.indentStep2.advLocation}} -->
+                                                                                        @for(location of iteam.indent.indentStep2.advLocation; track $index){
+                                                                                            {{location}}, 
+                                                                                        }
+                                                                                    </span>
+                                                                                </span>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="skills">
+                                                                        <ul class="list-inline">
+                                                                            @for(skill of iteam.indent.indentStep2.skilsList; track $index){
+                                                                                <li class="list-inline-item" tooltipPosition="top" pTooltip="Skills">{{skill}}</li>
+                                                                            }
+                                                                        </ul>
+                                                                    </div>
+                                                                    
+                                                                    <div class="row6">  
+                                                                        <span tooltipPosition="left" pTooltip="Posted On" class="job-post-day"><i class="fa-regular fa-clock"></i> {{iteam.indent.posted_on}} || {{iteam.indent.created_at | date: 'dd MMM, yyyy'}}</span>
+                                                                    </div>
+                                                                    <hr>
+
+                                                                    <div class="row">
+                                                                        <div class="col-md-6" style="font-size: 12px;">
+                                                                            <p class="mb-0"><b>Uploaded On: </b> {{iteam.created_at+'Z' | date: 'dd MMM, yyyy hh:mm:ss a'}}</p>
+                                                                            <p class="mb-0"><b>Uploaded Location: </b> {{iteam.uploadLocation | titlecase}}</p>
+                                                                        </div>
+                                                                        <div class="col-md-6" style="font-size: 12px;">
+                                                                            @if(iteam.applied_by == 'self'){
+                                                                                <p class="mb-0"><b>Source: </b>Self Registration</p>
+                                                                            }@else{
+                                                                                @if(iteam.applied_by.role_id == 12){
+                                                                                    <p class="mb-0"><b>Uploaded By: </b> <a [routerLink]="['/partner-details', iteam.applied_by.partner_id]" target="_blank" class="link-primary">{{iteam.applied_by.partner_firm_name}}</a> (Partner)</p>
+                                                                                }@else{
+                                                                                    <p class="mb-0"><b>Source: </b>{{iteam.applied_by.name}} ({{iteam.applied_by.role_name}})</p>
+                                                                                }
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        }
+                                                    </ul>
+                                                </div>     
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

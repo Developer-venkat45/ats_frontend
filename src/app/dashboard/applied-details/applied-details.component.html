@@ -1,0 +1,246 @@
+<div class="section-full p-t60  p-b60 site-bg-gray mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                @if(loader){
+                    <div class="fb-item">
+                        <div class="first-section-wrapper">
+                            <div class="gravatar-title">
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{ width: '170px', 'border-radius': '0', height: '15px' }"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                            <div class="gravatar">
+                                <ngx-skeleton-loader appearance="circle" [theme]="{ width: '80px', height: '80px' }"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                        <div class="second-section-wrapper">
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{width: '80%','border-radius': '0',height: '10px','margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '90%', 'border-radius': '0', height: '10px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '60%', 'border-radius': '0', height: '10px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader count="4" appearance="circle" [theme]="{ width: '20%', height: '70px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                }@else{
+                    <div class="srp-jobtuple-wrapper">
+                        <div class="cust-job-tuple layout-wrapper lay-2 sjw__tuple rounded">
+                            <div class=" row1">
+                                <a [routerLink]="['/job_details', candidateData?.indent?._id]" class="text-primary">{{candidateData?.indent?.indentStep1?.jobTitle}}</a>
+                            </div>
+                            
+                            <div class=" row3">
+                                <div class="job-details ">
+                                    <span class="exp-wrap">
+                                        <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-experience exp">
+                                            <span tooltipPosition="top" pTooltip="Experience" class="expwdth"><i class="fa-solid fa-calendar"></i> {{candidateData?.indent?.indentStep2?.minExperience}} - {{candidateData?.indent?.indentStep2?.maxExperience}} Yrs</span>
+                                        </span>
+                                    </span>
+                                    <span class="sal-wrap ver-line">
+                                        <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-rupee sal">
+                                            <span tooltipPosition="top" pTooltip="Salary"><i class="fa-solid fa-indian-rupee-sign"></i> {{candidateData?.indent?.indentStep2?.minSalary | currency:'INR' : '' : '1.0-0'}} - {{candidateData?.indent?.indentStep2?.maxSalary | currency:'INR':'':'1.0-0'}} Per {{candidateData?.indent?.indentStep2?.salaryUnit}}</span>
+                                        </span>
+                                    </span>
+                                    <span class="loc-wrap ver-line">
+                                        <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                            <span tooltipPosition="top" pTooltip="Vacancies" class="locWdth"><i class="fa-solid fa-user"></i> {{candidateData?.indent?.indentStep2?.vacancies}}</span>
+                                        </span>
+                                    </span>
+                                    <span class="loc-wrap ver-line">
+                                        <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                            <span tooltipPosition="top" pTooltip="Job Location" class="locWdth"><i class="fa-solid fa-location-dot"></i> {{candidateData?.indent?.indentStep2?.advLocation}}</span>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="skills">
+                                <ul class="list-inline">
+                                    @for(skill of candidateData?.indent?.indentStep2.skilsList; track $index){
+                                        <li class="list-inline-item" tooltipPosition="top" pTooltip="Skills">{{skill}}</li>
+                                    }
+                                </ul>
+                            </div>
+                            <div class="row6">  
+                                <span class="job-post-day" tooltipPosition="left" pTooltip="Posted On"><i class="fa-regular fa-clock"></i> {{candidateData?.indent?.created_at | date: 'dd MMM, yyyy'}} </span>
+                            </div>
+                            <!-- <div class="row">
+                                <div class="col-md-4">
+                                    <div class="row6">  
+                                        <span tooltipPosition="left" pTooltip="Posted On" class="job-post-day"><i class="fa-regular fa-clock"></i> {{candidateData?.indent?.posted_on}} || {{candidateData?.indent?.created_at | date: 'dd MMM, yyyy'}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <p class="mb-0" ><b>Applied On: </b> <span >{{candidateData?.indent?.created_at | date: 'dd MMM, yyyy'}}</span></p> 
+                                </div>
+                                <div class="col-md-4">
+                                    <p class="mb-0" ><b>Current Stage: </b> <span class="parentStage">{{candidateData?.indent?.stage | titlecase}}</span></p>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                }
+
+                
+
+                @if(eandIsubmitButton){
+                    <div class="can_stage rounded">
+                        <div class="row">
+                            <p>E And I Link: <a class="text-primary" href="enaditest/{{candidateData?.indent?._id}}/{{candidateData?.indent?.indentStep4?.eandiId}}/{{myProfileData?._id}}">Click to open E and I Done</a></p>
+                        </div>
+                    </div>
+                }
+
+                <!-- @if(submitButton){
+                    <div class="can_stage rounded">
+                        <div class="row">
+                            @if(candidateData?.indent?.indentStep5?.screening?.eandiDone?.status){
+                                @if(candidateData?.childStage == 'EandIdone' ){
+                                    <p>Click to view/complete <a class="text-primary" href="assessmenttest/{{candidateData?.indent?._id}}/{{candidateData?.indent?.indentStep6?.assessmentId}}/{{candidateData?._id}}">Assessment</a></p>
+                                }@else{
+                                    <p>The assessment will be accessible after the completion of E & I.</p>
+                                }
+                            }@else{
+                                <p>Click to view/complete <a class="text-primary" href="assessmenttest/{{candidateData?.indent?._id}}/{{candidateData?.indent?.indentStep6?.assessmentId}}/{{candidateData?._id}}">Assessment</a></p>
+                            }
+                        </div>
+                    </div>
+                } -->
+
+
+
+                <div class="nav-align-top mb-4 mt-4">
+                    <div class="srp-jobtuple-wrapper mt-4">
+                        <div class="widget widget-description rounded">
+                            <h4 class="twm-s-title">Job Description:</h4>
+                            <div [innerHTML]="sanitizedContent2"></div>
+                        </div>
+                    </div>
+                    <div class="srp-jobtuple-wrapper">
+                        <div class="widget widget-description rounded">
+                            <h4 class="twm-s-title">About Company:</h4>
+                            <div [innerHTML]="sanitizedContent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                @if(loader){
+                    <div class="fb-item">
+                        <div class="second-section-wrapper">
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '80%', 'border-radius': '0', height: '10px', 'margin-bottom': '15px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '90%', 'border-radius': '0', height: '10px', 'margin-bottom': '15px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '60%', 'border-radius': '0', height: '10px', 'margin-bottom': '15px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '80%', 'border-radius': '0', height: '10px', 'margin-bottom': '15px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '90%', 'border-radius': '0', height: '10px', 'margin-bottom': '15px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '60%', 'border-radius': '0', height: '10px', 'margin-bottom': '15px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{ width: '60%', 'border-radius': '0', height: '10px', 'margin-bottom': '15px'}"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                }@else{
+
+                    <div class="card flex justify-content-center mb-3">
+                        <h5 class="card-header">Job Information</h5>
+                        <div class="card-body">
+                            <ul class="twm-job-hilites2">
+                                <li class="pt-3">
+                                    <div class="twm-s-info-inner">
+                                        <!-- <i class="fa-solid fa-arrow-right"></i> -->
+                                        <span><b> Job Type:</b> {{candidateData?.indent?.indentStep1?.jobType}}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="twm-s-info-inner">
+                                        <!-- <i class="fa-solid fa-arrow-right"></i> -->
+                                        <span><b> Department:</b> {{candidateData?.indent?.indentStep1?.department}}</span>
+                                    </div>
+                                </li>
+                                <!-- <li>
+                                    <div class="twm-s-info-inner">
+                                        <! -- <i class="fa-solid fa-arrow-right"></i> - ->
+                                        <span><b> Business Unit:</b> {{indentData?.indentStep1?.businessUnit}}</span>
+                                    </div>
+                                </li> -->
+                                <li>
+                                    <div class="twm-s-info-inner">
+                                        <!-- <i class="fa-solid fa-arrow-right"></i> -->
+                                        <span><b>Job Level:</b> {{candidateData?.indent?.indentStep1?.jobLevel}}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="twm-s-info-inner">
+                                        <!-- <i class="fa-solid fa-arrow-right"></i> -->
+                                        <span><b>Job Function:</b> {{candidateData?.indent?.indentStep1?.jobFunction}}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="twm-s-info-inner">
+                                        <!-- <i class="fa-solid fa-arrow-right"></i> -->
+                                        <span><b>Job Sector: </b> {{candidateData?.indent?.indentStep1?.jobSector}}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="twm-s-info-inner">
+                                        <!-- <i class="fa-solid fa-arrow-right"></i> -->
+                                        <span><b>Job Industry: </b> {{candidateData?.indent?.indentStep1?.jobIndustry}}</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="can-timeline bg-white rounded">
+                        <div class="card flex justify-content-center">
+                                <h5 class="card-header">Stage Timeline</h5>
+                                <div class="card-body" style="padding: 10px 25px;">
+                                    <div class="timeline-container">
+                                    <ul class="tl">
+                                        @for(staged of indentStaged; track $index){
+                                            <li class="tl-item ">
+                                                <div class="item-icon"></div>
+                                                <div class="item-text">
+                                                    <div class="item-title">{{staged.displayName}}</div>
+                                                    <!-- <div class="item-detail">By {{staged.created_by}}</div> -->
+                                                </div>
+                                                <div class="item-timestamp">{{staged.date | date: 'dd MMM, yyyy hh:mm:ss a'}}</div>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-toast />

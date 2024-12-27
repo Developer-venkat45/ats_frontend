@@ -1,0 +1,28 @@
+::ng-deep .p-multiselect-items{
+    padding: 16px;
+   }
+
+::ng-deep .p-multiselect{
+    min-width: 15rem;
+    width: 18rem;
+}
+
+::ng-deep .p-multiselect-filter{
+    padding: 0px;
+}
+
+::ng-deep .p-multiselect-label{
+    padding: 6px 6px 6px 12px;
+}
+
+::ng-deep .p-button{
+    background-color: rgb(237, 28, 36);
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+    border-radius: 26px;
+    padding: 8px 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    width: fit-content;
+    border: none;
+}

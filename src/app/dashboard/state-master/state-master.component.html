@@ -1,0 +1,60 @@
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class=" container col-md-12">
+        <div class="breadcrumb nav">
+            <span class="breadcrumb-item">
+                <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+            </span>
+            <span class="breadcrumb-item">
+                <a class="breadcrumb-link" [routerLink]="['/statemaster']">state master</a>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row ">
+    
+            <div class="col-md-9">
+                <div class="step-form rounded">
+                    <form [formGroup]="stateMasterForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">State <span class="text-danger">*</span></label>
+                                    <select class="form-control" formControlName="state_id">
+                                        <option value="">Select State</option>
+                                        @for(state of stateData; track $index){
+                                            <option value="{{state.id}}">{{state.name}}</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">City <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Enter City" formControlName="name">
+                                </div>
+                                <div class="text-danger pt-2 error" *ngIf="stateMasterForm.controls.name.invalid && (stateMasterForm.controls.name.touched || stateMasterForm.controls.name.dirty || isFormSubmited)" >
+                                    <span *ngIf="stateMasterForm.controls.name.errors?.['alphaSpace']">Please enter only alphabets'</span>
+                                    <span *ngIf="stateMasterForm.controls.name.errors?.['maxlength']">* Maximum 150 character should allowed'</span>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p id="message"></p>
+                                    @if(isBtnLoading){
+                                        <button style="display: inline-block;" class="btn btn-primary postjob-btn mr-2" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                                    }@else{
+                                        <button style="display: inline-block;" type="button" class="btn postjob-btn mr-2" type="button" (click)="UpdateStateMaster()"><i class="fa-regular fa-paper-plane"></i> Update</button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>    
+        </div>
+    </div>
+</div>
+
+<p-toast />

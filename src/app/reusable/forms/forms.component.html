@@ -1,0 +1,68 @@
+<section class="section p-t60 mt-5 p-b60 content" *ngIf="formData">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-danger">
+          <div class="box-header with-border">
+            <h3 class="box-title">{{ formData.form_name }}</h3>
+          </div>
+          <div class="box-body">
+            <div class="row mt-3">
+              <input type="hidden" name="db_name" #inputElem [value]="formData.db_table"/>
+              @for (field of formData.form_data; track $index) {
+                <div class="col-md-6">
+                  @if (field.input_type !== 'button' && field.input_type !== 'radio') {
+                    <div class="form-group">
+                      @switch (field.input_type) {
+                        @case ('options') {
+                          <label class="control-label">{{ field.label_name }}<span class="text-danger">*</span></label>
+                          <select #inputElem class="form-control" [name]="field.label_name">
+                            <option value="" disabled selected>{{field.placeholder}}</option>
+                            @for (opt of field.optionsData; track $index) {
+                              <option [value]="opt">{{ opt }}</option>
+                            }
+                          </select>
+                        }
+                        @case ('multi_select') {
+                          <label class="control-label">{{ field.label_name }}<span class="text-danger">*</span></label>
+                          <ng-multiselect-dropdown  [settings]="dropdownSettings" [data]="field.optionsData" #inputElemmul>
+                          </ng-multiselect-dropdown>
+                        }
+                        @default {
+                          <label class="control-label">{{ field.label_name }}<span class="text-danger">*</span></label>
+                          <input #inputElem [type]="field.input_type" [name]="field.label_name" [placeholder]="field.placeholder" class="form-control" />
+                        }
+                      }
+                    </div>
+                  }
+                  @if (field.input_type === 'radio') {
+                    <div class="form-group">
+                      <label class="control-label">{{field.label_name}}<span class="text-danger">*</span></label>
+                      @for (radioLabel of field.radioLabels; track $index) {
+                        <input #inputElem type="radio" [name]="field.label_name" [value]="radioLabel.value" /> {{ radioLabel.value }}
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-12">
+                @for (field of formData.form_data; track $index) {
+                  @if (field.input_type === 'button') {
+                    <div class="submit-btn">
+                      <button class="postjob-btn" [type]="field.input_type" (click)="onSubmit()">{{ field.label_name }}</button>
+                    </div>
+                  }
+                }
+              </div>
+              <div class="text-danger pt-2">
+                <span>{{formerror}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

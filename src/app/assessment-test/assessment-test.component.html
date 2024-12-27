@@ -1,0 +1,265 @@
+<!-- <div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class="container">
+        <div class="row">
+            <form [formGroup]="enaditest">
+                <div class="step-form">
+                    <div class="step-boder">
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <div class="form-heading-div">
+                                    <h4 class="text-white">{{selectedEandi?.title}}</h4>
+                                    <p><b>Category: </b> 
+                                        @for(cat of selectedEandi?.category; track $index){
+                                            <span>{{cat}}</span>,
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="question-div">
+                                <div class="row">
+                                    @for(question of selectedEandi?.questions; track $index){
+                                        <div class="col-md-12 mb-3">
+                                            <label class="control-label">Q {{$index+1}}. {{question.question}} <span class="text-danger">*</span></label>
+                                            @if(question.question_type == "STA"){
+                                                <input type="text" class="form-control" placeholder="Enter Answer" formControlName="question">
+                                            }
+                                            @if(question.question_type == "NA"){
+                                                <input type="number" class="form-control" placeholder="Enter Answer">
+                                            }
+                                            @if(question.question_type == "LTA"){
+                                                <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter your answer"></textarea>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        {{enaditest.value | json}}
+
+                        <p>{{apiResponseMessage}}</p>
+                        @if(submitButton){
+                            <div class="row mb-3">
+                                <div class="col-md-12" style="margin-left: 15px;">
+                                    <div class="submit-btn">
+                                        <button class="btn postjob-btn" (click)="submitAssessment()"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> -->
+
+
+
+
+<!-- <div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class="container">
+      <div class="row">
+        <form [formGroup]="enaditest">
+          <div class="step-form">
+            <div class="step-boder">
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <div class="form-heading-div">
+                    <h4 class="text-white">{{ selectedEandi?.title }}</h4>
+                    <p><b>Category: </b>
+                      <ng-container *ngFor="let cat of selectedEandi?.category; let i = index">
+                        <span>{{ cat }}</span><span *ngIf="i < selectedEandi?.category.length - 1">, </span>
+                      </ng-container>
+                    </p>
+                  </div>
+                </div>
+  
+                <div class="question-div">
+                  <div class="row">
+                    <ng-container *ngFor="let question of selectedEandi?.questions; let i = index">
+                      <div class="col-md-12 mb-3">
+                        <label class="control-label">Q {{ i + 1 }}. {{ question.question }} <span class="text-danger">*</span></label>
+                        <ng-container [ngSwitch]="question.question_type">
+                          <input *ngSwitchCase="'STA'" type="text" class="form-control" placeholder="Enter Answer" [formControlName]="'question' + i">
+                          <input *ngSwitchCase="'NA'" type="number" class="form-control" placeholder="Enter Answer" [formControlName]="'question' + i">
+                          <textarea *ngSwitchCase="'LTA'" class="form-control" rows="2" style="height: 80px;" placeholder="Enter your answer" [formControlName]="'question' + i"></textarea>
+                        </ng-container>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+  
+              {{ enaditest.value | json }}
+  
+
+              <p class="text-danger">{{overallFormValid3}}</p> 
+              <p class="text-danger">{{apiMessage3}}</p>
+              <div class="row mb-3" *ngIf="submitButton">
+                <div class="col-md-12" style="margin-left: 15px;">
+                  <div class="submit-btn">
+                    <button class="btn postjob-btn" (click)="submitAssessment()">
+                      <i class="fa-regular fa-paper-plane"></i> SUBMIT
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> -->
+
+
+
+  <!-- <div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h4>E & I For : <a href="job_details/{{indentId}}" class="link-primary">{{indentData?.indentStep1?.jobTitle}}</a></h4>
+        </div>
+        <form [formGroup]="enaditest">
+          <div class="step-form">
+            <div class="step-boder">
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <div class="form-heading-div">
+                    <h4 class="text-white">{{ selectedEandi?.title }}</h4>
+                    <p><b>Category: </b>
+                      <ng-container *ngFor="let cat of selectedEandi?.category; let i = index">
+                        <span>{{ cat }}</span><span *ngIf="i < selectedEandi?.category.length - 1">, </span>
+                      </ng-container>
+                    </p>
+                  </div>
+                </div>
+  
+                <div class="question-div">
+                  <div class="row" formArrayName="answers">
+                    <ng-container *ngFor="let question of questions.controls; let i = index" [formGroupName]="i">
+                      <div class="col-md-12 mb-3">
+                        <label class="control-label">Q {{ i + 1 }}. {{ question.get('question')?.value }} <span class="text-danger">*</span></label>
+                        <ng-container [ngSwitch]="question.get('question_type')?.value">
+                          <input *ngSwitchCase="'STA'" type="text" class="form-control" placeholder="Enter Answer" formControlName="answer">
+                          <input *ngSwitchCase="'NA'" type="number" class="form-control" placeholder="Enter Answer" formControlName="answer">
+                          <textarea *ngSwitchCase="'LTA'" class="form-control" rows="2" style="height: 80px;" placeholder="Enter your answer" formControlName="answer"></textarea>
+                        </ng-container>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="col-md-12">
+                <div class="question-div" style="padding: 0 30px;">
+                  <p>{{apiMessage3}}</p>
+                  <p class="text-danger" style="margin-left: -10px;">{{overallFormValid3}}</p>
+                </div>
+              </div>
+              
+              @if(submitButton){
+                <div class="row mb-3" *ngIf="submitButton">
+                  <div class="col-md-12" style="margin-left: 15px;">
+                    <div class="submit-btn">
+                      <button class="btn postjob-btn" (click)="submitAssessment()">
+                        <i class="fa-regular fa-paper-plane"></i> SUBMIT
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              }
+
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> -->
+
+
+
+
+  <div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h4>E & I For : <a href="job_details/{{indentId}}" class="link-primary">{{indentData?.indentStep1?.jobTitle}}</a></h4>
+        </div>
+        <form [formGroup]="enaditest">
+          <div class="step-form">
+            <div class="step-boder">
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <div class="form-heading-div">
+                    <h4 class="text-white">{{ selectedEandi?.title }}</h4>
+                    <p><b>Category: </b>
+                      <ng-container *ngFor="let cat of selectedEandi?.category; let i = index">
+                        <span>{{ cat }}</span><span *ngIf="i < selectedEandi?.category.length - 1">, </span>
+                      </ng-container>
+                    </p>
+                  </div>
+                </div>
+
+                <div class="question-div">
+                  <div class="row" formArrayName="answers">
+
+                    <ng-container *ngFor="let question of questions.controls; let i = index" [formGroupName]="i">
+                      <div class="col-md-6 questionoptiondiv">
+                        <div class="row">
+                          <div class="col-md-12 mb-3">
+                            <div class="question-heading rounded">
+                              <label class="control-label mb-0">Q {{ i + 1 }}. {{ question.get('question')?.value }} <span class="text-danger">*</span></label>
+                            </div>
+                          </div>
+                          <div class="col-md-12 mb-3">
+                            <div class="options-div">
+                              <div *ngFor="let option of question.get('options')?.value; let j = index">
+                                <label>
+                                  {{ 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[j] }}: 
+                                  <input type="radio" style="cursor: pointer;" [formControlName]="'answer'" [value]="option.option" (change)="calculateScore(i,option.score)"> {{ option.option }}
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+
+                  </div>
+                </div>
+
+              </div>
+  
+              <div class="col-md-12">
+                <div class="question-div" style="padding: 0 30px;">
+                  <p>{{apiMessage3}}</p>
+                  <p class="text-danger" style="margin-left: -10px;">{{overallFormValid3}}</p>
+                </div>
+              </div>
+
+              <!-- <p>{{enaditest.value | json}}</p> -->
+              
+              @if(submitButton){
+                <div class="row mb-3" *ngIf="submitButton">
+                  <div class="col-md-12" style="margin-left: 15px;">
+                    <div class="submit-btn">
+                      @if(isLoading){
+                        <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                      }@else{
+                        <button class="btn postjob-btn" (click)="submitAssessment()"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <p-toast />

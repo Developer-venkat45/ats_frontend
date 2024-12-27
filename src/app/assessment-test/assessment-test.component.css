@@ -1,0 +1,27 @@
+
+.form-heading-div{
+    background: cornflowerblue;
+    padding: 10px 15px 6px 15px;
+    border-radius: 5px 5px 0 0;
+    color: #FFFFFF;
+  }
+  
+  .step-boder{
+    border-radius: 5px;
+    border: 1px solid #D3D8DD;
+    background-color: #FFFFFF;
+  }
+  
+  .question-div{
+    padding: 15px 30px;
+    /* height: 300px;
+    overflow-y: scroll; */
+  }
+
+.question-heading{
+  background-color: #f0f0f0;
+  padding: 10px;
+}
+.options-div{
+  padding: 10px;
+}

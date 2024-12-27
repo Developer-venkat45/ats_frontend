@@ -1,0 +1,726 @@
+<div class="section-full p-t60 mt-5 p-b60">
+    <div class="container">
+        <div class=" container col-md-12">
+            <div class="breadcrumb nav">
+                <span class="breadcrumb-item">
+                    <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+                </span>
+                <span class="breadcrumb-item">
+                    <a class="breadcrumb-link" [routerLink]="['/partner']">Partner</a>
+                </span>
+                <span class="breadcrumb-item">
+                    <a class="breadcrumb-link">Partner Details</a>
+                </span>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-12" style="margin-bottom: -10px;">
+                @if(loader){
+                    <div class="fb-item">
+                        <div class="first-section-wrapper">
+                            <div class="gravatar">
+                                <ngx-skeleton-loader appearance="" [theme]="{ width: '100px', height: '100px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="gravatar-title">
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{width: '270px', 'border-radius': '0', height: '20px', 'margin-bottom': '10px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{ width: '170px', 'border-radius': '0', height: '15px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{ width: '270px', 'border-radius': '0', height: '15px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                }@else{
+                <div class="client-data rounded">
+                    <div class="client-logo ">
+                        <img src="{{baseAPIURL}}{{partnerList?.partnerLogo}}" class="logoImage rounded" loading="lazy">
+                    </div>
+                    <div class="client-details">
+                        @if(partnerList?.partnerCategory != "Freelancer"){
+                            <h5 class="client-title">{{partnerList?.firmName}}</h5>
+                        }@else{
+                            <h5 class="client-title">{{partnerList?.vendorName}}</h5>
+                        }
+                        <p class="client-sub-title"><i class="fa-solid fa-briefcase"></i> {{partnerList?.partnerCategory}}</p>
+                        @if(partnerList?.approve == true){
+                            <p class="client-sub-title"><i class="fa-solid fa-calendar"></i> Agreement expiration: {{partnerList?.aggrementExpirationdate | date: 'dd MMM, yyyy'}}</p>
+                        }
+                        <!-- <p class="client-indent"><i class="fa-solid fa-suitcase"></i> {{partnerList?.indentCount}} Indents</p> -->
+                        @if(partnerList?.expired){
+                            <button class="pending_status_btn btn ml-2"><i class="fa fa-times-circle"></i> Expired </button>
+                        }
+                    </div>
+                </div>
+            }
+            </div>
+
+            
+            <div class="col-md-12">
+                <div class="nav-align-top mb-4">
+                    @if(loader){
+                        <div class="fb-item">
+                            <div>
+                                <ngx-skeleton-loader [theme]="{width: '170px', 'border-radius': '0', height: '20px', 'margin-bottom': '10px','margin-left':'25px'}"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    }@else{
+                    <ul class="nav nav-tabs nav-fill" role="tablist" style="background-color: #f0f8ff;">
+                        <li class="nav-item" role="presentation">
+                            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-home" aria-controls="navs-justified-home" aria-selected="true"><i class="tf-icons bx bx-home me-1"></i> Overview</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button type="button" (click)="onIndentsClick()" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-profile" aria-controls="navs-justified-profile" aria-selected="false" tabindex="-1"><i class="tf-icons bx bx-user me-1"></i>Indents</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button type="button" (click)="onCandidatesClick()" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-candidates" aria-controls="navs-justified-candidates" aria-selected="false"><i class="tf-icons bx bx-user me-1"></i>Candidates</button>
+                        </li>
+                    </ul>
+                    }
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show" id="navs-justified-home" role="tabpanel">
+                            @if(loader){
+                                <div class="fb-item" style="height: 70vh;">
+                                    <div class="first-section-wrapper">
+                                        <div class="gravatar-title">
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{width: '170px', 'border-radius': '0', height: '20px', 'margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{ width: '190px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{ width: '270px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{width: '170px', 'border-radius': '0', height: '20px', 'margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{ width: '190px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{ width: '270px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div style="float: right;">
+                                                <div>
+                                                    <ngx-skeleton-loader [theme]="{width: '130%', 'border-radius': '0', height: '20px', 'margin-bottom': '20px','margin-left':'25px','margin-top':'40px'}"></ngx-skeleton-loader>
+                                                </div>
+                                                <div>
+                                                    <ngx-skeleton-loader [theme]="{ width: '190px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                                </div>
+                                                <div>
+                                                    <ngx-skeleton-loader [theme]="{ width: '270px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{width: '170px', 'border-radius': '0', height: '20px', 'margin-bottom': '20px','margin-left':'25px','margin-top':'40px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{ width: '190px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{ width: '270px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            }@else{
+                            <h5 class="text-danger mb-3">Basic Information</h5>
+                            <div class="card card-action mb-4">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-xl-7 col-12">
+                                            <dl class="row mb-0">
+                                                @if(partnerList?.partnerCategory != "Freelancer"){
+                                                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Filled By</dt>
+                                                    <dd class="col-sm-8">{{partnerList?.vendorName}}</dd>
+
+                                                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">MD Name:</dt>
+                                                    <dd class="col-sm-8">{{partnerList?.mdName}}</dd>
+                                    
+                                                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Designation:</dt>
+                                                    <dd class="col-sm-8">{{partnerList?.designation}}</dd>
+
+                                                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Date of Incorporation:</dt>
+                                                    <dd class="col-sm-8">{{partnerList?.dateOfIncorporation | date: 'dd MMM, yyyy'}}</dd>
+                                                }
+                                
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Primary Contact No.:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.primaryContactNumber}}</dd>
+                                
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Secondary Contact No.:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.secondaryContactNumber || '---'}}</dd>
+                                
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Primary Email Id:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.primaryEmailId}}</dd>
+
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Secondary Email Id:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.secondaryEmailId || '---'}}</dd>
+                                            </dl>
+                                        </div>
+                                        <div class="col-xl-5 col-12">
+                                            <dl class="row mb-0">
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Partner Type:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.partnerType}}</dd>
+
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Partner Category:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.partnerCategory}}</dd>
+                                
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Referred By:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.source?.options}}</dd>
+
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Referred Type:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.source?.others}}</dd>
+
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">date Of Birth:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.dateOfBirth | date: 'dd MMM, yyyy'}}</dd>
+                                            </dl>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <dl class="row mb-0">
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Industries which you are hiring currently:</dt>
+                                                <dd class="col-sm-8">
+                                                    @for(industries of partnerList?.currentlyHiringIndustries; track $index){
+                                                        {{industries}},
+                                                    }
+                                                </dd>
+                                
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Position Levels which you are hiring currently:</dt>
+                                                <dd class="col-sm-8">
+                                                    @for(position of partnerList?.positionLevel; track $index){
+                                                        {{position}},
+                                                    }
+                                                </dd>
+                                
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Employee Count of the Partner Company:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.employeeCount}}</dd>
+                                
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Recruitment Presence:</dt>
+                                                <dd class="col-sm-8">
+                                                    @for(state of partnerList?.recruitmentPresence; track $index){
+                                                        {{state}},
+                                                    }
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            }
+                            @if(loader){
+                                <div class="fb-item" style="height: 60vh;">
+                                    <div class="first-section-wrapper">
+                                        <div class="gravatar-title">
+                                            <div style="float: right;">
+                                                <div>
+                                                    <ngx-skeleton-loader [theme]="{width: '130%', 'border-radius': '0', height: '20px', 'margin-bottom': '20px','margin-left':'25px','margin-top':'40px'}"></ngx-skeleton-loader>
+                                                </div>
+                                                <div>
+                                                    <ngx-skeleton-loader [theme]="{ width: '190px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                                </div>
+                                                <div>
+                                                    <ngx-skeleton-loader [theme]="{ width: '80px', 'border-radius': '0', height: '80px','margin-bottom': '20px','margin-left':'220px','border-top-right-radius':'25px'}"></ngx-skeleton-loader>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{width: '170px', 'border-radius': '0', height: '20px', 'margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{ width: '190px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{width: '170px', 'border-radius': '0', height: '20px', 'margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{ width: '80px', 'border-radius': '0', height: '80px','margin-bottom': '20px','margin-left':'220px','border-top-right-radius':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+        
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{ width: '190px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{ width: '270px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            }@else{
+                            @if(loginUserRole != "Recruiter"){
+                            <h5 class="text-danger mb-3">Partner Certifications</h5>
+                            <div class="card card-action mb-4">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-xl-7 col-12">
+                                            <dl class="row mb-0">
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">GSTIN:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.gstin ? 'Yes' : 'NA'}}</dd>
+                                
+                                                @if(partnerList?.gstin){
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">GST Number:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.gistinNumber}}</dd>
+                                
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">GSTIN Image:</dt>
+                                                <dd class="col-sm-8"><a href="{{baseAPIURL}}{{partnerList?.gstinImage}}" target="_blank"><img src="{{gstImageUrl}}" class="logoImage rounded" loading="lazy"></a></dd>
+                                                }
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">PAN card Number:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.pancard || '---'}}</dd>
+                                
+                                                @if(partnerList?.pancardImage){
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">PAN card Image:</dt>
+                                                <dd class="col-sm-8"><a href="{{baseAPIURL}}{{partnerList?.pancardImage}}" target="_blank"><img src="{{pancardImageUrl}}" class="logoImage rounded" loading="lazy"></a></dd>
+                                                }
+                                                
+                                            </dl>
+                                        </div>
+                                        <div class="col-xl-5 col-12">
+                                            <dl class="row mb-0">
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">MSME:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.msme ? 'Yes' : 'NA'}}</dd>
+
+                                                @if(partnerList?.msme){
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">MSME Number:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.msmeNumber}}</dd>
+
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">MSME Image:</dt>
+                                                <dd class="col-sm-8"><a href="{{baseAPIURL}}{{partnerList?.msmeImage}}" target="_blank"><img src="{{msmeImageUrl}}" class="logoImage rounded" loading="lazy"></a></dd>
+                                                }
+
+                                                @if(partnerList?.signature){
+                                                    <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Signature:</dt>
+                                                    <dd class="col-sm-8"><img src="{{baseAPIURL}}{{partnerList?.signature}}" class="logoImage rounded" loading="lazy"></dd>
+                                                }
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                            }
+                            @if(loader){
+                                <div class="fb-item" style="height: 70vh;">
+                                    <div class="first-section-wrapper">
+                                        <div class="gravatar-title">
+                                            <div style="float: right;">
+                                                <div>
+                                                    <ngx-skeleton-loader [theme]="{width: '130%', 'border-radius': '0', height: '20px', 'margin-bottom': '20px','margin-left':'25px','margin-top':'40px'}"></ngx-skeleton-loader>
+                                                </div>
+                                                <div>
+                                                    <ngx-skeleton-loader [theme]="{ width: '190px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                                </div>
+                                                <div>
+                                                    <ngx-skeleton-loader [theme]="{ width: '270px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{width: '170px', 'border-radius': '0', height: '20px', 'margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{ width: '190px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{ width: '270px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{width: '170px', 'border-radius': '0', height: '20px', 'margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{ width: '190px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{ width: '270px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{width: '170px', 'border-radius': '0', height: '20px', 'margin-bottom': '20px','margin-left':'25px','margin-top':'40px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{ width: '190px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{ width: '270px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            }@else{
+                            <h5 class="text-danger mb-3">Partner Account Information</h5>
+                            <div class="card card-action mb-4">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-xl-7 col-12">
+                                            <dl class="row mb-0">
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Bank Name:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.bankName || '---'}}</dd>
+                                
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Branch Name:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.branchName || '---'}}</dd>
+
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Account Name:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.accountName || '---'}}</dd>
+                                
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Account Number:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.accountNumber || '---'}}</dd>
+
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">IFSC Code:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.ifscCode || '---'}}</dd>
+
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Bank Address:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.bankAddress || '---'}}</dd>
+                                            </dl>
+                                        </div>
+                                        <div class="col-xl-5 col-12">
+                                            <dl class="row mb-0">
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">MICR Code:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.micrCode || '---'}}</dd>
+                                                
+                                                @if(partnerList?.chequeImage){
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Cancel Cheque:</dt>
+                                                <dd class="col-sm-8"><a href="{{baseAPIURL}}{{partnerList?.chequeImage}}" target="_blank"><img src="{{chequeImageUrl}}" class="logoImage rounded" loading="lazy"></a></dd>
+                                                }
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                            @if(loader){
+                                <div class="fb-item" style="height: 25vh;">
+                                    <div class="first-section-wrapper">
+                                        <div class="gravatar-title">
+                                            <div style="float: left;">
+                                                <div>
+                                                    <ngx-skeleton-loader [theme]="{width: '170px', 'border-radius': '0', height: '20px', 'margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                                </div>
+                                                <div>
+                                                    <ngx-skeleton-loader [theme]="{ width: '190px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                                </div>
+                                                <div>
+                                                    <ngx-skeleton-loader [theme]="{ width: '270px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                                </div>
+                                            </div>
+                                            <div style="float: right;">
+                                                <div>
+                                                    <ngx-skeleton-loader [theme]="{width: '170px', 'border-radius': '0', height: '20px', 'margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                                </div>
+                                                <div>
+                                                    <ngx-skeleton-loader [theme]="{ width: '190px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                                </div>
+                                                <div>
+                                                    <ngx-skeleton-loader [theme]="{ width: '270px', 'border-radius': '0', height: '15px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            }@else{
+                            <h5 class="text-danger mb-3">Partner Address</h5>
+                            <div class="card card-action mb-4">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-xl-7 col-12">
+                                            <dl class="row mb-0">
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Zone:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.zone || '---'}}</dd>
+                                
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Base Location City:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.city || '---'}}</dd>
+
+                                                <dt class="col-sm-4 fw-medium mb-3 text-nowrap">Registered Address:</dt>
+                                                <dd class="col-sm-8">{{partnerList?.registeredAddress || '---'}}</dd>
+                                            </dl>
+                                        </div>
+                                        <div class="col-xl-5 col-12">
+                                            <dl class="row mb-0">
+                                                <dt class="col-sm-6 fw-medium mb-3 text-nowrap">Base Location State:</dt>
+                                                <dd class="col-sm-6">{{partnerList?.state || '---'}}</dd>
+
+                                                <dt class="col-sm-6 fw-medium mb-3 text-nowrap">Pincode:</dt>
+                                                <dd class="col-sm-6">{{partnerList?.pincode || '---'}}</dd>
+
+                                                <dt class="col-sm-6 fw-medium mb-3 text-nowrap">Communication Address:</dt>
+                                                <dd class="col-sm-6">{{partnerList?.address || '---'}}</dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                            @if(loader){
+                                <div class="fb-item" style="height: 35vh;">
+                                    <div class="first-section-wrapper">
+                                        <div class="gravatar-title">
+                                            <div>
+                                                <ngx-skeleton-loader [theme]="{width: '170px', 'border-radius': '0', height: '20px', 'margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                            <div>
+                                                <ngx-skeleton-loader appearance="" [theme]="{ width: '320px', 'border-radius': '0', height: '120px','margin-bottom': '20px','margin-left':'25px'}"></ngx-skeleton-loader>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }@else{
+                            <h5 class="text-danger mb-3">Partner SPOC</h5>
+                            <div class="row mb-4">
+                                @if(partnerList?.users){
+                                    @for(spoc of partnerList?.users; track $index){
+                                        <div class="col-md-4">
+                                            <div class="spoc-card rounded">
+                                                <div class="spoc-img">
+                                                    @if(spoc?.image != null && spoc?.image != ''){
+                                                        <img src="{{baseAPIURL}}{{spoc.image}}" alt="user-avatar" class="d-block rounded">
+                                                    }@else{
+                                                        <img src="../../../assets/images/user.jpg" alt="user-avatar" class="d-block rounded">
+                                                    }
+                                                </div>
+                                                <div class="spoc-details">
+                                                    <p class="mb-0"><i class="fa-solid fa-user text-danger"></i> {{spoc.name}}</p>
+                                                    <p class="mb-0"><i class="fa-solid fa-envelope text-danger"></i> {{spoc.email}}</p>
+                                                    <p class="mb-0"><i class="fa-solid fa-phone text-danger"></i> {{spoc.mobile}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }@else{
+                                    <p>Partner SPOC is not added, <a class="link-primary" [routerLink]="['/users']">Add SPOC</a></p>
+                                }
+                            </div>
+                            }
+                        </div>
+                        <div class="tab-pane fade indentcomponent" id="navs-justified-profile" role="tabpanel">
+                            @for(iteam of indentList; track $index){
+                                <div class="tmi-jobs-list-wrap">
+                                    <ul>
+                                        <li>
+                                            <div class="srp-jobtuple-wrapper" data-job-id="141220500637">
+                                                <div class="cust-job-tuple layout-wrapper lay-2 sjw__tuple rounded" style="background-color: #f7f7f7;">
+                                                    <div class=" row1">
+                                                        @if(iteam.client[0]){
+                                                            <a [routerLink]="['/job_details',iteam._id]"><p class="comp-name mw-25" tooltipPosition="top" pTooltip="Client Name" style="margin-right: 15px;"><i class="fa-solid fa-building-ngo"></i> {{iteam.indentStep1.jobTitle}}</p></a>
+                                                        }
+                                                    </div>
+                                                    <div class=" row3">
+                                                        <div class="job-details ">
+                                                            <span class="exp-wrap">
+                                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-experience exp">
+                                                                    <span tooltipPosition="top" pTooltip="Experience" class="expwdth"><i class="fa-solid fa-briefcase"></i>{{iteam.indentStep2.minExperience}} - {{iteam.indentStep2.maxExperience}} Yrs </span>
+                                                                </span>
+                                                            </span>
+                                                            <span class="sal-wrap ver-line">
+                                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-rupee sal">
+                                                                    <span tooltipPosition="top" pTooltip="Salary" class=""><i class="fa-solid fa-indian-rupee-sign"></i>{{iteam.indentStep2.minSalary | currency:'INR' : '' : '1.0-0'}} - {{iteam.indentStep2.maxSalary | currency:'INR':'':'1.0-0'}} Per {{iteam.indentStep2.salaryUnit}}</span>
+                                                                </span>
+                                                            </span>
+                                                            <span class="loc-wrap ver-line">
+                                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                                                    <span tooltipPosition="top" pTooltip="Vacancies" class="locWdth"><i class="fa-solid fa-suitcase"></i>{{iteam.indentStep2.vacancies}}</span>
+                                                                </span>
+                                                            </span>
+                                                            <span class="loc-wrap ver-line">
+                                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                                                    <span tooltipPosition="top" pTooltip="Job Location" class="locWdth"><i class="fa-solid fa-location-dot"></i>{{iteam.indentStep2.advLocation}}</span>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="skills">
+                                                        <ul class="list-inline">
+                                                            @for(skill of iteam.indentStep2.skilsList; track $index){
+                                                                <li class="list-inline-item" tooltipPosition="top" pTooltip="Skills">{{skill}}</li>
+                                                            }
+                                                        </ul>
+                                                    </div>
+                                                    <div class="row6">  
+                                                        <span tooltipPosition="left" pTooltip="Posted On" class="job-post-day"><i class="fa-regular fa-clock"></i> {{iteam.posted_on}} || {{iteam.created_at | date: 'dd MMM, yyyy'}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        
+                                        <!-- <li>
+                                            <div class="srp-jobtuple-wrapper" data-job-id="141220500637">
+                                                <div class="cust-job-tuple layout-wrapper lay-2 sjw__tuple rounded" style="background-color: #f7f7f7;">
+                                                    <div class=" row1">
+                                                        <a tooltipPosition="top" pTooltip="Indent Title" class="title" [routerLink]="['/job_details']">Test Job 2</a>
+                                                    </div>
+                                                    <div class=" row3">
+                                                        <div class="job-details ">
+                                                            <span class="exp-wrap">
+                                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-experience exp">
+                                                                    <span tooltipPosition="top" pTooltip="Experience" class="expwdth"><i class="fa-solid fa-briefcase"></i>  0 - 10 Yrs</span>
+                                                                </span>
+                                                            </span>
+                                                            <span class="sal-wrap ver-line">
+                                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-rupee sal">
+                                                                    <span tooltipPosition="top" pTooltip="Salary" class=""><i class="fa-solid fa-indian-rupee-sign"></i> 50000 - 60000 Per Month</span>
+                                                                </span>
+                                                            </span>
+                                                            <span class="loc-wrap ver-line">
+                                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                                                    <span tooltipPosition="top" pTooltip="Vacancies" class="locWdth"><i class="fa-solid fa-suitcase"></i>  10 Nos.</span>
+                                                                </span>
+                                                            </span>
+                                                            <span class="loc-wrap ver-line">
+                                                                <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                                                    <span tooltipPosition="top" pTooltip="Job Location" class="locWdth"><i class="fa-solid fa-location-dot"></i> Anantapur,Cuttack</span>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="skills">
+                                                        <ul class="list-inline">
+                                                            
+                                                                <li class="list-inline-item" tooltipPosition="top" pTooltip="Skills">PHP</li>
+                                                            
+                                                        </ul>
+                                                    </div>
+                                                    <div class="row6">  
+                                                        <span tooltipPosition="left" pTooltip="Posted On" class="job-post-day"><i class="fa-regular fa-clock"></i> 3 Days ago</span>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </li> -->
+                                    </ul>
+                                </div>
+                                }
+                        </div>
+
+
+                        <div class="tab-pane fade candidatecomponent" id="navs-justified-candidates" role="tabpanel">
+                        @if(totalRecord > 0){
+                            @for(iteam of recommData; track $index){
+                                <div class="can_stage mt-3 rounded">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-1" tooltipPosition="top" pTooltip="Candidate Image">
+                                                    <a class="text-primary" href="candidateprofile/{{iteam._id}}">
+                                                        <img src="https://tms.tmivirtually.com/docs/trainer/image/1683046513Trainer_IMG.jpg" style="width: 52px; height: 52px; border-radius: 100%; border: 4px solid #f0f8ff;"> 
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-8" style="margin-left: -17px; margin-top: 10px;">
+                                                    <h6>
+                                                        <a class="text-primary" tooltipPosition="top" pTooltip="Candidate Name" href="candidateprofile/{{iteam._id}}">{{iteam.name}}</a>
+                                                        <br>
+                                                        <span tooltipPosition="top" pTooltip="Candidate Mobile Number">{{iteam.mobile}}</span>
+                                                    </h6>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <a [routerLink]="">
+                                                        <div class="resume rounded">
+                                                            <p class="mb-0">Applied Jobs: <span class="applied-indent-count">{{iteam.no_of_applied_indents}}</span></p>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="row my-3" style="box-sizing: content-box;">
+                                            <div class="col-sm-6 col-lg-3">
+                                                <div class="card card-border-shadow-primary h-100" style="background-color: #fff;">
+                                                    <div class="card-body">
+                                                        <div class="d-flex align-items-center mb-2 pb-1">
+                                                            <div class="avatar me-2">
+                                                                <span class="avatar-initial rounded bg-label-primary"><i class="fa-solid fa-golf-ball-tee"></i></span>
+                                                            </div>
+                                                            <h4 class="ms-1 mb-0">Summary</h4>
+                                                        </div>
+                                                        <p class="mb-1" tooltipPosition="left" pTooltip="{{ iteam.candidate_summary}}">{{ iteam.candidate_summary | slice:0:40}}...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-lg-3">
+                                                <div class="card card-border-shadow-warning h-100" style="background-color: #fff;">
+                                                    <div class="card-body">
+                                                        <div class="d-flex align-items-center mb-2 pb-1">
+                                                            <div class="avatar me-2">
+                                                                <span class="avatar-initial rounded bg-label-warning"><i class="fa-solid fa-graduation-cap"></i></span>
+                                                            </div>
+                                                            <h4 class="ms-1 mb-0">Education</h4>
+                                                        </div>
+                                                    
+                                                        @if(iteam.education != ''){
+                                                        <p class="mb-1">{{iteam.education[0].qualification}}</p>
+                                                        }
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-lg-3">
+                                                <div class="card card-border-shadow-danger h-100" style="background-color: #fff;">
+                                                    <div class="card-body">
+                                                        <div class="d-flex align-items-center mb-2 pb-1">
+                                                            <div class="avatar me-2">
+                                                                <span class="avatar-initial rounded bg-label-danger"><i class="fa-solid fa-graduation-cap"></i></span>
+                                                            </div>
+                                                            <h4 class="ms-1 mb-0">Strengths</h4>
+                                                        </div>
+                                                    
+                                                        @if(iteam.strengths){
+                                                        <p class="mb-1">{{iteam.strengths[0] | slice:0:10}}...</p>
+                                                        }
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-lg-3">
+                                                <div class="card card-border-shadow-info h-100" style="background-color: #fff;">
+                                                    <div class="card-body">
+                                                        <div class="d-flex align-items-center mb-2 pb-1">
+                                                            <div class="avatar me-2">
+                                                                <span class="avatar-initial rounded bg-label-info"><i class="fa-solid fa-briefcase"></i></span>
+                                                            </div>
+                                                            <h4 class="ms-1 mb-0">Experience</h4>
+                                                        </div>
+                                                        <p class="mb-1">{{iteam.totWorkExp}} Years</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row mt-4">
+                                <!-- <div class="col-md-8">
+                                    <p>Showing {{startIndex2}} to {{endIndex2}} of {{filterdRecord}} entries</p>
+                                </div> -->
+                                <div class="col-md-12">
+                                    <div class="cuspagi" style="float: right;">
+                                        <nav aria-label="...">
+                                            <ul class="pagination">
+                                                <li class="page-item {{isDisabled}}"><button class="page-link" (click)="prevPage()">Previous</button></li>
+                                                <li class="page-item active" aria-current="page"><a class="page-link" >{{currentPage}}</a></li>
+                                                <li class="page-item {{isDisabled2}}"><button class="page-link text-danger" (click)="nextPage()">Next</button></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        }@else{
+                            <div class="col-md-12 pt-5">
+                                <div class="empty_state rounded">
+                                    <i class="fa-solid fa-face-surprise"></i>
+                                    <h3 class="">No records</h3>
+                                    <p>There are no records found</p>
+                                </div>
+                            </div>
+                        }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,493 @@
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class=" container col-md-12">
+        <div class="breadcrumb nav">
+            <span class="breadcrumb-item">
+                <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+            </span>
+            <span class="breadcrumb-item">
+                <a class="breadcrumb-link" [routerLink]="['/eandi']">E&I</a>
+            </span>
+            <span class="breadcrumb-item">
+                <a class="breadcrumb-link">Addeandiquestion</a>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row ">
+            
+            <div class="col-md-9">
+                <div class="step-form rounded">
+                    <h5 class="text-danger py-3 - ">Add E&I Question For - <a routerLink="/eandi/" class="link-primary">{{eandiData?.title}}</a></h5>
+                    <form [formGroup]="insertEandiQuestion">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Field Type <span class="text-danger">*</span></label>
+                                    <select class="form-control" (change)="fieldType($event)" formControlName="fieldType">
+                                        <option value="null">Select Field Type</option>
+                                        <option value="Candidate Field">Candidate Field</option>
+                                        <option value="Generic Question" selected>Generic Field</option>
+                                    </select>
+                                    <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.fieldType.invalid && (insertEandiQuestion.controls.fieldType.touched || insertEandiQuestion.controls.fieldType.dirty || isFormSubmited)" >
+                                        <span *ngIf="insertEandiQuestion.controls.fieldType.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Input Type <span class="text-danger">*</span></label>
+                                    <select class="form-control" (change)="inputType($event)" formControlName="inputType">
+                                        <option value="null">Select Type</option>
+                                        @if(questionCategory == "Generic Question"){
+                                            <option value="MCQ">Multiple Choice Question</option>
+                                            <option value="MSQ">Multi-Select Question</option>
+                                            <option value="NQ">Numeric Question</option>
+                                            <option value="DDQ">Dropdown Question</option>
+                                            <option value="DIQ">Date Input Question</option>
+                                        }@if(questionCategory == "Candidate Field"){
+                                            <option value="DOB">Date of Birth</option>
+                                            <option value="Gender">Gender</option>
+                                            <option value="Skill">Skill</option>
+                                            <option value="City">City</option>
+                                            <option value="TWE">Total Work Experience</option>
+                                            <option value="HQ">Highest Qualification</option>
+                                            <option value="HQS">Highest Qualification Specialization</option>
+                                            <option value="HQPY">Highest Qualification Passing Year</option>
+                                            <option value="HQP">Highest Qualification Percentage</option>
+                                        }
+                                    </select>
+                                    <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.inputType.invalid && (insertEandiQuestion.controls.inputType.touched || insertEandiQuestion.controls.inputType.dirty || isFormSubmited)" >
+                                        <span *ngIf="insertEandiQuestion.controls.inputType.errors?.['required']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            @if(visibility){
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">{{lebel1}} <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Enter {{lebel1}}" formControlName="question">
+                                    <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.question.invalid && (insertEandiQuestion.controls.question.touched || insertEandiQuestion.controls.question.dirty || isFormSubmited)" >
+                                        <span *ngIf="insertEandiQuestion.controls.question.errors?.['required'] || insertEandiQuestion.controls.question.errors?.['nullRequired']">* This field is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Weightage <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Enter Weightage" formControlName="weightage" (keyup)="checkWeightage($event)">
+                                    <p class="small mb-0">{{remaingWeightage}} Weightage left out of 100</p>
+                                    <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.weightage.invalid && (insertEandiQuestion.controls.weightage.touched || insertEandiQuestion.controls.weightage.dirty || isFormSubmited)" >
+                                        <span *ngIf="insertEandiQuestion.controls.weightage.errors?.['required']">* This field is required</span>
+                                        <span *ngIf="insertEandiQuestion.controls.weightage.errors?.['number']" class="text-danger">Please enter only Positive numbers'</span>
+                                    </div>
+                                    <p class="text-danger pt-2 error">{{validationmessage1}}</p>
+                                </div>
+                            </div>
+
+                            @if(inputFieldType == "NQ" || inputFieldType == "TWE"){
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="control-label">Unit <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Enter Unit" formControlName="unit">
+                                </div>
+                            </div>
+                            }
+
+                            @if(inputFieldType == "MSQ" || inputFieldType == "HQS" || inputFieldType == "Skill"){
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="control-label">Minimum <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Enter Minimum item required" formControlName="minimum">
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+
+                        @if(inputFieldType == "MCQ" || inputFieldType == "MSQ" || inputFieldType == "HQS" || inputFieldType == "DDQ" || inputFieldType == "Gender" || inputFieldType == "Skill" || inputFieldType == "City" || inputFieldType == "HQ"){
+                            <div formGroupName="options">
+                                @for(opt of optionGroups.controls; track $index){
+                                    <div [formGroupName]="$index">
+                                        <div class="row">
+                                            @if(inputFieldType == "Gender"){
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Gender <span class="text-danger">*</span></label>
+                                                        <select class="form-control" formControlName="option">
+                                                            <option value="null">Select Gender</option>
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female">Female</option>
+                                                            <option value="Third Gender">Third Gender</option>
+                                                        </select>
+                                                        <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.option.invalid && (insertEandiQuestion.controls.options.controls[$index].controls.option.touched || insertEandiQuestion.controls.options.controls[$index].controls.option.dirty || isFormSubmited)" >
+                                                            <span *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.option.errors?.['nullRequired']">* This field is required</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }@else if(inputFieldType == "Skill"){
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Skills <span class="text-danger">*</span></label>
+                                                        <select class="form-control" formControlName="option">
+                                                            <option value="null">Select Skill</option>
+                                                            <option value="PHP">PHP</option>
+                                                            <option value="HTML">HTML</option>
+                                                            <option value="Python">Python</option>
+                                                        </select>
+                                                        <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.option.invalid && (insertEandiQuestion.controls.options.controls[$index].controls.option.touched || insertEandiQuestion.controls.options.controls[$index].controls.option.dirty || isFormSubmited)" >
+                                                            <span *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.option.errors?.['nullRequired']">* This field is required</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }@else if(inputFieldType == "City"){
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        <label class="control-label">City <span class="text-danger">*</span></label>
+                                                        <select class="form-control" formControlName="option">
+                                                            <option value="null">Select City</option>
+                                                            <option value="Hyderabad">Hyderabad</option>
+                                                            <option value="BBSR">BBSR</option>
+                                                            <option value="New Delhi">New Delhi</option>
+                                                        </select>
+                                                        <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.option.invalid && (insertEandiQuestion.controls.options.controls[$index].controls.option.touched || insertEandiQuestion.controls.options.controls[$index].controls.option.dirty || isFormSubmited)" >
+                                                            <span *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.option.errors?.['nullRequired']">* This field is required</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }@else if(inputFieldType == "HQ"){
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Highest Qualification <span class="text-danger">*</span></label>
+                                                        <select class="form-control" formControlName="option">
+                                                            <option value="null">Select Location</option>
+                                                            <option value="Under Graduate">Under Graduate</option>
+                                                            <option value="Graduate">Graduate</option>
+                                                            <option value="Post Graduate">Post Graduate</option>
+                                                            <option value="PHD">PHD</option>
+                                                        </select>
+                                                        <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.option.invalid && (insertEandiQuestion.controls.options.controls[$index].controls.option.touched || insertEandiQuestion.controls.options.controls[$index].controls.option.dirty || isFormSubmited)" >
+                                                            <span *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.option.errors?.['nullRequired']">* This field is required</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }@else{
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Option {{'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[$index]}} <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" placeholder="Enter Option" formControlName="option">
+                                                        <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.option.invalid && (insertEandiQuestion.controls.options.controls[$index].controls.option.touched || insertEandiQuestion.controls.options.controls[$index].controls.option.dirty || isFormSubmited)" >
+                                                            <span *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.option.errors?.['nullRequired']">* This field is required</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">Score {{'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[$index]}} <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Enter Score" formControlName="score">
+                                                    <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.score.invalid && (insertEandiQuestion.controls.options.controls[$index].controls.score.touched || insertEandiQuestion.controls.options.controls[$index].controls.score.dirty || isFormSubmited)" >
+                                                        <span *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.score.errors?.['nullRequired']">* This field is required</span>
+                                                        <span *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.score.errors?.['number']">Please enter only Positive numbers'</span>
+                                                        <span *ngIf="insertEandiQuestion.controls.options.controls[$index].controls.score.errors?.['scoreNotLessThanWeightage']">* Score Not Grater than Weightage</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                            @if($index >= 2){
+                                                <div class="col-md-1">
+                                                    <button type="button" class="btn btn-danger w-100" (click)="removeQuestion($index)" style="margin-top: 27px;"><i class="fa fa-times"></i></button>
+                                                </div>
+                                            }@else{
+                                                @if($index == 0){
+                                                <div class="col-md-1">
+                                                    <button class="btn btn-primary w-100" (click)="addMoreQuestion()" style="margin-top: 27px;">Add</button>
+                                                </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        
+  
+                        @if(inputFieldType == "NQ" || inputFieldType == "DIQ" || inputFieldType == "DOB" || inputFieldType == "TWE" || inputFieldType == "HQPY" || inputFieldType == "HQP"){
+                            <div formGroupName="conditions">
+                                @for(cnd of conditionGroups.controls; track $index){
+                                    <div [formGroupName]="$index">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Operator <span class="text-danger">*</span></label>
+                                                            <select class="form-control" formControlName="operator">
+                                                                <option value="null">Select Operator</option>
+                                                                <option value=">">></option>
+                                                                <option value=">=">>=</option>
+                                                                <option value="<"><</option>
+                                                                <option value="<="><=</option>
+                                                                <option value="==">==</option>
+                                                            </select>
+                                                            <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.conditions.controls[$index].controls.operator.invalid && (insertEandiQuestion.controls.conditions.controls[$index].controls.operator.touched || insertEandiQuestion.controls.conditions.controls[$index].controls.operator.dirty || isFormSubmited)" >
+                                                                <span *ngIf="insertEandiQuestion.controls.conditions.controls[$index].controls.operator.errors?.['nullRequired']">* This field is required</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Value <span class="text-danger">*</span></label>
+                                                            <input type="{{dynamicInputType}}" class="form-control" placeholder="Enter Value" formControlName="value">
+                                                            <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.conditions.controls[$index].controls.value.invalid && (insertEandiQuestion.controls.conditions.controls[$index].controls.value.touched || insertEandiQuestion.controls.conditions.controls[$index].controls.value.dirty || isFormSubmited)" >
+                                                                <span *ngIf="insertEandiQuestion.controls.conditions.controls[$index].controls.value.errors?.['nullRequired']">* This field is required</span>
+                                                                <span *ngIf="insertEandiQuestion.controls.conditions.controls[$index].controls.value.errors?.['floatnumbers']">* Please enter only numbers'</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Control</label>
+                                                            <select class="form-control" (change)="logicControl($event,$index)" formControlName="control">
+                                                                <option value="null">Select Operator</option>
+                                                                <option value="AND">AND</option>
+                                                                <option value="OR">OR</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @if(workingStatusValue2[$index]){
+                                                <div class="col-md-3">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Value <span class="text-danger">*</span></label>
+                                                                <input type="{{dynamicInputType}}" class="form-control" placeholder="Enter Score" formControlName="value2">
+                                                                <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.conditions.controls[$index].controls.value2.invalid && (insertEandiQuestion.controls.conditions.controls[$index].controls.value2.touched || insertEandiQuestion.controls.conditions.controls[$index].controls.value2.dirty || isFormSubmited)" >
+                                                                    <span *ngIf="insertEandiQuestion.controls.conditions.controls[$index].controls.value2.errors?.['nullRequired']">* This field is required</span>
+                                                                    <span *ngIf="insertEandiQuestion.controls.conditions.controls[$index].controls.value2.errors?.['floatnumbers']">* Please enter only numbers'</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                        
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Operator <span class="text-danger">*</span></label>
+                                                                <select class="form-control" formControlName="operator2">
+                                                                    <option value=null>Select Operator</option>
+                                                                    <option value=">">></option>
+                                                                    <option value=">=">>=</option>
+                                                                    <option value="<"><</option>
+                                                                    <option value="<="><=</option>
+                                                                    <option value="==">==</option>
+                                                                </select>
+                                                                <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.conditions.controls[$index].controls.operator2.invalid && (insertEandiQuestion.controls.conditions.controls[$index].controls.operator2.touched || insertEandiQuestion.controls.conditions.controls[$index].controls.operator2.dirty || isFormSubmited)" >
+                                                                    <span *ngIf="insertEandiQuestion.controls.conditions.controls[$index].controls.operator2.errors?.['nullRequired']">* This field is required</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                                
+                                            <div class="col-md-3">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Score <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" placeholder="Enter Score" formControlName="score">
+                                                            <div class="text-danger pt-2 error" *ngIf="insertEandiQuestion.controls.conditions.controls[$index].controls.score.invalid && (insertEandiQuestion.controls.conditions.controls[$index].controls.score.touched || insertEandiQuestion.controls.conditions.controls[$index].controls.score.dirty || isFormSubmited)" >
+                                                                <span *ngIf="insertEandiQuestion.controls.conditions.controls[$index].controls.score.errors?.['nullRequired']">* This field is required</span>
+                                                                <span *ngIf="insertEandiQuestion.controls.conditions.controls[$index].controls.score.errors?.['scoreNotLessThanWeightage']">* Score Not Grater than Weightage</span>
+                                                                <span *ngIf="insertEandiQuestion.controls.conditions.controls[$index].controls.score.errors?.['number']">* Please enter only numbers'</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    @if($index > 0){
+                                                        <div class="col-md-4">
+                                                            <button type="button" class="btn btn-danger" (click)="removeCondition($index)" style="margin-top: 27px;"><i class="fa fa-times"></i></button>
+                                                        </div>
+                                                    }@else{
+                                                        <div class="col-md-4">
+                                                            <button type="button" class="btn btn-primary" (click)="addMoreCondition()" style="margin-top: 25px;"><i class="fa-regular fa-plus"></i></button>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p id="message"></p>
+                                @if(isBtnLoading){
+                                    <button style="display: inline-block;" class="btn btn-primary postjob-btn mr-2" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                                }@else{
+                                    <button style="display: inline-block;" type="button" (click)="insertEandiQuestions();" class="btn postjob-btn mr-2" type="button"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                                }
+                                <button style="margin-left: 15px;" type="button" (click)="resetForm();" class="btn btn-primary " type="button"><i class="fa-solid fa-retweet"></i> RESET</button>
+                            </div>
+                        </div>
+
+                        <!-- <p class="mt-5">{{insertEandiQuestion.value | json}}</p> -->
+                        
+                        <!--
+                        <p>fieldType: {{insertEandiQuestion.controls.fieldType.valid}}</p>
+                        <p>inputType: {{insertEandiQuestion.controls.inputType.valid}}</p>
+                        <p>question: {{insertEandiQuestion.controls.question.valid}}</p>
+                        <p>weightage: {{insertEandiQuestion.controls.weightage.valid}}</p>
+                        <p>unit: {{insertEandiQuestion.controls.unit.valid}}</p>
+                        <p>minimum: {{insertEandiQuestion.controls.minimum.valid}}</p>
+                        <p>visibility: {{insertEandiQuestion.controls.visibility.valid}}</p>
+
+                        <hr>
+
+                        <p>operator: {{insertEandiQuestion.controls.conditions.controls[0].controls.operator.valid}}</p>
+                        <p>value: {{insertEandiQuestion.controls.conditions.controls[0].controls.value.valid}}</p>
+                        <p>control: {{insertEandiQuestion.controls.conditions.controls[0].controls.control.valid}}</p>
+                        <p>value2: {{insertEandiQuestion.controls.conditions.controls[0].controls.value2.valid}}</p>
+                        <p>operator2: {{insertEandiQuestion.controls.conditions.controls[0].controls.operator2.valid}}</p>
+                        <p>score: {{insertEandiQuestion.controls.conditions.controls[0].controls.score.valid}}</p>
+
+                        <hr>
+                        <p>option: {{insertEandiQuestion.controls.options.controls[0].controls.option.valid}}</p>
+                        <p>score: {{insertEandiQuestion.controls.options.controls[0].controls.score.valid}}</p>
+                        <p>option1: {{insertEandiQuestion.controls.options.controls[1].controls.option.valid}}</p>
+                        <p>score1: {{insertEandiQuestion.controls.options.controls[1].controls.score.valid}}</p>
+
+                        <p class="mt-5">Overall : {{insertEandiQuestion.valid}}</p> -->
+
+                        <!-- <p><span style="float: right; cursor: pointer;"><a (click)="allQuestions()"><i class="fa-regular fa-eye"></i> Preview</a></span></p> -->
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="step-form rounded">
+                    <div class="step-boder">
+                        <div class="row">
+                            
+                            <div class="col-md-12 mb-3">
+                                <div class="form-heading-div">
+                                    <h4 class="text-danger">{{eandiData?.title}}</h4>
+                                    <p><b>Category: </b> 
+                                        @for(cat of eandiData?.category; track $index){
+                                            <span>{{cat}}</span>,
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="question-div">
+                                <div class="row">
+                                @for(question of eandiData?.questions; track $index){
+                                    <div class="col-md-12 mb-3">
+                                        <label class="control-label"><b>Q {{$index+1}}</b>. {{question.question}} <span class="text-danger">*</span></label>
+                                        <p>Weightage : {{question.weightage}}</p>
+                                        <div class="row">
+                                            @for(option of question.options; track $index){
+                                                <div class="col-md-6 mb-2">
+                                                    <div class="option-group rounded">
+                                                        <p class="mb-0">Option: {{option.option}}</p>
+                                                        <p class="mb-0">Score: {{option.score}}</p>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-toast />
+
+
+<p-dialog header="E And I Questions" [(visible)]="questionModalView" [modal]="true" [style]="{width: '50vw'}" [maximizable]="true">
+    <div class="step-form">
+        <div class="step-boder">
+            <div class="row">
+                                
+                <div class="question-div">
+                    <div class="row">
+                        @if(selectedEandi != ''){
+                        <div class="col-md-12 mb-3">
+                            @if(selectedEandi?.question){
+                            <label class="control-label"><b>Q </b>. {{selectedEandi?.question}} <span class="text-danger">*</span></label>
+                            }
+                            <p><b>Weightage:</b> {{selectedEandi?.weightage}}</p>
+
+                            <!-- <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">DOB <span class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" placeholder="Enter Value">
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            @if(selectedEandi?.inputType == "MSQ"){
+                                <div class="row">
+                                    @for(option of selectedEandi.options; track $index){
+                                        <div class="col-md-12" style="padding-left: 20px;">
+                                            <div class="checkbox-input-class">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox">
+                                                    <label class="form-check-label" for="flexCheckCheckedDisabled">{{option.option}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+
+                            @if(selectedEandi?.inputType == "NQ"){
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="number" class="form-control" placeholder="Enter Value">
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            <!-- <div class="row">
+                                @for(option of question.options; track $index){
+                                    <div class="col-md-6 mb-2">
+                                        <div class="option-group rounded">
+                                            <p class="mb-0">Option: {{option.option}}</p>
+                                            <p class="mb-0">Score: {{option.score}}</p>
+                                        </div>
+                                    </div>
+                                }
+                            </div> -->
+                        </div>
+                        }
+                    
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</p-dialog>

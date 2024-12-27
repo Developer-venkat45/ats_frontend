@@ -1,0 +1,1283 @@
+<!-- <app-navbar></app-navbar> -->
+
+
+    <section class="section p-t60 mt-5 p-b60 content site-bg-gray">
+        <div class="container">
+
+            <div class="nav-align-top mb-4">
+                <ul class="nav nav-tabs nav-fill" role="tablist" style="background-color: #f0f8ff;">
+                    <li class="nav-item" role="presentation">
+                        <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-step1" aria-controls="navs-justified-step1" aria-selected="true"><i class="tf-icons bx bx-home me-1"></i> Basic Details</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-step2" aria-controls="navs-justified-step2" aria-selected="false" tabindex="-1"><i class="tf-icons bx bx-user me-1"></i>Additional Details</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-step3" aria-controls="navs-justified-step3" aria-selected="false" tabindex="-1"><i class="tf-icons bx bx-message-square me-1"></i> Stage Configuration</button>
+                    </li>
+                    @if(aiscoreTab){
+                        <li class="nav-item" role="presentation">
+                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-step4" aria-controls="navs-justified-step4" aria-selected="false" tabindex="-1"><i class="tf-icons bx bx-message-square me-1"></i> AI Scoring Criteria</button>
+                        </li>
+                    }
+                    @if(eandiTab){
+                    <li class="nav-item" role="presentation">
+                        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-step5" aria-controls="navs-justified-step5" aria-selected="false" tabindex="-1"><i class="tf-icons bx bx-message-square me-1"></i> E & I</button>
+                    </li>
+                    }
+                    @if(assessmentTab){
+                        <li class="nav-item" role="presentation">
+                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-step6" aria-controls="navs-justified-step6" aria-selected="false" tabindex="-1"><i class="tf-icons bx bx-message-square me-1"></i> Assessment</button>
+                        </li>
+                    }
+                </ul>
+                <p-toast />
+                <form [formGroup]="indentForm">
+                    <div class="tab-content bg-white p-3">
+                        <div class="tab-pane fade active show" id="navs-justified-step1" role="tabpanel">
+                            <div class="panel-header">
+                                <!-- <h5 class="text-danger">Basic Details</h5> -->
+                                <p class="mb-0">Provide the basic indent information</p>
+                            </div><br />
+                            <div class="step-form">
+                                <div formGroupName="indentStep1">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Designation <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" placeholder="Enter Designation" formControlName="jobTitle">
+                                                <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep1.controls.jobTitle.invalid && (indentForm.controls.indentStep1.controls.jobTitle.touched || indentForm.controls.indentStep1.controls.jobTitle.dirty || isFormSubmited)" >
+                                                    <span *ngIf="indentForm.controls.indentStep1.controls.jobTitle.errors?.['required']">* This field is required</span>
+                                                    <span *ngIf="indentForm.controls.indentStep1.controls.jobTitle.errors?.['designationValid'] &&  !indentForm.controls.indentStep1.controls.jobTitle.errors?.['required']">Allowed: alphabets,spaces and '-', ' .' '</span>
+                                                    <span *ngIf="indentForm.controls.indentStep1.controls.jobTitle.errors?.['maxlength']">* Maximum 150 character should be allowed'</span>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Job Code <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" placeholder="Enter Job Code" formControlName="jobCode" readonly>
+                                                <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep1.controls.jobCode.invalid && (indentForm.controls.indentStep1.controls.jobCode.touched || indentForm.controls.indentStep1.controls.jobCode.dirty || isFormSubmited)" >
+                                                    <span *ngIf="indentForm.controls.indentStep1.controls.jobCode.errors?.['required']">* This field is required</span>
+                                                    <span *ngIf="indentForm.controls.indentStep1.controls.jobCode.errors?.['jobcodevalid'] &&  !indentForm.controls.indentStep1.controls.jobCode.errors?.['required']">Allowed: alphanumaric,'-','()' '</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Category <span class="text-danger">*</span></label>
+                                                        <select class="form-control" formControlName="jobCategory">
+                                                            <option selected value="">Select Category</option>
+                                                            @for(item of categoryData; track $index ){
+                                                                <option value="{{item.name}}">{{item.name}}</option>
+                                                            }
+                                                        </select>
+                                                        <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep1.controls.jobCategory.invalid && (indentForm.controls.indentStep1.controls.jobCategory.touched || indentForm.controls.indentStep1.controls.jobCategory.dirty || isFormSubmited)" >
+                                                            <span *ngIf="indentForm.controls.indentStep1.controls.jobCategory.errors?.['required']">* This field is required</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Client <span class="text-danger">*</span></label>
+                                                        <select class="form-control" formControlName="jobClient" (change)="getClientSpoc($event)">
+                                                            <option selected value="">Select Client</option>
+                                                            @for(item of clientList; track $index ){
+                                                                <option value="{{item._id}}">{{item.name}}</option>
+                                                            }
+                                                        </select>
+                                                        <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep1.controls.jobClient.invalid && (indentForm.controls.indentStep1.controls.jobClient.touched || indentForm.controls.indentStep1.controls.jobClient.dirty || isFormSubmited)" >
+                                                            <span *ngIf="indentForm.controls.indentStep1.controls.jobClient.errors?.['required']">* This field is required</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Client SPOC <span class="text-danger">*</span></label>
+                                                        <select class="form-control" formControlName="jobClientSpoc">
+                                                            <option selected value="">Select Client SPOC</option>
+                                                            @if(clientData){
+                                                                @for(spoc1 of clientData[0].spoc; track $index ){
+                                                                    <option value="{{spoc1.name}}">{{spoc1.name}} - {{spoc1.email}}</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                        <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep1.controls.jobClientSpoc.invalid && (indentForm.controls.indentStep1.controls.jobClientSpoc.touched || indentForm.controls.indentStep1.controls.jobClientSpoc.dirty || isFormSubmited)" >
+                                                            <span *ngIf="indentForm.controls.indentStep1.controls.jobClientSpoc.errors?.['required']">* This field is required</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div style="display:flex;">
+                                                            <p><input class="form-check-input" type="checkbox" value={{false}} formControlName="hideClient"> Client hide from job
+                                                                seekers</p>       
+                                                            <p><input class="form-check-input" type="checkbox" value={{false}} formControlName="" style="margin-left:30px;"> Allow referrals for this
+                                                                job
+                                                          </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Job Type <span class="text-danger">*</span></label>
+                                                <select class="form-control" formControlName="jobType">
+                                                    <option selected value="">Select Job Type</option>
+                                                    @for(job of jobTypeData; track $index ){
+                                                        <option value="{{job}}">{{job}}</option>
+                                                    }
+                                                </select>
+                                                <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep1.controls.jobType.invalid && (indentForm.controls.indentStep1.controls.jobType.touched || indentForm.controls.indentStep1.controls.jobType.dirty || isFormSubmited)" >
+                                                    <span *ngIf="indentForm.controls.indentStep1.controls.jobType.errors?.['required']">* This field is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Department <span class="text-danger">*</span></label>
+                                                <select class="form-control" formControlName="department">
+                                                    <option selected value="">Select Department</option>
+                                                    @for(department of departmentData; track $index ){
+                                                        <option value="{{department}}">{{department}}</option>
+                                                    }
+                                                </select>
+
+                                                <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep1.controls.department.invalid && (indentForm.controls.indentStep1.controls.department.touched || indentForm.controls.indentStep1.controls.department.dirty || isFormSubmited)" >
+                                                    <span *ngIf="indentForm.controls.indentStep1.controls.department.errors?.['required']">* This field is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Business Unit <span class="text-danger">*</span></label>
+                                                <select class="form-control" formControlName="businessUnit">
+                                                    <option selected value="">Select Business Unit</option>
+                                                    @for(business of businessUnitData; track $index ){
+                                                        <option value="{{business}}">{{business}}</option>
+                                                    }
+                                                </select>
+                                                <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep1.controls.businessUnit.invalid && (indentForm.controls.indentStep1.controls.businessUnit.touched || indentForm.controls.indentStep1.controls.businessUnit.dirty || isFormSubmited)" >
+                                                    <span *ngIf="indentForm.controls.indentStep1.controls.businessUnit.errors?.['required']">* This field is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Job Level</label>
+                                                <select class="form-control" formControlName="jobLevel">
+                                                    <option selected value="">Select Job Level</option>
+                                                    @for(level of jobLevelData; track $index ){
+                                                        <option value="{{level}}">{{level}}</option>
+                                                    }
+                                                </select>
+                                            
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Job Function</label>
+                                                <select class="form-control" formControlName="jobFunction">
+                                                    <option selected value="">Select Function</option>
+                                                    @for(function of jobFunctionData; track $index ){
+                                                        <option value="{{function}}">{{function}}</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Job Sector</label>
+                                                <select class="form-control" formControlName="jobSector">
+                                                    <option selected value="">Select Sector</option>
+                                                    @for(sector of jobSectorData; track $index ){
+                                                        <option value="{{sector}}">{{sector}}</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Job Industry</label>
+                                                <select class="form-control" formControlName="jobIndustry">
+                                                    <option selected value="">Select Industry</option>
+                                                    @for(industry of jobIndustryData; track $index ){
+                                                        <option value="{{industry}}">{{industry}}</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 mb-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Recruiter </label>
+                                                <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="recruiterData" value="12" formControlName="recruiterList">
+                                                </ng-multiselect-dropdown>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-4 mb-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Partner </label>
+                                                <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="partnerData" value="12" formControlName="partnerList">
+                                                </ng-multiselect-dropdown>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <p class="mb-0"><input class="form-check-input" type="checkbox" value={{true}} formControlName="career" style="margin-left:0px;"> Promote this job on Career pages.</p>
+                                            <p class="small">Check the checkbox to promote.</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- {{indentForm.controls.indentStep1.valid}} -->
+
+                        </div>
+
+                        <div class="tab-pane fade" id="navs-justified-step2" role="tabpanel">
+                            <div class="panel-header">
+                                <!-- <h5 class="text-danger">Additional Details</h5> -->
+                                <p class="mb-0">Provide additional information for better understanding</p>
+                            </div><br />
+                            <div class="step-form">
+                                <div formGroupName="indentStep2">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Location <span class="text-danger">*</span></label>
+                                                <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="locationData" formControlName="advLocation">
+                                                </ng-multiselect-dropdown>
+                                                <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep2.controls.advLocation.invalid && (indentForm.controls.indentStep2.controls.advLocation.touched || indentForm.controls.indentStep2.controls.advLocation.dirty || isFormSubmited)" >
+                                                    <span *ngIf="indentForm.controls.indentStep2.controls.advLocation.errors?.['required']">* This field is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Min. Compensation <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" placeholder="Enter Minimum salary" min="1" formControlName="minSalary">
+                                                        <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep2.controls.minSalary.invalid && (indentForm.controls.indentStep2.controls.minSalary.touched || indentForm.controls.indentStep2.controls.minSalary.dirty || isFormSubmited)" >
+                                                            <span *ngIf="indentForm.controls.indentStep2.controls.minSalary.errors?.['required']">* This field is required</span>
+                                                            <span *ngIf="indentForm.controls.indentStep2.controls.minSalary.errors?.['pattern'] &&  !indentForm.controls.indentStep2.controls.minSalary.errors?.['required']">Only numbers allowed'</span>
+                                                        </div>
+                                                    </div>
+                                                    <p><input class="form-check-input" type="checkbox" value={{false}} checked style="margin-top: 5px;" formControlName="negotiable"> Negotiable</p>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Max. Compensation <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" placeholder="Enter Maximum Salary" min="1"   formControlName="maxSalary">
+                                                        <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep2.controls.maxSalary.invalid && (indentForm.controls.indentStep2.controls.maxSalary.touched || indentForm.controls.indentStep2.controls.maxSalary.dirty || isFormSubmited)" >
+                                                            <span *ngIf="indentForm.controls.indentStep2.controls.maxSalary.errors?.['required']">* This field is required</span>
+                                                            <span *ngIf="indentForm.controls.indentStep2.controls.maxSalary.errors?.['pattern'] &&  !indentForm.controls.indentStep2.controls.maxSalary.errors?.['required']">Only numbers allowed'</span>
+                                                            <span *ngIf="indentForm.controls.indentStep2.controls.maxSalary.errors?.['maxNotGreaterThanMin']">Max compensation should be more than min compensation</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+
+                                                        <label class="control-label"></label>
+                                                        <select class="form-control" formControlName="salaryUnit">
+                                                            <!-- <option value="Month" selected>Per Month</option> -->
+                                                            <option value="Annum">Per Annum</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Vacancies <span class="text-danger">*</span></label>
+                                                <input type="tex" class="form-control" placeholder="Enter Number of Vacancies" min="1"  formControlName="vacancies">
+                                                <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep2.controls.vacancies.invalid && (indentForm.controls.indentStep2.controls.vacancies.touched || indentForm.controls.indentStep2.controls.vacancies.dirty || isFormSubmited)" >
+                                                    <span *ngIf="indentForm.controls.indentStep2.controls.vacancies.errors?.['required']">* This field is required</span>
+                                                    <span *ngIf="indentForm.controls.indentStep2.controls.vacancies.errors?.['negativeValue']">* Only positive numbers allowed'</span>
+                                                    <span *ngIf="indentForm.controls.indentStep2.controls.vacancies.errors?.['number']">* Only positive numbers allowed'</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Skills <span class="text-danger">*</span></label>
+                                                <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="skillsData" formControlName="skilsList">
+                                                </ng-multiselect-dropdown>
+                                                <div class="text-danger pt-2" *ngIf="indentForm.controls.indentStep2.controls.skilsList.invalid && (indentForm.controls.indentStep2.controls.skilsList.touched || indentForm.controls.indentStep2.controls.skilsList.dirty || isFormSubmited)" >
+                                                    <span *ngIf="indentForm.controls.indentStep2.controls.skilsList.errors?.['required']">* This field is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Minimum Experience (Year) <span class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" placeholder="Enter min experience" formControlName="minExperience" maxlength="25">
+                                                <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep2.controls.minExperience.invalid && (indentForm.controls.indentStep2.controls.minExperience.touched || indentForm.controls.indentStep2.controls.minExperience.dirty || isFormSubmited)" >
+                                                    <span *ngIf="indentForm.controls.indentStep2.controls.minExperience.errors?.['required']">* This field is required</span>
+                                                    <span *ngIf="indentForm.controls.indentStep2.controls.minExperience.errors?.['negativeValue']">* Only positive numbers allowed'</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Maximum Experience (Year) <span class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" placeholder="Enter max experience" formControlName="maxExperience">
+                                                
+                                                <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep2.controls.maxExperience.invalid && (indentForm.controls.indentStep2.controls.maxExperience.touched || indentForm.controls.indentStep2.controls.maxExperience.dirty || isFormSubmited)" >
+                                                    <span *ngIf="indentForm.controls.indentStep2.controls.maxExperience.errors?.['required']">* This field is required</span>
+                                                    <span *ngIf="indentForm.controls.indentStep2.controls.maxExperience.errors?.['negativeValue']">* Only positive numbers allowed'</span>
+                                                    <span *ngIf="indentForm.controls.indentStep2.controls.maxExperience.errors?.['maxNotGreaterThanMin']">Max experience should be more than min experience</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Job Description <span class="text-danger">*</span></label>
+                                                <div class="NgxEditor__Wrapper">
+                                                    <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
+                                                    <ngx-editor formControlName="jobDescription" [editor]="editor" ></ngx-editor>
+                                                </div>
+                                                <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep2.controls.jobDescription.invalid && (indentForm.controls.indentStep2.controls.jobDescription.touched || indentForm.controls.indentStep2.controls.jobDescription.dirty || isFormSubmited)" >
+                                                    <span *ngIf="indentForm.controls.indentStep2.controls.jobDescription.errors?.['required']">* This field is required</span>
+                                                    <span *ngIf="indentForm.controls.indentStep2.controls.jobDescription.errors?.['maxlength']">* Maximum 5000 character should be allowed'</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Client Description <span class="text-danger">*</span></label>
+                                                <textarea class="form-control" rows="5" style="height: 150px;" formControlName="clientDescription" readonly></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Must Criteria</label>
+                                                <div class="NgxEditor__Wrapper">
+                                                    <ngx-editor-menu [editor]="editor2" [toolbar]="toolbar"> </ngx-editor-menu>
+                                                    <ngx-editor formControlName="mustCriteria" [editor]="editor2" ></ngx-editor>
+                                                </div>
+                                                <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep2.controls.mustCriteria.invalid && (indentForm.controls.indentStep2.controls.mustCriteria.touched || indentForm.controls.indentStep2.controls.mustCriteria.dirty || isFormSubmited)" >
+                                                    <span *ngIf="indentForm.controls.indentStep2.controls.mustCriteria.errors?.['maxlength']">* Maximum 5000 character should be allowed'</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- {{indentForm.controls.indentStep2.valid}} -->
+                        </div>
+
+                        <div class="tab-pane fade" id="navs-justified-step3" role="tabpanel">
+                            <div class="panel-header">
+                                <!-- <h5 class="text-danger">Stage wise Configuration</h5> -->
+                                <p class="mb-0">Create and customize the stages in the workflow as per the job requirement</p>
+                            </div><br />
+                            <div class="step-form">
+                                <div formGroupName="indentStep5">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div formGroupName="screening">
+                                                <label class="control-label">1. Screening <span class="text-danger">*</span></label>
+
+                                                <div formGroupName="scored">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked disabled>
+                                                            <label class="form-check-label" for="flexCheckCheckedDisabled">Scored</label>
+                                                            <!-- <input class="form-check-input" type="checkbox" value="{{true}}"  checked formControlName="status" (change)="onScoredChanged($event)" >
+                                                            <label class="form-check-label" for="flexCheckChecked">Scored</label> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="eandiDone">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked disabled>
+                                                            <label class="form-check-label" for="flexCheckCheckedDisabled">E&I Done</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="manualAssessment">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="{{false}}" name="assessmentConfig" formControlName="status" (change)="onCheckboxChange($event)">
+                                                            <label class="form-check-label" for="flexCheckChecked">Manual Assessment</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="manualAssessment">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="{{false}}" name="assessmentConfig" formControlName="status" (change)="onCheckboxChange($event)">
+                                                            <label class="form-check-label" for="flexCheckChecked">Online Assessment</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="calToAction">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="{{false}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">CTA - Call to Action</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="selected">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="{{true}}" checked formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Selected</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="rejected">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Rejected</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="hold">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Hold</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="shortList">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="{{false}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Shortlist Sent to Client</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="approvedShortList">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="{{false}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Client Approved Shortlist</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="rejectedShortList">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="{{false}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Client Rejected</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div formGroupName="interview">
+                                                <label class="control-label">2. Interview <span class="text-danger">*</span></label>
+
+                                                <div formGroupName="scheduledCreated">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Scheduled Created</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="candidatesScheduled">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Candidates Scheduled</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="interviewAttended">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Interview Attended</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="interviewSelected">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Interview Selected</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="interviewRejected">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Interview Rejected</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="interviewHold">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Interview Hold</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="candidateRescheduled">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Candidate Rescheduled</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="candidateDropped">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Candidate Dropped</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div formGroupName="offer">
+                                                <label class="control-label">3. Offer <span class="text-danger">*</span></label>
+
+                                                <div formGroupName="documentsSubmitted">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Documents Submitted / Collected</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="partialDocumentsSubmitted">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Partial Documents Submitted</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="documentsNotSubmitted">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Documents Not Submitted - Drop</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="offerReleased">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Offer Released - Acceptance Pending</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="offerAcceptance">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Offer Acceptance - Yet to Join</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="offerRejected">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Offer Rejected</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="offerHold">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Offer - Hold</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div formGroupName="hire">
+                                                <label class="control-label">4. Hire <span class="text-danger">*</span></label>
+
+                                                <div formGroupName="joinedYet">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Joined - Yet to Complete Retention </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="joinedLeft">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Joined -& Left Within Retention</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div formGroupName="joinedCompleted">
+                                                    <div class="checkbox-input-class">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" checked value="{{true}}" formControlName="status">
+                                                            <label class="form-check-label" for="flexCheckChecked">Joined & Completed Retention</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @if(assessmentTab == false && aiscoreTab == false && eandiTab == false){
+                                    <p class="text-danger">{{overallFormValid}}</p>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p id="message">{{apiMessage}}</p>
+                                            <div class="submit-btn">
+                                                <button class="postjob-btn btn" type="button" (click)="onSubmit();"><i class="fa-regular fa-paper-plane"></i> SUBMIT INDENT</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <!-- {{indentForm.value | json}} -->
+                            </div>
+                            <!-- {{indentForm.controls.indentStep5.valid}} -->
+                        </div>
+
+                        @if(aiscoreTab){
+                            <div class="tab-pane fade" id="navs-justified-step4" role="tabpanel">
+                                <div class="panel-header">
+                                    <!-- <h5 class="text-danger">AI Scoring Criteria</h5> -->
+                                    <p class="mb-0">Find your ideal candidate by giving promt to AI</p>
+                                </div><br />
+                                <div class="py-5 px-2 d-flex align-items-start step3panel">
+                                    <ul class="nav nav2 nav-pills flex-column nav-pills border-end border-3 me-3 align-items-end" id="pills-tab" role="tablist">
+                                        <li class="nav-item2" role="presentation">
+                                            <button class="nav-link text-primary fw-semibold active position-relative" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Skills</button>
+                                        </li>
+                                        <li class="nav-item2" role="presentation">
+                                            <button class="nav-link text-primary fw-semibold position-relative" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Education</button>
+                                        </li>
+                                        <li class="nav-item2" role="presentation">
+                                            <button class="nav-link text-primary fw-semibold position-relative" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Experience </button>
+                                        </li>
+                                        <li class="nav-item2" role="presentation">
+                                            <button class="nav-link text-primary fw-semibold position-relative text-right" id="pills-score-tab" data-bs-toggle="pill" data-bs-target="#pills-score" type="button" role="tab" aria-controls="pills-score" aria-selected="false">Scoring Weightage </button>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content p-3 w-100" id="pills-tabContent">
+                                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                            <div formGroupName="indentStep3">
+                                                <div formGroupName="skills">
+                                                    <h5>Define the capabilities and skills of your ideal candidate</h5>
+                                                    <div class="step-form-left-panel">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Must-to-have Skills <span class="text-danger"> *</span></label>
+                                                                    <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="skillsData" formControlName="mustHaveSkills">
+                                                                    </ng-multiselect-dropdown>
+                                                                    <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep3.controls.skills.controls.mustHaveSkills.invalid && (indentForm.controls.indentStep3.controls.skills.controls.mustHaveSkills.touched || indentForm.controls.indentStep3.controls.skills.controls.mustHaveSkills.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.skills.controls.mustHaveSkills.errors?.['required']">* This field is required</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Good-to-have Skills <span class="text-danger"> *</span></label>
+                                                                    <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="skillsData" formControlName="goodHaveSkills">
+                                                                    </ng-multiselect-dropdown>
+                                                                    <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep3.controls.skills.controls.goodHaveSkills.invalid && (indentForm.controls.indentStep3.controls.skills.controls.goodHaveSkills.touched || indentForm.controls.indentStep3.controls.skills.controls.goodHaveSkills.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.skills.controls.goodHaveSkills.errors?.['required']">* This field is required</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                            <div formGroupName="indentStep3">
+                                                <div formGroupName="education">
+                                                    <h5>Define the right education background and qualification for the job</h5>
+                                                    <div class="step-form-left-panel">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Degree<span class="text-danger"> *</span></label>
+                                                                    <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="degreeData" formControlName="scDegree">
+                                                                    </ng-multiselect-dropdown>
+                                                                    <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep3.controls.education.controls.scDegree.invalid && (indentForm.controls.indentStep3.controls.education.controls.scDegree.touched || indentForm.controls.indentStep3.controls.education.controls.scDegree.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.education.controls.scDegree.errors?.['required']">* This field is required</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Specialization<span class="text-danger"> *</span></label>
+                                                                    <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="specializationData" formControlName="scSpecialization">
+                                                                    </ng-multiselect-dropdown>
+                                                                    <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep3.controls.education.controls.scSpecialization.invalid && (indentForm.controls.indentStep3.controls.education.controls.scSpecialization.touched || indentForm.controls.indentStep3.controls.education.controls.scSpecialization.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.education.controls.scSpecialization.errors?.['required']">* This field is required</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Level<span class="text-danger"> *</span></label>
+                                                                    <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="levelData" formControlName="scLevel">
+                                                                    </ng-multiselect-dropdown>
+                                                                    <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep3.controls.education.controls.scLevel.invalid && (indentForm.controls.indentStep3.controls.education.controls.scLevel.touched || indentForm.controls.indentStep3.controls.education.controls.scLevel.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.education.controls.scLevel.errors?.['required']">* This field is required</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Quality<span class="text-danger"> *</span></label>
+                                                                    <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="qualityData" formControlName="scQuality">
+                                                                    </ng-multiselect-dropdown>
+                                                                    <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep3.controls.education.controls.scQuality.invalid && (indentForm.controls.indentStep3.controls.education.controls.scQuality.touched || indentForm.controls.indentStep3.controls.education.controls.scQuality.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.education.controls.scQuality.errors?.['required']">* This field is required</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                                            <div formGroupName="indentStep3">
+                                                <div formGroupName="experience">
+                                                    <h5 class="mb-4">Define the right experience and qualification that matches the job requirement</h5>
+                                                    <div class="step-form-left-panel">
+                                                        <h5>Job Information</h5>
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Experience (Min) in Years<span class="text-danger"> *</span></label>
+                                                                    <input type="number" class="form-control" placeholder="Enter Min Experience" formControlName="scMinExperience">
+                                                                    <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep3.controls.experience.controls.scMinExperience.invalid && (indentForm.controls.indentStep3.controls.experience.controls.scMinExperience.touched || indentForm.controls.indentStep3.controls.experience.controls.scMinExperience.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.experience.controls.scMinExperience.errors?.['required']" class="text-danger">* This field is required'</span>
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.experience.controls.scMinExperience.errors?.['negativeValue']" class="text-danger">Only positive numbers allowed'</span>
+                                                                  </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Experience (Max) in Years<span class="text-danger"> *</span></label>
+                                                                    <input type="number" class="form-control" placeholder="Enter Max Experience" formControlName="scMaxExperience">
+                                                                    <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep3.controls.experience.controls.scMaxExperience.invalid && (indentForm.controls.indentStep3.controls.experience.controls.scMaxExperience.touched || indentForm.controls.indentStep3.controls.experience.controls.scMaxExperience.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.experience.controls.scMaxExperience.errors?.['required']" class="text-danger">* This field is required'</span>
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.experience.controls.scMaxExperience.errors?.['negativeValue']" class="text-danger">Only positive numbers allowed'</span>
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.experience.controls.scMaxExperience.errors?.['maxNotGreaterThanMin']">Max compensation should be more than min compensation</span>
+                                                                  </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Previous Job Role</label>
+                                                                    <input type="text" class="form-control" placeholder="Enter Previous Job Role" formControlName="scPrvJobRole">
+                                                                    <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep3.controls.experience.controls.scPrvJobRole.invalid && (indentForm.controls.indentStep3.controls.experience.controls.scPrvJobRole.touched || indentForm.controls.indentStep3.controls.experience.controls.scPrvJobRole.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.experience.controls.scPrvJobRole.errors?.['alphanumaric']">Please enter Alphanumeric values'</span>
+                                                                  </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="step-form-left-panel">
+                                                        <h5>Employer Information</h5>
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Industry</label>
+                                                                    <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="scJobIndustryData" formControlName="scJobIndustry">
+                                                                    </ng-multiselect-dropdown>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Name of Previous Employer</label>
+                                                                    <input type="text" class="form-control" placeholder="Enter Previous Employer" formControlName="scPreEmp">
+                                                                    <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep3.controls.experience.controls.scPreEmp.invalid && (indentForm.controls.indentStep3.controls.experience.controls.scPreEmp.touched || indentForm.controls.indentStep3.controls.experience.controls.scPreEmp.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.experience.controls.scPreEmp.errors?.['alphanumaric']">Please enter Alphanumeric values'</span>
+                                                                  </div>
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Company Age</label>
+                                                                    <select class="form-control" formControlName="scCompanyAge">
+                                                                        <option selected value="">Select Company Age</option>
+                                                                        <option value="0 - 10 years">0 - 10 Years</option>
+                                                                        <option value="10 - 20 years">10 - 20 Years</option>
+                                                                        <option value="20 - 30 years">20 - 30 Years</option>
+                                                                        <option value="Above 30 Years">Above 30 Years</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="col-md-4 mb-3">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Company Size</label>
+                                                                    <select class="form-control" formControlName="scCompanySize">
+                                                                        <option selected value="">Select Company Size</option>
+                                                                        <option value="0 - 50 employees">0 - 50 Employees</option>
+                                                                        <option value="50 - 300 years">50 - 300 Employees</option>
+                                                                        <option value="300 - 3000 years">300 - 3000 Employees</option>
+                                                                        <option value="Above 3000">Above 3000</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane fade" id="pills-score" role="tabpanel" aria-labelledby="pills-score-tab">
+                                            <div formGroupName="indentStep3">
+                                                <div formGroupName="scoring">
+                                                    <h5 class="mb-4">Define the weightage for score calculation</h5>
+                                                    <div class="step-form-left-panel">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Skill <span class="text-danger"> *</span></label>
+                                                                    <input type="number" class="form-control" placeholder="Enter Min Experience" formControlName="scSkillWeightage">
+                                                                    <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep3.controls.scoring.controls.scSkillWeightage.invalid && (indentForm.controls.indentStep3.controls.scoring.controls.scSkillWeightage.touched || indentForm.controls.indentStep3.controls.scoring.controls.scSkillWeightage.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.scoring.controls.scSkillWeightage.errors?.['required']" class="text-danger">* This field is required'</span>
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.scoring.controls.scSkillWeightage.errors?.['negativeValue']" class="text-danger">Only positive numbers allowed'</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Education <span class="text-danger"> *</span></label>
+                                                                    <input type="number" class="form-control" placeholder="Enter Max Experience" formControlName="scEducationWeightage">
+                                                                    <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep3.controls.scoring.controls.scEducationWeightage.invalid && (indentForm.controls.indentStep3.controls.scoring.controls.scEducationWeightage.touched || indentForm.controls.indentStep3.controls.scoring.controls.scEducationWeightage.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.scoring.controls.scEducationWeightage.errors?.['required']" class="text-danger">* This field is required'</span>
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.scoring.controls.scEducationWeightage.errors?.['negativeValue']" class="text-danger">Only positive numbers allowed'</span>
+                                                                  </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Experience <span class="text-danger"> *</span></label>
+                                                                    <input type="number" class="form-control" placeholder="Enter Previous Job Role" formControlName="scExperienceWeightage">
+                                                                    <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep3.controls.scoring.controls.scExperienceWeightage.invalid && (indentForm.controls.indentStep3.controls.scoring.controls.scExperienceWeightage.touched || indentForm.controls.indentStep3.controls.scoring.controls.scExperienceWeightage.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.scoring.controls.scExperienceWeightage.errors?.['required']" class="text-danger">* This field is required'</span>
+                                                                        <span *ngIf="indentForm.controls.indentStep3.controls.scoring.controls.scExperienceWeightage.errors?.['negativeValue']" class="text-danger">Only positive numbers allowed'</span>
+                                                                  </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- <p class="text-danger">{{validationmessage1}}</p> -->
+                                                            <!-- <div class="text-danger pt-2">
+                                                                <span *ngIf="indentForm.controls.indentStep3.controls.scoring.errors?.['sumNotAllowed']">The total of all fields must not exceed 100.</span>
+                                                              </div> -->
+                                                              <div class="text-danger pt-2 error" *ngIf="indentForm.get('indentStep3')?.get('scoring')?.hasError('sumNotAllowed')">
+                                                                <span class="text-danger">The total of all fields must not exceed 100.</span>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @if(assessmentTab == false && eandiTab == false){
+                                    <p class="text-danger">{{overallFormValid}}</p>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p id="message">{{apiMessage}}</p>
+                                            <div class="submit-btn">
+                                                <button class="postjob-btn btn" type="button" (click)="onSubmit();"><i class="fa-regular fa-paper-plane"></i> SUBMIT INDENT</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <!-- {{indentForm.controls.indentStep3.value | json}} -->
+                                <!-- {{indentForm.controls.indentStep3.valid}} -->
+                            </div>
+                        }
+                        @if(eandiTab){
+                            <div class="tab-pane fade" id="navs-justified-step5" role="tabpanel">
+                                <div class="panel-header">
+                                    <p class="mb-0">Select form template to collect Eligibility and Interst of candidates</p>
+                                </div><br />
+                                <div class="step-form">
+                                    <div formGroupName="indentStep4">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row mt-3">
+                                                    <div class="col-md-3 mb-3" >
+                                                        <div class="form-group">
+                                                            <label class="control-label">Form Template  @if(indentForm.controls.indentStep4.controls.eandiId.errors?.['required']){<span class="text-danger"> *</span>}</label>
+                                                            <select class="form-control" formControlName="eandiId" (change)="getEandI($event)">
+                                                                <option selected="selected" value="">Select E&I</option>
+                                                                @for(eandi of eandiData; track $index ){
+                                                                    @if(eandi.total_weightage == 100){
+                                                                    <option value="{{eandi._id}}">{{eandi.title}}</option>
+                                                                    }
+                                                                }
+                                                            </select>
+                                                            <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep4.controls.eandiId.invalid && (indentForm.controls.indentStep4.controls.eandiId.touched || indentForm.controls.indentStep4.controls.eandiId.dirty || isFormSubmited)" >
+                                                                <span *ngIf="indentForm.controls.indentStep4.controls.eandiId.errors?.['required']"> * This field is required</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+
+                                        <div formGroupName="criteria">
+                                            <h5 class="mb-4">Rag Tag</h5>
+                                            <div class="step-form-left-panel">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <h5 class="text-success">Green</h5>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Min. Score <span class="text-danger"> *</span></label>
+                                                                    <input type="text" class="form-control" placeholder="Enter Min Experience" formControlName="greenMinScore" (keyup)="greenCriteriaChange()">
+                                                                    <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep4.controls.criteria.controls.greenMinScore.invalid && (indentForm.controls.indentStep4.controls.criteria.controls.greenMinScore.touched || indentForm.controls.indentStep4.controls.criteria.controls.greenMinScore.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="indentForm.controls.indentStep4.controls.criteria.controls.greenMinScore.errors?.['required']" class="text-danger">* This field is required'</span>
+                                                                        <span *ngIf="indentForm.controls.indentStep4.controls.criteria.controls.greenMinScore.errors?.['number']" class="text-danger">Only positive numbers allowed'</span>
+                                                                        <span *ngIf="indentForm.controls.indentStep4.controls.criteria.controls.greenMinScore.errors?.['minNotGreaterThanMin']">Max compensation should be more than min compensation</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Max. Score <span class="text-danger"> *</span></label>
+                                                                    <input type="number" class="form-control" placeholder="Enter Max Experience" formControlName="greenMaxScore" readonly>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12">
+                                                                <small><span id="gold_min_score_view">{{indentForm.controls.indentStep4.controls.criteria.get('greenMinScore')?.value}}</span> &gt;= to &lt; <span id="gold_max_score_view">{{indentForm.controls.indentStep4.controls.criteria.get('greenMaxScore')?.value}}</span></small>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <h5 class="text-warning">Amber</h5>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Min. Score <span class="text-danger"> *</span></label>
+                                                                    <input type="text" class="form-control" placeholder="Enter Min Experience" formControlName="amberMinScore" (keyup)="amberCriteriaChange()">
+                                                                    <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep4.controls.criteria.controls.amberMinScore.invalid && (indentForm.controls.indentStep4.controls.criteria.controls.amberMinScore.touched || indentForm.controls.indentStep4.controls.criteria.controls.amberMinScore.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="indentForm.controls.indentStep4.controls.criteria.controls.amberMinScore.errors?.['required']" class="text-danger">* This field is required'</span>
+                                                                        <span *ngIf="indentForm.controls.indentStep4.controls.criteria.controls.amberMinScore.errors?.['number']" class="text-danger">Only positive numbers allowed'</span>
+                                                                        <span *ngIf="indentForm.controls.indentStep4.controls.criteria.controls.amberMinScore.errors?.['minNotGreaterThanMin']">Max compensation should be more than min compensation</span>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Max. Score <span class="text-danger"> *</span></label>
+                                                                    <input type="number" class="form-control" placeholder="Enter Max Experience" formControlName="amberMaxScore" readonly>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12">
+                                                                <small><span id="gold_min_score_view">{{indentForm.controls.indentStep4.controls.criteria.get('amberMinScore')?.value}}</span> &gt;= to &lt; <span id="gold_max_score_view">{{indentForm.controls.indentStep4.controls.criteria.get('amberMaxScore')?.value}}</span></small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <h5 class="text-danger">Red</h5>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Min. Score <span class="text-danger"> *</span></label>
+                                                                    <input type="text" class="form-control" placeholder="Enter Min Experience" formControlName="redMinScore" (keyup)="redCriteriaChange()">
+                                                                    <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep4.controls.criteria.controls.redMinScore.invalid && (indentForm.controls.indentStep4.controls.criteria.controls.redMinScore.touched || indentForm.controls.indentStep4.controls.criteria.controls.redMinScore.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="indentForm.controls.indentStep4.controls.criteria.controls.redMinScore.errors?.['required']" class="text-danger">* This field is required'</span>
+                                                                        <span *ngIf="indentForm.controls.indentStep4.controls.criteria.controls.redMinScore.errors?.['number']" class="text-danger">Only positive numbers allowed'</span>
+                                                                        <span *ngIf="indentForm.controls.indentStep4.controls.criteria.controls.redMinScore.errors?.['minNotGreaterThanMin']">Max compensation should be more than min compensation</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Max. Score <span class="text-danger"> *</span></label>
+                                                                    <input type="number" class="form-control" placeholder="Enter Max Experience" formControlName="redMaxScore" readonly>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12">
+                                                                <small><span id="gold_min_score_view">{{indentForm.controls.indentStep4.controls.criteria.get('redMinScore')?.value}}</span> &gt;= to &lt; <span id="gold_max_score_view">{{indentForm.controls.indentStep4.controls.criteria.get('redMaxScore')?.value}}</span></small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        
+                                    
+                                    @if(endiData){
+                                        <div class="step-boder mt-4">
+                                            <div class="row">
+                                                <div class="col-md-12 mb-3">
+                                                    <div class="form-heading-div">
+                                                        <h4 class="text-white">{{endiData.title}}</h4>
+                                                        <p><b>Category: </b>
+                                                            @for(cat of endiData.category; track $index){
+                                                                <span>{{cat}}</span>,
+                                                            }
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="question-div">
+                                                    <div class="row">
+                                                    @for(question of endiData?.questions; track $index){
+                                                        <div class="col-md-12 mb-3">
+                                                            <label class="control-label"><b>Q {{$index+1}}</b>. {{question.question}} <span class="text-danger">*</span></label>
+                                                            <p>Weightage : {{question.weightage}}</p>
+                                                            <div class="row">
+                                                                @for(option of question.options; track $index){
+                                                                    <div class="col-md-6 mb-2">
+                                                                        <div class="option-group rounded">
+                                                                            <p class="mb-0">Option: {{option.option}}</p>
+                                                                            <p class="mb-0">Score: {{option.score}}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                                @if(assessmentTab == false){
+                                <p class="text-danger">{{overallFormValid}}</p>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p id="message">{{apiMessage}}</p>
+                                        <div class="submit-btn">
+                                            @if(isLoading){
+                                                <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                                            }@else{
+                                                <button class="postjob-btn btn" type="button" (click)="onSubmit();"><i class="fa-regular fa-paper-plane"></i> SUBMIT INDENT</button>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+
+                                <!-- {{indentForm.controls.indentStep4.value | json}} -->
+                                <!-- {{indentForm.controls.indentStep4.valid}} -->
+                            </div>
+                        }
+                        @if(assessmentTab){
+                            <div class="tab-pane fade" id="navs-justified-step6" role="tabpanel">
+                                <div class="panel-header">
+                                    <!-- <h5 class="text-danger">Assessment Application Forms</h5> -->
+                                    <p class="mb-0">Add assessment forms to conduct online assessment</p>
+                                </div><br />
+                                <div class="step-form">
+                                    <div formGroupName="indentStep6">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row mt-3">
+                                                    <!-- <div class="col-md-3 mb-3">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Assessment</label><br>
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="assessmentType" [value]="1" (click)="assessment(1)" formControlName="assessmentType"> Yes
+                                                            </label> &nbsp;
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="assessmentType" [value]="0"  checked="" (click)="assessment(0)" formControlName="assessmentType"> No
+                                                            </label>
+                                                        </div>
+                                                    </div> -->
+                                                    <div class="col-md-3 mb-3">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Assement @if(indentForm.controls.indentStep6.controls.assessmentId.errors?.['required']){<span class="text-danger"> *</span>}</label>
+                                                            <select class="form-control" formControlName="assessmentId" (change)="onSelectAssessment($event)">
+                                                                <option selected="selected" disabled="" value="">Select Assessment</option>
+                                                                @for(assessment of assessmentData; track $index ){
+                                                                    <option value="{{assessment._id}}">{{assessment.title}}</option>
+                                                                }
+                                                            </select>
+                                                            <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep6.controls.assessmentId.invalid && (indentForm.controls.indentStep6.controls.assessmentId.touched || indentForm.controls.indentStep6.controls.assessmentId.dirty || isFormSubmited)" >
+                                                                <span *ngIf="indentForm.controls.indentStep6.controls.assessmentId.errors?.['required']">* This field is required</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3 mb-3">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Assessment Cut off Score  @if(indentForm.controls.indentStep6.controls.assessmentCutScore.errors?.['required']){<span class="text-danger"> *</span>}</label>
+                                                            <input type="text" class="form-control" placeholder="Enter Score" min="1" formControlName="assessmentCutScore">
+                                                            <div class="text-danger pt-2 error" *ngIf="indentForm.controls.indentStep6.controls.assessmentCutScore.invalid && (indentForm.controls.indentStep6.controls.assessmentCutScore.touched || indentForm.controls.indentStep6.controls.assessmentCutScore.dirty || isFormSubmited)" >
+                                                                <span *ngIf="indentForm.controls.indentStep6.controls.assessmentCutScore.errors?.['required']">* This field is required</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div >
+                                        @for(item of assessmentList; track $index){
+                                            <div class="step-boder">
+                                                <div class="row">
+
+                                                    <div class="col-md-12 mb-3">
+                                                        <div class="form-heading-div">
+                                                            <h4 class="text-white">{{item.title}}</h4>
+                                                            <p><b>Category: </b>
+                                                                @for(cat of item.category; track $index){
+                                                                    <span>{{cat.name}}</span>,
+                                                                }
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="question-div">
+                                                        <div class="row">
+                                                        @for(question of item?.questions; track $index){
+                                                            <div class="col-md-12 mb-3">
+                                                                <label class="control-label"><b>Q {{$index+1}}</b>. {{question.question}} <span class="text-danger">*</span></label>
+                                                                <p>Weightage : {{question.weightage}}</p>
+                                                                <div class="row">
+                                                                    @for(option of question.options; track $index){
+                                                                        <div class="col-md-6 mb-2">
+                                                                            <div class="option-group rounded">
+                                                                                <p class="mb-0">Option: {{option.option}}</p>
+                                                                                <p class="mb-0">Score: {{option.score}}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <p class="text-danger">{{overallFormValid}}</p>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p id="message">{{apiMessage}}</p>
+                                            <div class="submit-btn">
+                                                @if(isLoading){
+                                                <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                                                }@else{
+                                                    <button class="postjob-btn btn" type="button" (click)="onSubmit();"><i class="fa-regular fa-paper-plane"></i> SUBMIT INDENT</button>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- {{indentForm.value | json}} -->
+                                <!-- {{indentForm.controls.indentStep6.valid}} -->
+                            </div>
+                        }
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+

@@ -1,0 +1,89 @@
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+            @if(loader){
+                @for(iteam of getNumberArray(loaderCount); track $index){
+                    <div class="fb-item">
+                        <div class="first-section-wrapper">
+                            <!-- <div class="gravatar">
+                                <ngx-skeleton-loader appearance="circle" [theme]="{ width: '80px', height: '80px' }"></ngx-skeleton-loader>
+                            </div> -->
+                            <div class="gravatar-title pt-4">
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{width: '170px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div>
+                                    <ngx-skeleton-loader [theme]="{ width: '200px', 'border-radius': '0', height: '15px' }"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="second-section-wrapper">
+                            <div class="wrapper">
+                                <ngx-skeleton-loader [theme]="{'width': '100%','border-radius': '0','height': '5px','margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div class="wrapper">
+                                <ngx-skeleton-loader count="1" appearance="circle" [theme]="{width: '70%',height: '25px','border-radius': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }@else{
+                <div class="product-filter-wrap d-flex justify-content-between position-relative m-b10">
+                    <span class="">Showing {{fetchedRecord}} Notifications</span>
+                    <form class="woocommerce-ordering tmi-filter-select" method="get">
+                        <select class="wt-select-bar-2 selectpicker" (change)=" onSelectChange($event)">
+                            <option value="10">Show 10</option>
+                            <option value="20">Show 20</option>
+                            <option value="30">Show 30</option>
+                            <option value="40">Show 40</option>
+                            <option value="50">Show 50</option>
+                            <option value="60">Show 60</option>
+                            <option value="100">Show 100</option>
+                            <option value="150">Show 150</option>
+                        </select>
+                    </form>
+                </div>
+                @if(totalRecord > 0){
+                    @for(message of notificationData; track $index){
+                        <div class="alert alert-light alert-dismissible fade show" role="alert" style="position:relative;">
+                            <div class="ribbon red"><span>High</span></div>
+
+                            <h4 class="alert-heading mt-4">{{message.title}}</h4>
+                            <p><strong>{{message.subject}}</strong></p>
+                            <p class="mb-2" [innerHTML]="message.message"></p>
+
+                            <hr>
+                            <p style="font-size: 13px;"><i class="fa-regular fa-clock"></i> {{message.created_at+'Z' | date: 'dd MMM, yyyy hh:mm:ss a'}}</p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="onRemoveNotification($index)" style="z-index: 1;"></button>
+                        </div>
+                    }   
+
+                    <div class="row">
+                        <div class="col-md-12" >
+                            <div class="cuspagi  d-flex justify-content-center">
+                                <nav aria-label="...">
+                                    <ul class="pagination">
+                                        <li class="page-item {{isDisabled}}"><button class="page-link" (click)="prevPage()">Previous</button></li>
+                                        <li class="page-item active" aria-current="page"><a class="page-link" >{{currentPage}}</a></li>
+                                        <li class="page-item {{isDisabled2}}"><button class="page-link text-danger" (click)="nextPage()">Next</button></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+            
+                }@else{
+                    <div class="col-md-12">
+                        <div class="empty_state rounded">
+                            <i class="fa-solid fa-face-surprise"></i>
+                            <h3 class="">No records</h3>
+                            <p>There are no records found</p>
+                        </div>
+                    </div>
+                }
+            }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,775 @@
+<div class="section-full p-t60  p-b60 site-bg-gray mt-5">
+    <div class="container">
+        <div class="row">
+            @if(allIndentDataShow){
+                <div class="col-md-12">
+                    <div class="breadcrumb nav">
+                        <span class="breadcrumb-item">
+                            <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+                        </span>
+                        <span class="breadcrumb-item">
+                            <a class="breadcrumb-link" [routerLink]="['/job']">Jobs</a>
+                        </span>
+                        <span class="breadcrumb-item">
+                            <a class="breadcrumb-link" [routerLink]="['/job_details', indentData?._id]">{{indentData?.indentStep1?.jobTitle}}</a>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="col-md-9">
+                    @if(loader){
+                        <div class="fb-item">
+                            <div class="first-section-wrapper">
+                                <div class="gravatar-title">
+                                    <div>
+                                        <ngx-skeleton-loader [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                    </div>
+                                    <div>
+                                        <ngx-skeleton-loader [theme]="{ width: '170px', 'border-radius': '0', height: '15px' }"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+                                <div class="gravatar">
+                                    <ngx-skeleton-loader appearance="circle" [theme]="{ width: '80px', height: '80px' }"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                            <div class="second-section-wrapper">
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader [theme]="{width: '80%','border-radius': '0',height: '10px','margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader [theme]="{ width: '90%', 'border-radius': '0', height: '10px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader [theme]="{ width: '60%', 'border-radius': '0', height: '10px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader count="4" appearance="circle" [theme]="{ width: '20%', height: '70px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                        </div>
+                    }@else{
+                        @if(loginUserRole == 'Partner SPOC - Manager' && partnerList.expired){
+                            <div class="alert alert-warning" role="alert">
+                                <i class="fa-solid fa-triangle-exclamation"></i> Your agreement has been expired on {{partnerList.aggrementExpirationdate | date: 'dd MMM, yyyy' }}.
+                            </div>
+                        }
+                        @if(loginUserRole == 'Candidate' && isAllow == false){
+                            <div class="alert alert-danger" role="alert">
+                                <p class="mb-0"><i class="fa-solid fa-triangle-exclamation"></i> Please complete your <span><a routerLink="/myaccount" class="text-primary">profile</a></span> to apply this Job.</p>
+                            </div>
+                        }
+                        <div class="srp-jobtuple-wrapper">
+                            <div class="cust-job-tuple layout-wrapper lay-2 sjw__tuple rounded">
+                                <div class=" row1">
+                                    <a class="title">{{indentData?.indentStep1?.jobTitle}}</a>
+
+                                    @if(isLoggedIn){
+                                        @if(isShown2){
+                                            @if(indentData?.indent_status === 'Open'){
+                                                <!-- <span class="indent_status rounded" (click)="op2.toggle($event)" tooltipPosition="top" pTooltip="Change Indent Status"><i class="fa-solid fa-gear"></i> Action</span> -->
+                                                @if(loginUserRole == 'Partner SPOC - Manager'){
+                                                    @if(partnerList.expired == false){
+                                                    <span class="indent_status rounded" (click)="op2.toggle($event)" tooltipPosition="top" pTooltip="Change Indent Status"><i class="fa-solid fa-gear"></i> Action</span>
+                                                    }
+                                                }@else{
+                                                    <span class="indent_status rounded" (click)="op2.toggle($event)" tooltipPosition="top" pTooltip="Change Indent Status"><i class="fa-solid fa-gear"></i> Action</span>
+                                                }
+                                            }
+
+                                            <div class="card flex justify-content-center ml-2">
+                                                <p-overlayPanel #op2>
+                                                    <div class="flex flex-column gap-3 w-25rem">
+                                                        <!-- <p><a href="jobpopup?jobid={{indentData?._id}}" class="text-primary">Recruit</a></p> -->
+                                                        <p><a [routerLink]="['/cvupload', indentData?._id]" class="text-primary">Upload CV</a></p>
+                                                        
+                                                        @if(loginUserRole == 'Super Admin' || loginUserRole == 'Recruiter' || loginUserRole =='BU Head' || loginUserRole =='Project Manager' || loginUserRole =='CRCM' || loginUserRole=='Partner Admin - Internal'){
+                                                            <p class="text-primary" routerLink="/candidates" [queryParams]="{ indentid: indentData?._id}" style="cursor: pointer;">Assign Existing Candidate</p>
+                                                        }
+                                                        @if(loginUserRole == 'Super Admin' || loginUserRole == 'Recruiter' || loginUserRole =='BU Head' || loginUserRole =='Project Manager' || loginUserRole =='CRCM' || loginUserRole=='Partner Admin - Internal'){
+                                                            @if(indentData?.indentStep1?.jobTitle == 'BFSI' || indentData?.indentStep1?.jobTitle == 'Non-BFSI'){
+                                                                <p class="text-primary" (click)="updatePartner(indentData)" style="cursor: pointer;">Assign/Reassign Partner</p>
+                                                            }
+                                                        }
+                                                        @if(loginUserRole == 'Super Admin' || loginUserRole == 'CRCM' || loginUserRole =='BU Head' || loginUserRole =='Project Manager' || loginUserRole =='CRCM' || loginUserRole=='Partner Admin - Internal'){
+                                                            <p class="text-primary" (click)="updateRecruiter(indentData)" style="cursor: pointer;">Assign/Reassign Recruiter</p>
+                                                        }
+                                                        @if(loginUserRole == 'Super Admin' || loginUserRole == 'CRCM' || loginUserRole =='BU Head' || loginUserRole =='Project Manager'){
+                                                            <p class="text-primary" (click)="manageLocation(indentData.indentStep2.advLocation, indentData?._id)" style="cursor: pointer;">Manage Indent Location</p>
+                                                        }
+                                                        @if(isShown4 && isShown3){
+                                                            <!-- <p><a href="addcandidate?indentId={{indentData?._id}}" class="text-primary">Add Manual Candidate</a></p> -->
+                                                            <!-- <p><a href="#" class="text-primary">Edit Indent</a></p> -->
+                                                            @if(indentData.screening == 0 && indentData.interview == 0 && indentData.offer == 0 && indentData.hire == 0){
+                                                            <p class="text-primary" routerLink="/editindent/{{indentData._id}}" style="cursor: pointer;">Edit Indent</p>
+                                                            }@else{
+                                                                @if(isSuperAdmin){
+                                                                    <p class="text-primary" routerLink="/editindent/{{indentData._id}}" style="cursor: pointer;">Edit Indent</p>
+                                                                }
+                                                            }
+                                                        }
+                                                        
+                                                    </div>
+                                                </p-overlayPanel>
+                                            </div>
+                                        }
+                                    }
+
+                                    @if(isLoggedIn){
+                                        @if(isShown){
+                                            @if(isShown2 && isShown3){
+                                            <button class="btn client_status rounded ml-2" (click)="indentStatusModalPop(indentData?.indent_status, indentData?._id)"><i [ngClass]="{'fa-eye': indentData?.indent_status === 'Open', 'fa-eye-slash': indentData?.indent_status != 'Open'}" class="fa"></i> {{indentData?.indent_status}}</button>
+                                            }
+                                            <a [routerLink]="['/candidate']" [queryParams]="{ indentId: indentData?._id}"  class="btn applied_status rounded ml-2"><i class="fa fa-paper-plane"></i> Applied</a>
+                                        }
+                                    }
+
+                                    @if(isLoggedIn){
+                                        @if(isCandidate){
+                                            @if(indentData.applied){
+                                                <a routerLink="/applieddetails/{{indentData._id}}" class="btn appaly_btn ml-2 postjob-btn"><i class="fa-solid fa-paper-plane"></i> Applied</a>
+                                            }@else{
+                                                <a [ngClass]="{'disabled': isAllow == false}" class="btn appaly_btn ml-2 postjob-btn" routerLink="/enaditest/{{indentData._id}}/{{indentData.indentStep4.eandiId}}/{{candidateId}}"><i class="fa-solid fa-paper-plane"></i> Apply</a>
+                                            }
+                                        }
+                                    }@else{
+                                        <a class="btn appaly_btn ml-2 postjob-btn" routerLink="/login"><i class="fa-solid fa-paper-plane"></i> Apply</a>
+                                    }
+                                </div>
+                                <div class="row2">
+                                    <span class=" comp-dtls-wrap">
+                                        @if(isLoggedIn){
+                                            @if(isCandidate){
+                                                @if(indentData?.indentStep1?.hideClient == false){
+                                                    <p class="comp-name mw-25" style="margin-right: 15px;"><i class="fa-solid fa-building-ngo"></i> {{indentData?.client?.[0]?.name}}</p>
+                                                }
+                                            }@else{
+                                                <p class="comp-name mw-25" style="margin-right: 15px;"><i class="fa-solid fa-building-ngo"></i> {{indentData?.client?.[0]?.name}}</p>
+                                            }
+                                        }@else{
+                                            @if(indentData?.indentStep1?.hideClient == false){
+                                            <p class="comp-name mw-25" style="margin-right: 15px;"><i class="fa-solid fa-building-ngo"></i> {{indentData?.client?.[0]?.name}}</p>
+                                            }
+                                        }
+                                        <p class="comp-name mw-25" tooltipPosition="top" pTooltip="Job Code" style="margin-right: 15px;"><i class="fa-solid fa-file"></i> {{indentData?.indentStep1?.jobCode}}</p>
+                                        <p class="comp-name mw-25" tooltipPosition="top" pTooltip="Indent Type"><i class="fa-solid fa-briefcase"></i> {{indentData?.indentStep1?.jobType}}</p>
+                                    </span>
+                                </div>
+                                <div class="row3">
+                                    <div class="job-details ">
+                                        <span class="exp-wrap">
+                                            <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-experience exp">
+                                                <span tooltipPosition="top" pTooltip="Experience" class="expwdth"><i class="fa-solid fa-calendar"></i> {{indentData?.indentStep2?.minExperience}} - {{indentData?.indentStep2?.maxExperience}} Yrs</span>
+                                            </span>
+                                        </span>
+                                        <span class="sal-wrap ver-line">
+                                            <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-rupee sal">
+                                                <span tooltipPosition="top" pTooltip="Salary"><i class="fa-solid fa-indian-rupee-sign"></i> {{indentData?.indentStep2?.minSalary | currency:'INR' : '' : '1.0-0'}} - {{indentData?.indentStep2?.maxSalary | currency:'INR':'':'1.0-0'}} Per {{indentData?.indentStep2?.salaryUnit}}</span>
+                                            </span>
+                                        </span>
+                                        <span class="loc-wrap ver-line">
+                                            <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                                <span tooltipPosition="top" pTooltip="Vacancies" class="locWdth"><i class="fa-solid fa-user"></i> {{indentData?.indentStep2?.vacancies}}</span>
+                                            </span>
+                                        </span>
+                                        <!-- <span class="loc-wrap ver-line">
+                                            <span class="ni-job-tuple-icon ni-job-tuple-icon-srp-location loc">
+                                                <span tooltipPosition="top" pTooltip="Job Location" class="locWdth"><i class="fa-solid fa-location-dot"></i> {{indentData?.indentStep2?.advLocation}}</span>
+                                            </span>
+                                        </span> -->
+                                    </div>
+                                    <p class="mb-0" style="font-size: 13px;">
+                                        <span tooltipPosition="top" pTooltip="Job Location" class="locWdth"><i class="fa-solid fa-location-dot"></i> 
+                                            <!-- @for(location of indentData?.indentStep2?.advLocation; track $index){
+                                                {{location}},
+                                            } -->
+                                            @for(location of activeLocation; track $index){
+                                                {{location}},
+                                            }
+                                        </span>
+                                    </p>
+                                </div>
+
+                                <div class="skills">
+                                    <ul class="list-inline">
+                                        @for(skill of indentData?.indentStep2?.skilsList; track $index){
+                                            <li class="list-inline-item" tooltipPosition="top" pTooltip="Skills">{{skill}}</li>
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="row6">  
+                                    <span class="job-post-day" tooltipPosition="left" pTooltip="Posted On"><i class="fa-regular fa-clock"></i> {{indentData?.posted_on}} || {{indentData?.created_at | date: 'dd MMM, yyyy'}} </span>
+                                </div>
+
+                                @if(isLoggedIn){
+                                    @if(isShown && isShown5){
+                                        <hr>
+                                        <div class="row7">
+                                            <div class="cand-stages">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <a [routerLink]="['/candidate']" [queryParams]="{ indentId: indentData._id, stage: 'screening' }">
+                                                            <div class="candidate-stage">
+                                                                <div class="screening-icon">
+                                                                    <img src="../../../assets/images/candidate_screen.png" >
+                                                                </div>
+                                                                <div class="candidate-stage-details">
+                                                                    <h4>{{indentData?.screening || 0}}</h4>
+                                                                    <h5>Screening</h5>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <a [routerLink]="['/candidate']" [queryParams]="{ indentId: indentData._id, stage: 'interview' }">
+                                                            <div class="candidate-stage">
+                                                                <div class="screening-icon">
+                                                                    <img src="../../../assets/images/interview.png" >
+                                                                </div>
+                                                                <div class="candidate-stage-details">
+                                                                    <h4>{{indentData?.interview || 0}}</h4>
+                                                                    <h5>Interview</h5>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <a [routerLink]="['/candidate']" [queryParams]="{ indentId: indentData._id, stage: 'offer' }">
+                                                            <div class="candidate-stage">
+                                                                <div class="screening-icon">
+                                                                    <img src="../../../assets/images/job-offer.png" >
+                                                                </div>
+                                                                <div class="candidate-stage-details">
+                                                                    <h4>{{indentData?.offer || 0}}</h4>
+                                                                    <h5>Offer</h5>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <a [routerLink]="['/candidate']" [queryParams]="{ indentId: indentData._id, stage: 'Hire' }">
+                                                            <div class="candidate-stage">
+                                                                <div class="screening-icon">
+                                                                    <img src="../../../assets/images/hiring.png" >
+                                                                </div>
+                                                                <div class="candidate-stage-details">
+                                                                    <h4>{{indentData?.hire || 0}}</h4>
+                                                                    <h5>Hire</h5>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    }
+
+
+
+                    @if(loader){
+                        <div class="fb-item">
+                            <div class="first-section-wrapper">
+                                <div class="gravatar-title">
+                                    <div>
+                                        <ngx-skeleton-loader [theme]="{width: '200px', 'border-radius': '0', height: '15px'}"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="second-section-wrapper" style="margin-top: -20px;">
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader [theme]="{ width: '80%', 'border-radius': '0', height: '10px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader [theme]="{ width: '90%', 'border-radius': '0', height: '10px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader [theme]="{ width: '60%', 'border-radius': '0', height: '10px','margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fb-item">
+                            <div class="first-section-wrapper">
+                                <div class="gravatar-title">
+                                    <div>
+                                        <ngx-skeleton-loader [theme]="{width: '200px', 'border-radius': '0', height: '15px'}"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="second-section-wrapper" style="margin-top: -20px;">
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader [theme]="{ width: '80%', 'border-radius': '0', height: '10px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader [theme]="{ width: '90%', 'border-radius': '0',  height: '10px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader [theme]="{ width: '60%', 'border-radius': '0', height: '10px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                </div>                           
+                            </div>
+                        </div>
+                    }@else{
+                        @if(indentData?.indentStep2?.mustCriteria){
+                            <div class="srp-jobtuple-wrapper">
+                                <div class="widget widget-description rounded">
+                                    <h4 class="twm-s-title">Must Criteria:</h4>
+                                    <div [innerHTML]="sanitizedContent3"></div>
+                                </div>
+                            </div>
+                        }
+                        
+                        <div class="srp-jobtuple-wrapper">
+                            <div class="widget widget-description rounded">
+                                <h4 class="twm-s-title">Job Description:</h4>
+                                <div [innerHTML]="sanitizedContent2"></div>
+                            </div>
+                        </div>
+
+                        <div class="srp-jobtuple-wrapper">
+                            <div class="widget widget-description rounded">
+                                <h4 class="twm-s-title">About Company:</h4>
+                                <div [innerHTML]="sanitizedContent"></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="col-md-3">
+                    <!-- <h4 class="section-head-small dz-widget-title">Job Information</h4> -->
+                    @if(loader){
+                        <div class="fb-item">
+                            <div class="second-section-wrapper">
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader [theme]="{ width: '80%', 'border-radius': '0', height: '10px', 'margin-bottom': '15px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader [theme]="{ width: '90%', 'border-radius': '0', height: '10px', 'margin-bottom': '15px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader [theme]="{ width: '60%', 'border-radius': '0', height: '10px', 'margin-bottom': '15px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader [theme]="{ width: '80%', 'border-radius': '0', height: '10px', 'margin-bottom': '15px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader [theme]="{ width: '90%', 'border-radius': '0', height: '10px', 'margin-bottom': '15px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader [theme]="{ width: '60%', 'border-radius': '0', height: '10px', 'margin-bottom': '15px'}"></ngx-skeleton-loader>
+                                </div>
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader [theme]="{ width: '60%', 'border-radius': '0', height: '10px', 'margin-bottom': '15px'}"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                        </div>
+                    }@else{
+                        <div class="card flex justify-content-center mb-3">
+                            <h5 class="card-header">Job Information</h5>
+                            <div class="card-body">
+                                <ul class="twm-job-hilites2">
+                                    <li class="pt-3">
+                                        <div class="twm-s-info-inner">
+                                            <!-- <i class="fa-solid fa-arrow-right"></i> -->
+                                            <span><b> Job Type:</b> {{indentData?.indentStep1?.jobType}}</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="twm-s-info-inner">
+                                            <!-- <i class="fa-solid fa-arrow-right"></i> -->
+                                            <span><b> Department:</b> {{indentData?.indentStep1?.department}}</span>
+                                        </div>
+                                    </li>
+                                    <!-- <li>
+                                        <div class="twm-s-info-inner">
+                                            <! -- <i class="fa-solid fa-arrow-right"></i> - ->
+                                            <span><b> Business Unit:</b> {{indentData?.indentStep1?.businessUnit}}</span>
+                                        </div>
+                                    </li> -->
+                                    <li>
+                                        <div class="twm-s-info-inner">
+                                            <!-- <i class="fa-solid fa-arrow-right"></i> -->
+                                            <span><b>Job Level:</b> {{indentData?.indentStep1?.jobLevel}}</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="twm-s-info-inner">
+                                            <!-- <i class="fa-solid fa-arrow-right"></i> -->
+                                            <span><b>Job Function:</b> {{indentData?.indentStep1?.jobFunction}}</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="twm-s-info-inner">
+                                            <!-- <i class="fa-solid fa-arrow-right"></i> -->
+                                            <span><b>Job Sector: </b> {{indentData?.indentStep1?.jobSector}}</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="twm-s-info-inner">
+                                            <!-- <i class="fa-solid fa-arrow-right"></i> -->
+                                            <span><b>Job Industry: </b> {{indentData?.indentStep1?.jobIndustry}}</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- @if(isLoggedIn){
+                        <h4 class="section-head-small dz-widget-title">Recommendaded Candidates</h4>
+                        @if(loader){
+                            <div class="fb-item">
+                                <div class="second-section-wrapper" style="margin-top: 10px;">
+                                    <div class="wrapper">
+                                        <ngx-skeleton-loader [theme]="{ width: '80%', 'border-radius': '0', height: '10px', 'margin-bottom': '15px'}"></ngx-skeleton-loader>
+                                    </div>
+                                    <div class="wrapper">
+                                        <ngx-skeleton-loader [theme]="{ width: '90%', 'border-radius': '0', height: '10px', 'margin-bottom': '15px'}"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="fb-item">
+                                <div class="second-section-wrapper"  style="margin-top: 10px;">
+                                    <div class="wrapper">
+                                        <ngx-skeleton-loader [theme]="{ width: '80%', 'border-radius': '0', height: '10px', 'margin-bottom': '15px'}"></ngx-skeleton-loader>
+                                    </div>
+                                    <div class="wrapper">
+                                        <ngx-skeleton-loader [theme]="{ width: '90%', 'border-radius': '0', height: '10px', 'margin-bottom': '15px'}"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+                            </div>
+                        }@else{
+                            <div class="twm-s-info2">
+                                <ul class="twm-job-hilites2">
+                                    @for(iteam of recommData; track $index){
+                                        <a href="candidate_details/{{iteam.id}}">
+                                            <li style="background-color: #fff;" class="rounded p-3 mb-2">
+                                                <div class="twm-s-info-inner">
+                                                    <i class="fas fa-user"></i><span class="twm-title"> {{iteam.name}}</span>
+                                                    <br><i class="fas fa-file"></i><span class="twm-title"> {{iteam.experience}}</span>
+                                                </div>
+                                            </li>
+                                        </a>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    } -->
+
+                    @if(isLoggedIn){
+                        @if(loader){
+                            <div class="fb-item">
+                                <div class="second-section-wrapper" style="margin-top: 10px;">
+                                    <div class="wrapper">
+                                        <ngx-skeleton-loader count="3" appearance="circle" [theme]="{ width: '100%', height: '50px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+                            </div>
+                        }@else{
+                            @if(isShown && isShown3){
+                                <div class="card flex justify-content-center">
+                                    <h5 class="card-header">Additional Information</h5>
+                                    <div class="card-body">
+                                        <p-accordion>
+                                            <p-accordionTab header="Client SPOC">
+                                                <ul class="twm-job-hilites2 mb-0">
+                                                    <li style="background-color: #fff;" class="rounded ">
+                                                        <div class="twm-s-info-inner">
+                                                            <i class="fas fa-user"></i><span class="twm-title"> {{indentData?.indentStep1?.jobClientSpoc}}</span>
+                                                            <!-- <br><i class="fas fa-file"></i><span class="twm-title"> {{spoc.mobile}}</span> -->
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </p-accordionTab>
+                                            <p-accordionTab header="Recruiter">
+                                                <ul class="twm-job-hilites2 mb-0">
+                                                    @for(recruiter of indentData?.indentStep1?.recruiterList; track $index){
+                                                        <li style="background-color: #fff;" class="rounded">
+                                                            <div class="twm-s-info-inner">
+                                                                <i class="fas fa-user"></i><span class="twm-title"> {{recruiter.item_text}}</span>
+                                                            </div>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </p-accordionTab>
+
+                                            <p-accordionTab header="Partner">
+                                                <ul class="twm-job-hilites2 mb-0">
+                                                    @for(partner of indentData?.indentStep1?.partnerList; track $index){
+                                                        <li style="background-color: #fff;" class="rounded">
+                                                            <div class="twm-s-info-inner">
+                                                                <i class="fas fa-user"></i><span class="twm-title"> {{partner.item_text}}</span>
+                                                            </div>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </p-accordionTab>
+
+                                            <p-accordionTab header="Conditions">
+                                                <p>Hide client logo for jobseekers : {{indentData?.indentStep1?.hideClient}}</p>
+                                                <p>Compainsation Negotiable: {{indentData?.indentStep2?.negotiable}}</p>
+                                            </p-accordionTab>
+                                        </p-accordion>
+                                    </div>
+                                </div>
+
+
+                                <div class="card flex justify-content-center mt-4">
+                                    <h5 class="card-header">Stage Configuration</h5>
+                                    <div class="card-body">
+                                        <p-accordion>
+                                            
+                                            @for(stage of indentStaging; track $index){
+                                            <p-accordionTab header="{{stage.stageName | titlecase }}">
+                                                @for(staged of stage.details; track $index){
+                                                    <p>
+                                                        {{$index+1}}. {{staged.displayName}} :
+                                                        @if(staged.status){
+                                                            <i class="fa fa-check-circle text-success"></i>
+                                                        }@else{
+                                                            <i class="fa fa-times-circle text-danger"></i>
+                                                        }
+                                                    </p>
+                                                }
+                                            
+                                            </p-accordionTab>
+                                            }
+
+                                        </p-accordion>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+
+                </div>
+            }@else{
+                <div class="col-md-12">
+                    <div class="alert alert-danger" role="alert">
+                        <p class="mb-0"><i class="fa-solid fa-triangle-exclamation"></i> Please complete your <span><a routerLink="/myaccount" class="text-primary">profile</a></span> to apply for the Jobs.</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<div class="card flex justify-content-center">
+    <p-dialog header="Assign/Reassign Recruiter" 
+        [modal]="true" 
+        [(visible)]="visible" 
+        [style]="{ width: '25rem' }" 
+        [style]="{ width: '50rem' }" 
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" >
+
+        <form name="form" #f="ngForm">
+            <div class="step-form">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <div class="form-group">
+                            <label class="control-label">Recruiter </label>
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" name="recruiter_list" [data]="recruiterData" [(ngModel)]="selectedItems" >
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="indentId" [(ngModel)]="updatedIndentId">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="message"></p>
+                    <div class="submit-btn">
+                        <button type="button" class="btn postjob-btn" (click)="reassignRecruter(f)"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+</div>
+
+
+<div class="card flex justify-content-center">
+    <p-dialog header="Assign/Reassign Partner" 
+        [modal]="true" 
+        [(visible)]="assignPartnerModal" 
+        [maximizable]="true"
+        [style]="{ width: '25rem' }" 
+        [style]="{ width: '50rem' }" 
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" >
+
+        <form name="form" #fp="ngForm">
+            <div class="step-form">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <div class="form-group">
+                            <label class="control-label">Partner</label>
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" name="partner_list" [data]="partnerData" [(ngModel)]="selectedItems" >
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="indentId" [(ngModel)]="updatedIndentId">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="message"></p>
+                    <div class="submit-btn">
+                        <button type="button" class="btn postjob-btn" (click)="reassignPartner(fp)"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+</div>
+
+
+<div class="card flex justify-content-center">
+    <p-dialog header="Change Indent Status" 
+        [modal]="true" 
+        [(visible)]="indentStatusModal" 
+        [style]="{ width: '25rem' }" 
+        [style]="{ width: '50rem' }" 
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" >
+
+        <form [formGroup]="indentStatusForm">
+            <div class="step-form">
+                <div class="row">
+                    <p>Current Status: {{currentStatus}}</p>
+                    <label class="form-check-label">Status</label>
+                    <div class="col-md-12">
+                        <div class="form-check form-check-inline">
+                            <input name="collapsible-address-type" class="form-check-input" type="radio" value="Open" name="indent_status" formControlName="indent_status">
+                            <label class="form-check-label" for="collapsible-address-type-home"> Open </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input name="collapsible-address-type" class="form-check-input" type="radio" value="Close" name="indent_status" formControlName="indent_status">
+                            <label class="form-check-label" for="collapsible-address-type-office"> Close </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input name="collapsible-address-type" class="form-check-input" type="radio" value="Hold" name="indent_status" formControlName="indent_status">
+                            <label class="form-check-label" for="collapsible-address-type-office"> Hold </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input name="collapsible-address-type" class="form-check-input" type="radio" value="Pause" name="indent_status" formControlName="indent_status">
+                            <label class="form-check-label" for="collapsible-address-type-office"> Pause </label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Comment</label>
+                            <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter your full address" formControlName="comment"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="message"></p>
+                    <div class="submit-btn">
+                        <button type="button" class="btn postjob-btn" (click)="updateIndentStatus()"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+</div>
+
+<div class="card flex justify-content-center">
+    <p-dialog header="Manage Indent Location" 
+        [modal]="true" 
+        [(visible)]="indentLocationModal" 
+        [style]="{ width: '25rem' }" 
+        [style]="{ width: '50rem' }" 
+        [maximizable]="true"
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" >
+
+
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Location</th>
+                <th scope="col">No. of Uploaded Candidates</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+                @for(location of indentLocationList?.jobLocations; track $index){
+                    <tr>
+                        <th scope="row">{{$index+1}}</th>
+                        <td>{{location.location}}</td>
+                        <td>{{location.candidate_count}}</td>
+                        <td><button [ngClass]="{'btn-primary': location.status=== 'Open', 'btn-danger': location.status=== 'Close', 'btn-warning': location.status=== 'Hold', 'btn-info': location.status=== 'Pause'}" class="btn  btn-sm" (click)="indentLocationStatusModalPop(location.status,location.location)">{{location.status}}</button></td>
+                    </tr>
+                }
+            </tbody>
+          </table>
+
+    </p-dialog>
+</div>
+
+
+
+
+<div class="card flex justify-content-center">
+    <p-dialog header="Change Location Status" 
+        [modal]="true" 
+        [(visible)]="indentLocationStatusModal" 
+        [style]="{ width: '25rem' }" 
+        [style]="{ width: '50rem' }" 
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" >
+
+        <form [formGroup]="indentLocationStatusForm">
+            <div class="step-form">
+                <div class="row">
+                    <p>Current Status: {{currentLocatonStatus}}</p>
+                    <label class="form-check-label">Status</label>
+                    <div class="col-md-12">
+                        <div class="form-check form-check-inline">
+                            <input name="collapsible-address-type" class="form-check-input" type="radio" value="Open" name="status" formControlName="status">
+                            <label class="form-check-label" for="collapsible-address-type-home"> Open </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input name="collapsible-address-type" class="form-check-input" type="radio" value="Close" name="status" formControlName="status">
+                            <label class="form-check-label" for="collapsible-address-type-office"> Close </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input name="collapsible-address-type" class="form-check-input" type="radio" value="Hold" name="status" formControlName="status">
+                            <label class="form-check-label" for="collapsible-address-type-office"> Hold </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input name="collapsible-address-type" class="form-check-input" type="radio" value="Pause" name="status" formControlName="status">
+                            <label class="form-check-label" for="collapsible-address-type-office"> Pause </label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Comment <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter your comments" formControlName="comment"></textarea>
+                        </div>
+                        <div class="text-danger pt-2 error" *ngIf="indentLocationStatusForm.controls.comment.invalid && (indentLocationStatusForm.controls.comment.touched || indentLocationStatusForm.controls.comment.dirty || isFormSubmited5)" >
+                            <span *ngIf="indentLocationStatusForm.controls.comment.errors?.['required']">* This field is required'</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="message"></p>
+                    <div class="submit-btn">
+                        <button type="button" class="btn postjob-btn" (click)="updateIndentLocationStatus()"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+</div>
+<p-toast />

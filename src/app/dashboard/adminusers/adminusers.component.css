@@ -1,0 +1,25 @@
+.soptions{
+    cursor: pointer;
+}
+.soptions:hover {
+    color: red; /* Change to your desired color */
+}
+
+
+.scrollable-content {
+    max-height: calc(100vh - 58px); /* Adjust the height based on your layout */
+    overflow-y: auto;
+}
+
+.rightSidebar {
+    position: -webkit-sticky; /* For Safari */
+    position: sticky;
+    top: 0; /* Adjust as necessary */
+    z-index: 100; /* Adjust z-index if necessary */
+}
+
+.container {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}

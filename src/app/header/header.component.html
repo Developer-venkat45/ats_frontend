@@ -1,0 +1,158 @@
+<div class="page-wraper">
+   <!-- HEADER START -->
+   <header  class="site-header header-style-3 mobile-sider-drawer-menu">
+      <nav class="navbar navbar-expand-lg custom-navbar">
+         <div class="container">
+            <a class="navbar-brand" routerLink="/"><img src="../../assets/images/TMI&Hirehaat.png" alt="HireHaat" title="Hire Haat"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+               @if(loginUserRole != "Finance Admin"){
+                  <ul class="navbar-nav me-auto mb-2 mb-lg-0 customnav-ul-left">
+                     @if(loginUserRole == "Candidate"){
+                        <li class="nav-item dropdown">
+                           <a class="nav-link" routerLink="/job" id="" role="button">Jobs</a>
+                        </li>
+                     }@else{
+                        <li class="nav-item">
+                           <a class="nav-link active" aria-current="page" routerLink="/indent">Jobs</a>
+                        </li>
+                     }
+
+                     @if(! isLoggedIn){
+                        <li class="nav-item dropdown">
+                           <a class="nav-link" target="_blank" href="https://tminetwork.com/about-us/" role="button" >About Us</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                           <a class="nav-link" target="_blank" href="https://tminetwork.com/contact-us/" role="button" >Contact Us</a>
+                        </li>
+                     }
+
+                     @if(isLoggedIn){
+                        @if(isShown){
+                           <div class="nav-item">                  
+                              <a class="nav-link dropdown-toggle" (click)="op.toggle($event)" role="button" aria-expanded="false">Dashboard</a>
+                              <p-overlayPanel #op>
+                                 @if(isShown2){
+                                    <p><a class="text-primary" routerLink="/candidates">Candidates</a></p>
+                                 }
+                                 @if(isShown2){
+                                    <p><a class="text-primary" routerLink="/eandi">E & I</a></p>
+                                 }
+                                 @if(isShown2){
+                                    <p><a class="text-primary" routerLink="/assessment">Assessment</a></p>
+                                 }
+
+                                 <p><a class="text-primary" routerLink="/users">Users</a></p>
+                                 <!-- <li><a class="dropdown-item" href="addindent">Add Project</a></li> -->
+
+
+                                 @if(isShown2 && isShown3){
+                                    <p><a class="text-primary" routerLink="/template">Template</a></p>
+                                 }
+                                 @if(isShown2 && isShown3){
+                                    <p><a class="text-primary" routerLink="/master">Master</a></p>
+                                 }
+                                    <p><a class="text-primary" routerLink="/partner">Partner</a></p>
+                                 @if(isShown2){
+                                    <p><a class="text-primary" routerLink="/client">Client</a></p>
+                                 }
+                                 @if(loginUserRole == "Super Admin"){
+                                    <p><a class="text-primary" routerLink="/statemaster">State Master</a></p>
+                                 }
+                                 @if(loginUserRole == "Super Admin" || loginUserRole == "Partner SPOC - Manager" || loginUserRole == "Recruiter" || loginUserRole == "CRCM"){
+                                    <p><a class="text-primary" routerLink="/projectspoc">Project SPOC</a></p>
+                                 }
+                                 @if(loginUserRole == "Super Admin"){
+                                    <p><a class="text-primary" routerLink="/emaillog">Email Log</a></p>
+                                 }
+                                 @if(loginUserRole == "Super Admin"){
+                                    <p><a class="text-primary" [routerLink]="['/report',partner]">Report</a></p>
+                                 }
+                                 @if(loginUserRole == "Super Admin"){
+                                    <p><a class="text-primary" routerLink="/bulknotificationlog">Bulk Notification Log</a></p>
+                                 }
+                              </p-overlayPanel>
+                           </div>
+                        }
+                     }
+                     @if(loginUserRole == "Recruiter"){
+                        <div class="nav-item">
+                           <a class="nav-link dropdown-toggle" (click)="op2.toggle($event)" role="button" aria-expanded="false">Dashboard</a>
+                        <p-overlayPanel #op2>   
+                           <p><a class="text-primary" routerLink="/candidates">Candidates</a></p>
+                           <p><a class="text-primary" routerLink="/partner">Partner</a></p>
+                        </p-overlayPanel>
+                        </div>
+                     }
+                     @if(loginUserRole == "Partner SPOC - Manager"){
+                        <li class="nav-item">
+                           <a class="nav-link active" routerLink="/candidates" aria-current="page" >Candidates</a>
+                        </li>
+                        <li class="nav-item">
+                           <a class="nav-link" routerLink="/projectspoc">Project SPOC</a>
+                        </li>
+                     }
+                  </ul>
+               }@else{
+                  <ul class="navbar-nav me-auto mb-2 mb-lg-0 customnav-ul-left">
+                     <li class="nav-item dropdown">
+                        <a class="nav-link" routerLink="/dashboard" id="" role="button">Dashboard</a>
+                     </li>
+                  </ul>
+               }
+
+   
+               @if(isLoggedIn){
+                  <ul class="navbar-nav ms-auto mb-2 mb-lg-0 right-nav align-items-center">
+                     @if(loginUserRole != "Finance Admin"){
+                        <li><a class="" routerLink="/notification"><i class="fa fa-bell"></i></a></li>
+                        @if(isShown){
+                           @if(isShown2){
+                              <li><a class="postjob-btn" routerLink="/addindent"><i class="fa-regular fa-plus"></i> Job</a></li>
+                           }
+                        }
+                     }
+                     
+                     <li class="nav-item loggedin-user">
+                        <a class="nav-link dropdown-toggle" (click)="op3.toggle($event)" role="button" aria-expanded="false"> <i class="fa fa-user"></i> {{loginedName}}</a>
+                        <p-overlayPanel #op3>
+                           <p><a routerLink="/myaccount" class="dropdown-item text-primary">My Account</a></p>
+                           @if(loginUserRole == "Candidate"){
+                              <p><a class="dropdown-item text-primary" routerLink="/myapplication">My Applications</a></p>
+                           }
+                           <p><a class="dropdown-item text-primary" style="cursor: pointer;" (click)="logout()">Logout</a></p>
+                        </p-overlayPanel>
+                     </li>
+                  </ul>
+               }@else{
+                  <ul class="navbar-nav ms-auto mb-2 mb-lg-0 right-nav">
+                     <li><a class="signup-btn" routerLink="/login">Login</a></li>
+                     <li><a class="signup-btn" routerLink="/register">Register</a></li>
+                  </ul>
+               }
+            </div>
+         </div>
+      </nav>
+   </header>
+   <!-- HEADER END -->
+
+   <router-outlet></router-outlet>
+
+
+   <footer class="footer fixed-bottom">
+      <div class="container">
+         
+         <div class="row align-items-baseline footer-bottom">
+            <div class="col-md-6">
+               <p class="footer-copyright">© 2024 <a class="footer-privacy__link link-primary" target="_blank" href="https://tminetwork.com">TMI Network.</a> </p>
+            </div>
+            <div class="col-md-6">
+               <div class="footer-privacy"><a class="footer-privacy__link link-primary" href="#">Privacy Policy</a><span class="footer-privacy__divider">|</span><a class="footer-privacy__link link-primary" href="#">Terms & Conditions</a></div>
+            </div>
+         </div>
+      </div>
+   </footer>
+</div>

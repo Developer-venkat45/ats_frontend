@@ -1,0 +1,365 @@
+select {
+    padding: 5px 10px;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.53;
+    color: #697a8d;
+    /* appearance: none; */
+    background-color: #fff;
+    background-image: var(--bs-form-select-bg-img), var(--bs-form-select-bg-icon, none);
+    background-repeat: no-repeat;
+    background-position: right .875rem center;
+    background-size: 17px 12px;
+    border: var(--bs-border-width) solid #d9dee3;
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+
+.client-data {
+    background-color: #FFF;
+    display: inline-block;
+    width: 100%;
+    padding: 15px;
+    position: relative;
+}
+
+.client-logo {
+    float: left;
+}
+
+.client-logo img {
+    height: 100px;
+    border: 2px solid #ecf0f5;
+}
+
+.client-details {
+    float: left;
+    padding-left: 15px;
+}
+
+.client-title {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.client-sub-title {
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 18px;
+    margin-bottom: 0px;
+    color: #878787;
+    line-height: 1.8;
+}
+
+.client-indent {
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 18px;
+    margin-bottom: 0px;
+    color: #262626;
+    line-height: 1.8;
+}
+
+.indent-btn {
+    position: absolute;
+    right: 24px;
+}
+
+
+.client_status {
+    float: right;
+    color: #4582de;
+    background-color: #f0f0f0;
+    padding: 6.4px 20px;
+    border-radius: 25px;
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+.applied-indent-count {
+    float: right;
+}
+
+.applied-indent-count {
+    background-color: #177ad4;
+    padding: 3px 10px;
+    border-radius: 100%;
+    color: #fff;
+    font-size: 12px;
+}
+
+.applied-indent-background {
+    background-color: rgb(236, 240, 245);
+    padding: 10px 15px 10px 15px;
+
+}
+
+.approved_status {
+    float: right;
+    color: green;
+    background-color: #f0f0f0;
+    padding: 6.4px 20px;
+    border-radius: 25px;
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+
+.pending_status {
+    float: right;
+    color: red;
+    background-color: #f0f0f0;
+    padding: 6.4px 20px;
+    border-radius: 25px;
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+
+.reset-filter {
+    margin-top: -28px;
+    float: right;
+    cursor: pointer;
+}
+
+
+
+
+.step-form .form-group {
+    margin-bottom: 18px;
+}
+
+.step-form .form-group label.control-label {
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.step-form .form-group .form-control {
+    border-radius: 6px;
+}
+
+
+.form-control {
+    appearance: auto;
+    color: #808385;
+}
+
+::placeholder {
+    color: #808385;
+}
+
+
+.error {
+    font-size: 12px;
+    font-style: italic;
+}
+
+
+.logoImage {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+}
+
+::ng-deep .p-calendar {
+    width: 100%;
+}
+
+::ng-deep .p-inputtext {
+    padding: 3px 15px;
+}
+
+
+.empty_state {
+    position: relative;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #FFF;
+    padding: 85px;
+
+    i {
+        margin: auto;
+        margin-bottom: 0px;
+        font-size: 90px;
+        color: #ccc;
+    }
+
+    h3 {
+        margin: 8px 0px;
+        text-align: center;
+        font-weight: normal;
+    }
+
+    p {
+        font-size: 14px;
+        margin: 0px;
+        color: #999;
+        text-align: center;
+    }
+
+    button {
+        outline: none;
+        border: none;
+        border-radius: 3px;
+        padding: 8px 8px;
+        margin: 20px auto auto auto;
+        width: 50%;
+        max-width: 200px;
+        background: #348AC7;
+        color: white;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        font-size: 12px;
+
+    }
+}
+
+.pagination {
+    --bs-pagination-padding-x: 0.94rem;
+}
+
+/* Skeleton Loader */
+.item {
+    width: auto;
+    height: auto;
+    margin: 10px auto;
+    border: 1px solid #eaeaea;
+    padding: 10px;
+}
+
+.fb-item {
+    width: auto;
+    height: auto;
+    margin: 0 0 10px 0;
+    border: 1px solid #eaeaea;
+    padding: 10px;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+}
+
+.gravatar {
+    width: 100px;
+    height: 90px;
+}
+
+.gravatar-title {
+    width: 89%;
+    padding: 10px;
+    height: 80px;
+}
+
+.first-section-wrapper,
+.second-section-wrapper {
+    width: 100%;
+    height: auto;
+    flex: 1;
+}
+
+.first-section-wrapper {
+    display: inline-flex;
+}
+
+.second-section-wrapper {
+    margin-top: 30px;
+}
+
+.wrapper {
+    width: 100%;
+    flex: 1;
+}
+
+.item-with-background {
+    background: #121212;
+    padding: 10px;
+}
+
+.loader {
+    line-height: 1;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    background: rgb(239, 241, 246) no-repeat;
+    background-color: rgb(239, 241, 246);
+    line-height: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.content-loaded-image {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    background-color: rgb(174, 174, 174);
+    margin: 5px;
+    border-radius: 50%;
+}
+
+.gravatar-title-name {
+    margin-top: 0;
+    width: 200px;
+    border-radius: 0;
+    height: 15px;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.gravatar-description {
+    width: 170px;
+    border-radius: 0;
+    height: 15px;
+    font-size: 12px;
+}
+
+.partner_status {
+    position: absolute;
+    right: 24px;
+    bottom: 10px;
+}
+
+.approved_status_btn {
+    float: right;
+    color: green;
+    background-color: #f0f0f0;
+    padding: 3px 10px;
+    margin-left: 10px;
+    font-size: 12px;
+}
+
+.pending_status_btn {
+    float: right;
+    color: red;
+    background-color: #f0f0f0;
+    padding: 3px 10px;
+    margin-left: 10px;
+    font-size: 12px;
+}
+
+::ng-deep .multiselect-dropdown .dropdown-btn .selected-item-container .selected-item {
+    background: #e5e7eb !important;
+    border: 1px solid #e5e7eb !important;
+    margin-right: 4px;
+    padding: 2px 10px !important;
+    color: #4b5563 !important;
+    border-radius: 16px !important;
+    float: left;
+    max-width: none !important;
+    margin-bottom: 5px !important;
+    font-size: 13px !important;
+}
+
+::ng-deep .selected-item a {
+    color: #4b5563 !important;
+    padding-left: 2px;
+}
+
+.notification {
+    border-color: mediumvioletred;
+}
+
+.btn2 {
+    width: -webkit-fill-available;
+}

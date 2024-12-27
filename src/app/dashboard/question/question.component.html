@@ -1,0 +1,136 @@
+<!-- <app-navbar></app-navbar> -->
+
+<section class="section p-t60 mt-5 p-b60 content site-bg-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Add Question For the assessment is - {{assessmentData?.title}}</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-addclient">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form [formGroup]="assessmentForm">
+                                        <div class="clint-info">
+                                            
+                                            <!-- <div formGroupName="assessmentQuestion"> -->
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Question <span class="text-danger"> *</span></label>
+                                                            <input type="text" class="form-control" placeholder="Enter Assessment Question" formControlName="question">
+                                                            <div class="text-danger pt-2" *ngIf="assessmentForm.controls.question.invalid && (assessmentForm.controls.question.touched || assessmentForm.controls.question.dirty || isFormSubmited)" >
+                                                                <span *ngIf="assessmentForm.controls.question.errors?.['required']">* This field is required</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Question Type <span class="text-danger"> *</span></label>
+                                                            <select class="form-select" aria-label="Default select example" formControlName="question_type" (change)="questionTypeChanged($event)">
+                                                                <option selected value="">Select Question Type</option>
+                                                                <option value="MCQ">Multiple Choice</option>
+                                                                <!-- <option value="LTA">Long Text Answer</option>
+                                                                <option value="STA">Short Text Answer</option>
+                                                                <option value="NA">Numeric Answer</option> -->
+                                                            </select>
+                                                            <div class="text-danger pt-2" *ngIf="assessmentForm.controls.question_type.invalid && (assessmentForm.controls.question_type.touched || assessmentForm.controls.question_type.dirty || isFormSubmited)" >
+                                                                <span *ngIf="assessmentForm.controls.question_type.errors?.['required']">* This field is required</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    @if(assessmentQuestionTypes != 'MCQ'){
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Weightage <span class="text-danger"> *</span></label>
+                                                            <input type="text" class="form-control" placeholder="Enter Question Weightage" formControlName="weightage">
+                                                            <div class="text-danger pt-2" *ngIf="assessmentForm.controls.weightage.invalid && (assessmentForm.controls.weightage.touched || assessmentForm.controls.weightage.dirty || isFormSubmited)" >
+                                                                <span *ngIf="assessmentForm.controls.weightage.errors?.['required']">* This field is required</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    }
+
+                                                    @if(assessmentQuestionTypes == 'NA' || assessmentQuestionTypes == 'MCQ'){
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Correct Answer</label>
+                                                            <input type="text" class="form-control" placeholder="Enter Numeric Correct Answer" formControlName="correct_answer">
+                                                            <div class="text-danger pt-2" *ngIf="assessmentForm.controls.correct_answer.invalid && (assessmentForm.controls.correct_answer.touched || assessmentForm.controls.correct_answer.dirty || isFormSubmited)" >
+                                                                <span *ngIf="assessmentForm.controls.correct_answer.errors?.['required']">* This field is required</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    }
+                                                </div>
+                                            <!-- </div> -->
+
+                                            @if(assessmentQuestionTypes == 'MCQ'){
+                                                <hr class="py-3">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <button type="button" class="btn btn-primary" (click)="addAnswer()" style="float: right;">Add more</button>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div formGroupName="answers">
+                                                    @for(answer of answerGroups.controls; track $index){
+                                                    <div [formGroupName]="$index">
+                                                        <div class="row">
+                                                            <div class="col-md-5">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Answer {{$index+1}}<span class="text-danger"> *</span></label>
+                                                                    <input type="text" class="form-control" placeholder="Enter Answer" formControlName="answer">
+                                                                    <div class="text-danger pt-2 error" *ngIf="assessmentForm.controls.answers.controls[$index].controls.answer.invalid && (assessmentForm.controls.answers.controls[$index].controls.answer.touched || assessmentForm.controls.answers.controls[$index].controls.answer.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="assessmentForm.controls.answers.controls[$index].controls.answer.errors?.['required']">* This field is required</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-5">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Weightage {{$index+1}}<span class="text-danger"> *</span></label>
+                                                                    <input type="number" class="form-control" placeholder="Enter Weightage" formControlName="weightage">
+                                                                    <div class="text-danger pt-2 error" *ngIf="assessmentForm.controls.answers.controls[$index].controls.weightage.invalid && (assessmentForm.controls.answers.controls[$index].controls.weightage.touched || assessmentForm.controls.answers.controls[$index].controls.weightage.dirty || isFormSubmited)" >
+                                                                        <span *ngIf="assessmentForm.controls.answers.controls[$index].controls.weightage.errors?.['required']">* This field is required</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <button type="button" class="btn btn-danger" (click)="removeAnswer($index)" style="margin-top: 20px;"><i class="fa fa-times"></i></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    }
+                                                </div>  
+                                            }
+                                                 
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p id="message">{{apiMessage}}</p>
+                                                    <div class="submit-btn">
+                                                        
+                                                        @if(isBtnLoading){
+                                                            <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                                                        }@else{
+                                                            <button class="postjob-btn" (click)="onSubmit()"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- <p class="mt-5">{{assessmentForm.value | json}}</p> -->
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p-toast />

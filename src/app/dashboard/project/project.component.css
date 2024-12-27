@@ -1,0 +1,20 @@
+.side-bar {
+    border-radius: 20px;
+    height: 100vh;
+    overflow-y: hidden;
+}
+.srp-jobtuple-wrapper .sjw__tuple .row1 .imagewrap {
+    float: none;
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    width: 100px;
+    height: 100px;
+}
+
+.srp-jobtuple-wrapper .sjw__tuple .row1 .imagewrap .logoImage {
+    height: 100px;
+    width: 100px;
+    border-radius: 14px;
+    border: 1px solid #e7e7f1;
+}

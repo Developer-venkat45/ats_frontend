@@ -1,0 +1,339 @@
+<section class="section p-t60 mt-5 p-b60 content site-bg-gray">
+    <div class="container bg-white p-3 rounded">
+
+        <div class="panel-header">
+            <h5 class="text-danger">Insert Candidate</h5>
+            <p class="mb-0">Provide the basic candidate information</p>
+        </div>
+
+        <form [formGroup]="insertCandidate">
+
+            <div class="step-form">
+                <div class="row">
+                    <h5 class="text-danger mb-3 mt-3">1. Candidate Basic Info</h5>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Full Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Enter Full Name" formControlName="name">
+                            <div class="text-danger pt-2 error" *ngIf="insertCandidate.controls.name.invalid && (insertCandidate.controls.name.touched || insertCandidate.controls.name.dirty || isFormSubmited)" >
+                                <span *ngIf="insertCandidate.controls.name.errors?.['required']">* This field is required</span>
+                                <span *ngIf="insertCandidate.controls.name.errors?.['alphabet'] &&  !insertCandidate.controls.name.errors?.['required']" class="text-danger">Please enter only alphabets'</span>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Mobile <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Enter Mobile Number" formControlName="mobile" maxlength="10">
+                            <div class="text-danger pt-2 error" *ngIf="insertCandidate.controls.mobile.invalid && (insertCandidate.controls.mobile.touched || insertCandidate.controls.mobile.dirty || isFormSubmited)" >
+                                <span *ngIf="insertCandidate.controls.mobile.errors?.['required']">* This field is required</span>
+                                <span *ngIf="insertCandidate.controls.mobile.errors?.['onlynumber'] &&  !insertCandidate.controls.mobile.errors?.['required']" class="text-danger">Please enter mobile number'</span>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Email Id <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Enter Email Id" formControlName="email">
+                            <div class="text-danger pt-2 error" *ngIf="insertCandidate.controls.email.invalid && (insertCandidate.controls.email.touched || insertCandidate.controls.email.dirty || isFormSubmited)" >
+                                <span *ngIf="insertCandidate.controls.email.errors?.['required']">* This field is required</span>
+                                <span *ngIf="insertCandidate.controls.email.errors?.['emailvalidate'] &&  !insertCandidate.controls.email.errors?.['required']" class="text-danger">Please enter valid email address'</span>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Date of Birth <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" formControlName="dob">
+                            <div class="text-danger pt-2 error" *ngIf="insertCandidate.controls.dob.invalid && (insertCandidate.controls.dob.touched || insertCandidate.controls.dob.dirty || isFormSubmited)" >
+                                <span *ngIf="insertCandidate.controls.dob.errors?.['required']">* This field is required</span>
+                                <span *ngIf="insertCandidate.controls.dob.errors?.['minAge'] && !insertCandidate.controls.dob.errors?.['required']">You must be at least 18 years old.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Total Work Experience (In Months) <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Enter Total Work Experience" formControlName="totWorkExp">
+                            <div class="text-danger pt-2 error" *ngIf="insertCandidate.controls.totWorkExp.invalid && (insertCandidate.controls.totWorkExp.touched || insertCandidate.controls.totWorkExp.dirty || isFormSubmited)" >
+                                <span *ngIf="insertCandidate.controls.totWorkExp.errors?.['required']">* This field is required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Father's Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Enter Father's Name" formControlName="fatherName">
+                            <div class="text-danger pt-2 error" *ngIf="insertCandidate.controls.fatherName.invalid && (insertCandidate.controls.fatherName.touched || insertCandidate.controls.fatherName.dirty || isFormSubmited)" >
+                                <span *ngIf="insertCandidate.controls.fatherName.errors?.['required']">* This field is required</span>
+                                <span *ngIf="insertCandidate.controls.fatherName.errors?.['alphabet'] &&  !insertCandidate.controls.fatherName.errors?.['required']" class="text-danger">Please enter only alphabets'</span>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Skills <span class="text-danger">*</span></label>
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="skillsData" formControlName="skills">
+                            </ng-multiselect-dropdown>
+                            <div class="text-danger pt-2" *ngIf="insertCandidate.controls.skills.invalid && (insertCandidate.controls.skills.touched || insertCandidate.controls.skills.dirty || isFormSubmited)" >
+                                <span *ngIf="insertCandidate.controls.skills.errors?.['required']">* This field is required</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-4">
+                        <label class="form-check-label">Gender</label><br>
+                        <div class="form-check form-check-inline">
+                            <input name="collapsible-address-type" class="form-check-input" type="radio" value="male" name="gender" checked="" formControlName="gender">
+                            <label class="form-check-label" for="collapsible-address-type-home">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input name="collapsible-address-type" class="form-check-input" type="radio" value="female" name="gender" formControlName="gender">
+                            <label class="form-check-label" for="collapsible-address-type-office"> Female </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h5 class="text-danger mb-3 mt-3">2. Candidate Address</h5>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">State <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Enter State" formControlName="state">
+                            <div class="text-danger pt-2 error" *ngIf="insertCandidate.controls.state.invalid && (insertCandidate.controls.state.touched || insertCandidate.controls.state.dirty || isFormSubmited)" >
+                                <span *ngIf="insertCandidate.controls.state.errors?.['required']">* This field is required</span>
+                                <span *ngIf="insertCandidate.controls.state.errors?.['pattern'] &&  !insertCandidate.controls.state.errors?.['required']" class="text-danger">Please enter only alphabets'</span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">City <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Enter City" formControlName="city">
+                            <div class="text-danger pt-2 error" *ngIf="insertCandidate.controls.city.invalid && (insertCandidate.controls.city.touched || insertCandidate.controls.city.dirty || isFormSubmited)" >
+                                <span *ngIf="insertCandidate.controls.city.errors?.['required']">* This field is required</span>
+                                <span *ngIf="insertCandidate.controls.city.errors?.['pattern'] &&  !insertCandidate.controls.city.errors?.['required']" class="text-danger">Please enter only alphabets'</span>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Address <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter Full Address" formControlName="address"></textarea>
+                            <div class="text-danger pt-2 error" *ngIf="insertCandidate.controls.address.invalid && (insertCandidate.controls.address.touched || insertCandidate.controls.address.dirty || isFormSubmited)" >
+                                <span *ngIf="insertCandidate.controls.address.errors?.['required']">* This field is required</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h5 class="text-danger mb-3 mt-3">3. Candidate Qualifications</h5>
+                    <div formGroupName="education">
+                        @for(answer of answerGroups.controls; track $index){
+                            <div [formGroupName]="$index">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @if($index == 0){
+                                            <label class="control-label">Qualification <span class="text-danger">*</span></label>
+                                            }
+                                            <input type="text" class="form-control" placeholder="Enter Qualification" formControlName="qualification">
+                                            <div class="text-danger pt-2 error" *ngIf="insertCandidate.controls.education.controls[$index].controls.qualification.invalid && (insertCandidate.controls.education.controls[$index].controls.qualification.touched || insertCandidate.controls.education.controls[$index].controls.qualification.dirty || isFormSubmited)" >
+                                                <span *ngIf="insertCandidate.controls.education.controls[0].controls.qualification.errors?.['required']">* This field is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @if($index == 0){
+                                            <label class="control-label">Institute/University Name <span class="text-danger">*</span></label>
+                                            }
+                                            <input type="text" class="form-control" placeholder="Enter Institute/University Name" formControlName="institute">
+                                            <div class="text-danger pt-2 error" *ngIf="insertCandidate.controls.education.controls[$index].controls.institute.invalid && (insertCandidate.controls.education.controls[$index].controls.institute.touched || insertCandidate.controls.education.controls[$index].controls.institute.dirty || isFormSubmited)" >
+                                                <span *ngIf="insertCandidate.controls.education.controls[0].controls.institute.errors?.['required']">* This field is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            @if($index == 0){
+                                            <label class="control-label">Passed On <span class="text-danger">*</span></label>
+                                            }
+                                            <select class="form-control" formControlName="passedOn">
+                                                <option selected="selected" value="">Select Year</option>
+                                                @for(year of years; track $index){
+                                                    <option value="{{year}}">{{year}}</option>
+                                                }
+                                            </select>
+                                            <div class="text-danger pt-2 error" *ngIf="insertCandidate.controls.education.controls[$index].controls.passedOn.invalid && (insertCandidate.controls.education.controls[$index].controls.passedOn.touched || insertCandidate.controls.education.controls[$index].controls.passedOn.dirty || isFormSubmited)" >
+                                                <span *ngIf="insertCandidate.controls.education.controls[0].controls.passedOn.errors?.['required']">* This field is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            @if($index == 0){
+                                            <label class="control-label">Percentage <span class="text-danger">*</span></label>
+                                            }
+                                            <input type="text" class="form-control" placeholder="Enter Percentage" formControlName="percentage">
+                                            <div class="text-danger pt-2 error" *ngIf="insertCandidate.controls.education.controls[$index].controls.percentage.invalid && (insertCandidate.controls.education.controls[$index].controls.percentage.touched || insertCandidate.controls.education.controls[$index].controls.percentage.dirty || isFormSubmited)" >
+                                                <span *ngIf="insertCandidate.controls.education.controls[0].controls.percentage.errors?.['required']">* This field is required</span>
+                                                <span *ngIf="insertCandidate.controls.education.controls[0].controls.percentage.errors?.['numbersdots'] &&  !insertCandidate.controls.education.controls[0].controls.percentage.errors?.['required']" class="text-danger">Allowed: numbers,('. ')'</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @if($index >= 1){
+                                        <div class="col-md-1">
+                                            <button type="button" class="btn btn-danger" (click)="removeAnswer($index)"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    }@else{
+                                        <div class="col-md-1">
+                                            <button class="btn btn-primary mt-4" (click)="addAnswer()">Add</button>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <h5 class="text-danger mb-3 mt-3">4. Candidate Experience</h5>
+
+                    <div formGroupName="experience">
+                        @for(exps of expGroups.controls; track $index){
+                            <div [formGroupName]="$index">
+                                <div class="row">
+                                    @if($index >= 1){
+                                        <div class="col-md-12">
+                                            <hr class="hr pb-4 mt-4">
+                                        </div>
+                                    }
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Working Status <span class="text-danger">*</span></label>
+                                            <select class="form-control" formControlName="workingStatus" (change)="workingStatusSelect($event, $index)">
+                                                <option selected="selected" value="">Select Working Status</option>
+                                                <option value="Currently Working">Currently Working</option>
+                                                <option value="Already Left">Already Left</option>
+                                            </select>
+                                            <div class="text-danger pt-2 error" *ngIf="insertCandidate.controls.experience.controls[$index].controls.workingStatus.invalid && (insertCandidate.controls.experience.controls[$index].controls.workingStatus.touched || insertCandidate.controls.experience.controls[$index].controls.workingStatus.dirty || isFormSubmited)" >
+                                                <span *ngIf="insertCandidate.controls.experience.controls[0].controls.workingStatus.errors?.['required']">* This field is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Company Name <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" placeholder="Enter Company Name" formControlName="compName">
+                                            <div class="text-danger pt-2 error" *ngIf="insertCandidate.controls.experience.controls[$index].controls.compName.invalid && (insertCandidate.controls.experience.controls[$index].controls.compName.touched || insertCandidate.controls.experience.controls[$index].controls.compName.dirty || isFormSubmited)" >
+                                                <span *ngIf="insertCandidate.controls.experience.controls[0].controls.compName.errors?.['required']">* This field is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Industry <span class="text-danger">*</span></label>
+                                            <select class="form-control" formControlName="industry">
+                                                <option selected="selected" value="">Select Industry</option>
+                                                @for(industry of industryData; track $index){
+                                                    <option value="{{industry}}">{{industry}}</option>
+                                                }
+                                            </select>
+                                            <div class="text-danger pt-2 error" *ngIf="insertCandidate.controls.experience.controls[$index].controls.industry.invalid && (insertCandidate.controls.experience.controls[$index].controls.industry.touched || insertCandidate.controls.experience.controls[$index].controls.industry.dirty || isFormSubmited)" >
+                                                <span *ngIf="insertCandidate.controls.experience.controls[0].controls.industry.errors?.['required']">* This field is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Designation <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" placeholder="Enter Designation" formControlName="designation">
+                                            <div class="text-danger pt-2 error" *ngIf="insertCandidate.controls.experience.controls[$index].controls.designation.invalid && (insertCandidate.controls.experience.controls[$index].controls.designation.touched || insertCandidate.controls.experience.controls[$index].controls.designation.dirty || isFormSubmited)" >
+                                                <span *ngIf="insertCandidate.controls.experience.controls[0].controls.designation.errors?.['required']">* This field is required</span>
+                                                <span *ngIf="insertCandidate.controls.experience.controls[0].controls.designation.errors?.['pattern'] &&  !insertCandidate.controls.experience.controls[0].controls.designation.errors?.['required']" class="text-danger">Allowed: alphabets, spaces, '-', '(', ')'</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Start Date <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control" placeholder="Enter email id" formControlName="startDate">
+                                            <div class="text-danger pt-2 error" *ngIf="insertCandidate.controls.experience.controls[$index].controls.startDate.invalid && (insertCandidate.controls.experience.controls[$index].controls.startDate.touched || insertCandidate.controls.experience.controls[$index].controls.startDate.dirty || isFormSubmited)" >
+                                                <span *ngIf="insertCandidate.controls.experience.controls[0].controls.startDate.errors?.['required']">* This field is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @if(workingStatusValueIndex == $index){
+                                        @if(workingStatusValue){
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">End Date</label>
+                                                    <input type="date" class="form-control" placeholder="Enter email id" formControlName="endDate">
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    @if($index >= 1){
+                                        <div class="col-md-1">
+                                            <button type="button" class="btn btn-danger" (click)="removeExperience($index)" style="margin-top: 20px;"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    }@else{
+                                        <div class="col-md-1">
+                                            <button class="btn btn-primary mt-4" (click)="addExperience()">Add</button>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+
+
+                <!-- {{insertCandidate.value | json}} -->
+
+                <p class="text-danger">{{overallFormValid}}</p>
+                <p class="text-danger">{{apiMessage}}</p>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p id="message"></p>
+                        <div class="submit-btn">
+                            <button type="button" (click)="insertCandidateData();" class="btn postjob-btn" type="button"><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+
+    </div>
+</section>

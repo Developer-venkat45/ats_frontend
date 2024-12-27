@@ -1,0 +1,158 @@
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="filter-heading" style="margin-bottom: 10px;">
+                    <div class="breadcrumb nav">
+                        <span class="breadcrumb-item">
+                            <a class="breadcrumb-link" [routerLink]="['/']" ><i class="fa-solid fa-home"></i> Home</a>
+                        </span>
+                        <span class="breadcrumb-item">
+                            <a class="breadcrumb-link" [routerLink]="['/user']">user</a>
+                        </span>
+                        <span class="breadcrumb-item">
+                            <a class="breadcrumb-link" >user-profile</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="side-bar bg-white p-3 rounded">
+                            <div class="sidebar-elements search-bx">
+
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div class="user-avatar-section">
+                                            <div class=" d-flex align-items-center flex-column">
+                                                    <img class="img-fluid  my-4 myaccountimg" src="../../../assets/images/user.jpg" alt="User avatar">
+
+                                                <div class="user-info text-center">
+                                                    <h4 class="mb-2">{{userDetailsData?.name}}</h4>
+                                                    <span class=""><small>{{ userDetailsData?.email}}</small></span>
+                                                </div>
+
+                                                <input type="file" id="fileInput" hidden>
+                                            </div>
+                                        </div>
+                                        
+                                        <h5 class="pb-2 border-bottom mt-3 text-danger">Activity</h5>
+
+                                        <div class="info-container">
+                                            <ul class="list-unstyled">
+                                                <li class="mb-3">
+                                                    <span class="fw-medium me-2 text-dark"><b>Status:</b></span>
+                                                    <span class="col-sm-8">{{userDetailsData?.status == 1 ? 'Active' : 'In Active' || '---'}}</span>
+                                                </li>
+                                                <li class="mb-3">
+                                                    <span class="fw-medium me-2 text-dark"><b>Last Login Time:</b></span>
+                                                    <span class="col-sm-8">{{userDetailsData?.last_login | date: 'dd MMM, yyyy' || '---'}}</span>
+                                                </li>
+                                                <li class="mb-3">
+                                                    <span class="fw-medium me-2 text-dark"><b>Last Login Ip:</b></span>
+                                                    <span class="col-sm-8">{{userDetailsData?.last_login_ip || '---'}}</span>
+                                                </li>
+                                                <li class="mb-3">
+                                                    <span class="fw-medium me-2 text-dark"><b>Failed Login Count:</b></span>
+                                                    <span class="col-sm-8">{{userDetailsData?.failed_login_count || '---'}}</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9 col-md-12 mt-5">
+                <div class="nav-align-top mb-4">
+                    <ul class="nav nav-tabs nav-fill" role="tablist" style="background-color: #f0f8ff;">
+                        <li class="nav-item" role="presentation">
+                            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-home" aria-controls="navs-justified-home" aria-selected="true"><i class="tf-icons bx bx-home me-1"></i> Profile Details</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-profile" aria-controls="navs-justified-profile" aria-selected="false" tabindex="-1"><i class="tf-icons bx bx-user me-1"></i>#####</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show" id="navs-justified-home" role="tabpanel">
+                            
+                            <h5 class="text-danger pb-3">User Details</h5>
+                            <div class="card card-action mb-4" style="background: #ecf0f5;">
+                                <div class="card-body">
+                                    <dl class="row">
+                                        <dt class="col-sm-4 fw-medium mb-3 text-nowrap text-dark">Name:</dt>
+                                        <dd class="col-sm-8">{{userDetailsData?.name || '---'}}</dd>
+                                        
+                                        <dt class="col-sm-4 fw-medium mb-3 text-nowrap text-dark">Username:</dt>
+                                        <dd class="col-sm-8">{{userDetailsData?.username || '---'}}</dd>
+                    
+                                        <dt class="col-sm-4 fw-medium mb-3 text-nowrap text-dark">Email:</dt>
+                                        <dd class="col-sm-8">{{userDetailsData?.email || '---'}}</dd>
+                    
+                                        <dt class="col-sm-4 fw-medium mb-3 text-nowrap text-dark">Mobile:</dt>
+                                        <dd class="col-sm-8">{{userDetailsData?.mobile || '---'}}</dd>
+                    
+                                        <dt class="col-sm-4 fw-medium mb-3 text-nowrap text-dark">Role:</dt>
+                                        <dd class="col-sm-8">{{userDetailsData?.role_text || '---'}}</dd>
+                                    </dl>
+                                </div>
+                            </div>
+
+                            <div class="card card-action mb-4" style="background: #ecf0f5;">
+                                <div class="card-body">
+                                    <dl class="row">
+                                        <dt class="col-sm-4 fw-medium mb-3 text-nowrap text-dark">Company:</dt>
+                                        <dd class="col-sm-8">{{userDetailsData?.company || '---'}}</dd>
+        
+                                        <dt class="col-sm-4 fw-medium mb-3 text-nowrap text-dark">Department:</dt>
+                                        <dd class="col-sm-8">{{userDetailsData?.department || '---'}}</dd>
+        
+                                        <dt class="col-sm-4 fw-medium mb-3 text-nowrap text-dark">Designation:</dt>
+                                        <dd class="col-sm-8">{{userDetailsData?.designation || '---'}}</dd>
+        
+                                        <dt class="col-sm-4 fw-medium mb-3 text-nowrap text-dark">Gender:</dt>
+                                        <dd class="col-sm-8">{{userDetailsData?.gender || '---'}}</dd>
+                                    </dl>
+                                </div>
+                            </div>
+
+                            <div class="card card-action mb-4" style="background: #ecf0f5;">
+                                <div class="card-body">
+                                    <dl class="row mb-0">
+                                        <dt class="col-sm-4 fw-medium mb-3 text-nowrap text-dark">State:</dt>
+                                        <dd class="col-sm-8">{{userDetailsData?.state || '---'}}</dd>
+                            
+                                        <dt class="col-sm-4 fw-medium mb-3 text-nowrap text-dark">City:</dt>
+                                        <dd class="col-sm-8">{{userDetailsData?.city || '---'}}</dd>
+                            
+                                        <dt class="col-sm-4 fw-medium mb-3 text-nowrap text-dark">Pincode:</dt>
+                                        <dd class="col-sm-8">{{userDetailsData?.pincode || '---'}}</dd>
+                            
+                                        <dt class="col-sm-4 fw-medium mb-3 text-nowrap text-dark">Address:</dt>
+                                        <dd class="col-sm-8">{{userDetailsData?.address || '---'}}</dd>
+                            
+                                        <dt class="col-sm-4 fw-medium mb-3 text-nowrap text-dark">Zone:</dt>
+                                        <dd class="col-sm-8">{{userDetailsData?.zone || '---'}}</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="tab-pane fade " id="navs-justified-profile" role="tabpanel">
+                            <h5 class="text-danger pb-3">Details</h5>  
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,101 @@
+<!-- <app-navbar></app-navbar> -->
+
+<section class="section p-t60 mt-5 p-b60 content site-bg-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Add Assessment</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="">
+                            <form [formGroup]="assessmentForm">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12 mb-3">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Title <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" placeholder="Enter title" formControlName="title">
+                                                        <div class="text-danger pt-2" *ngIf="assessmentForm.controls.title.invalid && (assessmentForm.controls.title.touched || assessmentForm.controls.title.dirty || isFormSubmited)" >
+                                                            <span *ngIf="assessmentForm.controls.title.errors?.['required']">* This field is required</span>
+                                                            <span *ngIf="assessmentForm.controls.title.errors?.['alphanumaric']" class="text-danger">Please enter Alphanumeric values and Underscore(_)'</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <div><label class="control-label">Category <span class="text-danger">*</span></label></div>
+                                                        <p-multiSelect [options]="assessmentCatData" optionLabel="name"  placeholder="Select Category" formControlName="category" /> &nbsp; &nbsp;
+                                                        <p-button (click)="showDialog()" label="Add" class="ml-2" />
+                                                    </div>
+                                                    <div class="text-danger pt-2" *ngIf="assessmentForm.controls.category.invalid && (assessmentForm.controls.category.touched || assessmentForm.controls.category.dirty || isFormSubmited)" >
+                                                        <span *ngIf="assessmentForm.controls.category.errors?.['required']">* This field is required</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            
+
+                                            <!-- {{assessmentForm.value | json}} -->
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p id="message">{{apiMessage}}</p>
+                                                    <div class="submit-btn">
+                                                        @if(isLoading){
+                                                            <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                                                        }@else{
+                                                            <button class="btn postjob-btn" (click)="onSubmit();" ><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <!-- {{assessmentForm.value | json}} -->
+                                            </div>
+                                        
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <!-- /input-group -->
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="card flex justify-content-center">
+    <p-dialog header="Add Assessment Category" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+        <form [formGroup]="assessmentCatForm">
+            <div class="col-md-12 my-3">
+                <div class="form-group">
+                    <label class="control-label">Category Name<span class="text-danger"> *</span></label>
+                    <input type="text" class="form-control" placeholder="Enter category name" formControlName="name">
+                    <div class="text-danger pt-2" *ngIf="assessmentCatForm.controls.name.invalid && (assessmentCatForm.controls.name.touched || assessmentCatForm.controls.name.dirty || isFormSubmited)" >
+                        <span *ngIf="assessmentCatForm.controls.name.errors?.['required']">* This field is required</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="message">{{apiMessage2}}</p>
+                    <div class="submit-btn">
+                        @if(isLoading){
+                            <button class="btn btn-primary postjob-btn" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status"> Loading...</span></button>
+                        }@else{
+                            <button class="btn postjob-btn" (click)="addCategory();" ><i class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+</div>
+
+<p-toast />

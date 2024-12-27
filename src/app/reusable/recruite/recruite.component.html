@@ -1,0 +1,595 @@
+<!-- CONTENT START -->
+<div class="page-content mt-5 site-bg-gray" *ngIf="uploadvisible">
+  <section class="section p-t60 p-b60 content">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+  <div class="box box-danger">
+      <div class="box-header with-border">
+        <h3 class="box-title">Add Profiles</h3>
+      </div>
+      <div class="box-body">
+        <div class="form-addclient">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="clint-info">
+          <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">Select Profiles</label><small class="float-end text-danger">Only pdf files are allowed.</small>
+                  <input type="file" name="resumes" id="resunes" class="form-control" (change)="onFileSelected($event)" webkitdirectory directory required #fileInput>
+                </div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="submit-btn">
+               <button class="postjob-btn" (click)="onSubmit()">
+                <div class="spinner-border text-light" role="status" *ngIf="isUploading; else uploadStatus">
+                  <span class="sr-only">Loading...</span>
+                </div>
+                <ng-template #uploadStatus>
+                  <i class="fa-regular fa-paper-plane"></i> SUBMIT PROFILES
+                </ng-template>
+              </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+      </div>
+      </div>
+      </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+        <div class="p-b60 site-bg-gray" *ngIf="candidatesvisible" style="margin-top: 150px;">
+          <!-- <br>
+          <br>
+          <br>
+          <br> -->
+  
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6">
+                <input type="checkbox" (change)="toggleSelectAll($event)" [checked]="allSelected"> Select All
+              </div>
+            </div>
+          </div>
+
+          @for (candidate of canid; track $index) {
+            <!-- @if (!candidate.data.status) {
+              <div class="error-message">
+                <p>Error: {{candidate.data.error_type}}</p>
+              </div>
+            } @else { -->
+              @if (candidate.data.duplicate_uploads) {
+                <div class="section-full p-t60 mt-5" style="background: white; width: 85%; border-radius: 35px; margin-left: 72px;">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="duplicate-card">
+                          <h4><b><i class="fas fa-user"></i></b>{{ candidate.data.name }}</h4>
+                          <p>Email: {{ candidate.data.email }}</p>
+                          <p>Mobile: {{ candidate.data.mobile }}</p>
+                          <p class="text-danger">This is a duplicate entry CV Uploads.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br><br>
+              } @else {
+              <div class="section-full mt-1">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="step-form rounded bg-white">
+
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h4>
+                              <input type="checkbox" [value]="candidate" (change)="toggleSelection(candidate)" [checked]="isSelected(candidate)">
+                              {{candidate.data.name}}
+                            </h4>
+                          </div>
+                          <div class="col-md-6">
+                            <h4><p class="mb-0">Candidate Score: {{ getScorePercentage(candidate.data.score)}}</p></h4>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <h5 class="text-danger mb-3 mt-3">1. Candidate Basic Info</h5>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label class="control-label">Full Name <span class="text-danger">*</span></label>
+                              <input type="text" id="name" class="form-control" placeholder="Enter Full Name" [(ngModel)]="candidate.data.name">
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label class="control-label">Mobile <span class="text-danger">*</span></label>
+                              <input type="text" id="mobile" class="form-control" placeholder="Enter Mobile Number" [(ngModel)]="candidate.data.mobile">
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label class="control-label">Email Id <span class="text-danger">*</span></label>
+                              <input type="email" id="email" class="form-control" placeholder="Enter Email Id" [(ngModel)]="candidate.data.email">
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label class="control-label">Date of Birth <span class="text-danger">*</span></label>
+                              <input type="date" id="dob" class="form-control" [(ngModel)]="candidate.data.dob">
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">                              
+                            <div class="form-group">
+                              <label class="control-label">Total Work Experience (In Months) <span class="text-danger">*</span></label>
+                              <input type="number" id="experience" class="form-control" placeholder="Enter Total Work Experience" [(ngModel)]="candidate.data.totWorkExp">
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label class="control-label">Father's Name <span class="text-danger">*</span></label>
+                              <input type="text" id="fatherName" class="form-control" placeholder="Enter Father's Name" [(ngModel)]="candidate.data.fatherName">
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label class="control-label">Gender <span class="text-danger">*</span></label>
+                              <select id="gender" class="form-control" [(ngModel)]="candidate.data.gender">
+                                  <option value="">Select Gender</option>
+                                  <option value="Male">Male</option>
+                                  <option value="Female">Female</option>
+                                  <option value="Other">Other</option>
+                              </select>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <div class="row">
+                          <h5 class="text-danger mb-3 mt-3">2. Address</h5>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label class="control-label">State <span class="text-danger">*</span></label>
+                              <input type="text" id="state" class="form-control" placeholder="Enter State" [(ngModel)]="candidate.data.state">
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">                                                                
+                            <div class="form-group">
+                              <label class="control-label">City <span class="text-danger">*</span></label>
+                              <input type="text" id="city" class="form-control" placeholder="Enter City" [(ngModel)]="candidate.data.city">
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label class="control-label">Address <span class="text-danger">*</span></label>
+                              <input type="text" id="address" class="form-control" placeholder="Enter Full Address" [(ngModel)]="candidate.data.address">
+                            </div>
+                          </div>
+                        
+                        </div>
+
+                        <div class="row">
+                          <h5 class="text-danger mb-3 mt-3">3. Education</h5>
+
+                          @for(education of candidate.data.education; track $index){
+                            <div class="col-md-4"> 
+                              <div class="form-group">
+                                @if($index == 0){
+                                <label class="control-label">Qualification On <span class="text-danger">*</span></label>
+                                }
+                                <input type="text" id="qualification" class="form-control" [(ngModel)]="education.qualification">
+                              </div>
+                            </div>
+                              
+                            <div class="col-md-4"> 
+                              <div class="form-group">
+                                @if($index == 0){
+                                <label class="control-label">Institute/University Name <span class="text-danger">*</span></label>
+                                }
+                                <input type="text" id="qualification_institute" class="form-control" [(ngModel)]="education.institute">
+                              </div>
+                            </div>
+
+                            <div class="col-md-2"> 
+                              <div class="form-group">
+                                @if($index == 0){
+                                <label class="control-label">Passed On <span class="text-danger">*</span></label>
+                                }
+                                <input type="text" id="passed" class="form-control" [(ngModel)]="education.passedOn">
+                              </div>
+                            </div>
+
+                            <div class="col-md-2"> 
+                              <div class="form-group">
+                                @if($index == 0){
+                                  <label class="control-label">Percentage <span class="text-danger">*</span></label>
+                                }
+                                  <input type="text" id="percentage" class="form-control" [(ngModel)]="education.percentage">
+                              </div>
+                            </div>
+                          }
+
+                        </div>
+
+                        <div class="row">
+                          <h5 class="text-danger mb-3 mt-3">4. Experience</h5>
+                          @for(experience of candidate.data.experience; track $index){
+                            @if($index >= 1){
+                              <div class="col-md-12">
+                                  <hr class="hr pb-4 mt-4">
+                              </div>
+                            }
+                            <div class="col-md-4"> 
+                              <div class="form-group">
+                                <label class="control-label">Working Status <span class="text-danger">*</span></label>
+                                <input type="text" id="last_company_working_status" class="form-control" [(ngModel)]="experience.workingStatus">
+                              </div>
+                            </div>
+
+                            <div class="col-md-4"> 
+                              <div class="form-group">
+                                <label class="control-label">Company Name <span class="text-danger">*</span></label>
+                                <input type="text" id="latest_company" class="form-control" [(ngModel)]="experience.compName">
+                              </div>
+                            </div>
+
+                            <div class="col-md-4">                        
+                              <div class="form-group">
+                                <label class="control-label">Industry <span class="text-danger">*</span></label>
+                                <input type="text" id="industry" class="form-control" [(ngModel)]="experience.industry">
+                              </div>
+                            </div>
+
+                            <div class="col-md-4"> 
+                              <div class="form-group">
+                                <label class="control-label">Designation <span class="text-danger">*</span></label>
+                                <input type="text" id="role_in_latest_company" class="form-control" [(ngModel)]="experience.designation">
+                              </div>
+                            </div>
+
+                            <div class="col-md-4"> 
+                              <div class="form-group">
+                                <label class="control-label">Start Date <span class="text-danger">*</span></label>
+                                <input type="text" id="joining_date_of_latest_company" class="form-control" [(ngModel)]="experience.startdate">
+                              </div>
+                            </div>
+                              
+                            
+                            <div class="col-md-4"> 
+                              <div class="form-group">
+                                <label class="control-label">End Date <span class="text-danger">*</span></label>
+                                <input type="text" id="leving_date_of_latest_company" class="form-control" [(ngModel)]="experience.enddate">
+                              </div>
+                            </div>
+                            
+                          }
+                        </div>
+
+                        <div class="row">
+                          <h5 class="text-danger mb-3 mt-3">4. Smmmary</h5>
+
+                          <div class="col-md-12">                        
+                            <div class="form-group">
+                              <label class="control-label">Summary <span class="text-danger">*</span></label>
+                              <textarea class="form-control" rows="2" style="height: 80px;" placeholder="Enter Candidate Summaryu" [(ngModel)]="candidate.data.candidate_summary"></textarea>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <!-- <div class="row">
+                          <div class="col-md-12">
+                              <p id="message"></p>
+                              <div class="submit-btn">
+                                  <button *ngIf="!candidate.data.duplicate_db" type="button" (click)="submitCandidate(candidate.data.candidates_bulk)" class="btn postjob-btn" type="button"><i class="fa-regular fa-paper-plane"></i> SUBMIT 1</button>
+                              </div>
+                          </div>
+                        </div> -->
+                        <div class="row">
+                          <div class="col-md-12">
+                            <p class="small" *ngIf="candidate.data.duplicate_db" class="text-danger">This candidate already exists in our records do you want update.</p>
+                            <p class="small" *ngIf="candidate.data.duplicate_db" class=""> 
+                              This candidate Last Updated {{ dateconvert(candidate.data.exits_cand_date) }}
+                              <a *ngIf="candidate.data.duplicate_db" class="link-primary" target="_blank" type="button"href="candidateprofile/{{candidate.data.exits_cand_id}}" target="_blank" >View Existing Profile</a>
+                            </p>
+                          </div>
+                        </div>
+
+                      </div>
+
+
+                      <div class="can_stage">
+                        <div class="row">
+
+                          <!-- <div class="col-md-12">
+                            <div class="row">
+                              <div class="col-md-12">
+                                <h4>
+                                  <input type="checkbox" [value]="candidate" (change)="toggleSelection(candidate)" [checked]="isSelected(candidate)">
+                                  {{candidate.data.name}}
+                                </h4>
+                              </div>
+                            </div>
+                          </div> -->
+
+                          <!-- <div class="col-md-12">
+                            <div class="stage">
+                              <div class="row">
+
+                                <div class="col-md-6">
+                                  @if (showFirstNameInput) {
+                                      <div class="form-group">
+                                          <label for="first_name">Full Name</label>
+                                          <input type="text" id="name" class="form-control" [(ngModel)]="candidate.data.name">
+                                      </div>
+                                  } @else {
+                                      <p>First Name: {{candidate.data.name}}</p>
+                                  }
+                                </div>
+                            
+                                <div class="col-md-6">
+                                  @if (showMobileInput) {
+                                      <div class="form-group">
+                                          <label for="mobile">Mobile</label>
+                                          <input type="text" id="mobile" class="form-control" [(ngModel)]="candidate.data.mobile">
+                                      </div>
+                                  } @else {
+                                      <p>Mobile: {{candidate.data.mobile}}</p>
+                                  }
+                                </div>
+
+                                <div class="col-md-6">
+                                  @if (showEmailInput) {
+                                      <div class="form-group">
+                                          <label for="email">Email</label>
+                                          <input type="email" id="email" class="form-control" [(ngModel)]="candidate.data.email">
+                                      </div>
+                                  } @else {
+                                      <p>Email: {{candidate.data.email}}</p>
+                                  }
+                                </div>
+
+                                <div class="col-md-6">
+                                  @if (showFatherNameInput) {
+                                    <div class="form-group">
+                                        <label for="father_name">Father's Name</label>
+                                        <input type="text" id="fatherName" class="form-control" [(ngModel)]="candidate.data.fatherName">
+                                    </div>
+                                  } @else {
+                                      <p>Father's Name: {{candidate.data.fatherName}}</p>
+                                  }
+                                </div>
+                                
+                                <div class="col-md-6">
+                                  @if (showDobInput) {
+                                      <div class="form-group">
+                                          <label for="dob">Date of Birth</label>
+                                          <input type="date" id="dob" class="form-control" [(ngModel)]="candidate.data.dob">
+                                      </div>
+                                  } @else {
+                                      <p>DOB: {{candidate.data.dob}}</p>
+                                  }
+                                </div>
+
+                                <div class="col-md-6">
+                                  @if (showGenderInput) {
+                                      <div class="form-group">
+                                          <label for="gender">Gender</label>
+                                          <select id="gender" class="form-control" [(ngModel)]="candidate.data.gender">
+                                              <option value="">Select Gender</option>
+                                              <option value="Male">Male</option>
+                                              <option value="Female">Female</option>
+                                              <option value="Other">Other</option>
+                                          </select>
+                                      </div>
+                                  } @else {
+                                      <p>Gender: {{candidate.data.gender}}</p>
+                                  }
+                                </div>
+
+                                <div class="col-md-6">
+                                  @if (showAddresssInput) {
+                                    <div class="form-group">
+                                        <label for="address">Address</label>
+                                        <input type="text" id="address" class="form-control" [(ngModel)]="candidate.data.address">
+                                    </div>
+                                  } @else {
+                                      <p>Address: {{candidate.data.address}}</p>
+                                  }
+                                </div>
+                                  
+                                <div class="col-md-6">
+                                  @if (showStatesInput) {
+                                    <div class="form-group">
+                                        <label for="address">State</label>
+                                        <input type="text" id="state" class="form-control" [(ngModel)]="candidate.data.state">
+                                    </div>
+                                  } @else {
+                                      <p>State: {{candidate.data.state}}</p>
+                                  }
+                                </div>
+
+                                <div class="col-md-6">                                                                
+                                  @if (showCityInput) {
+                                    <div class="form-group">
+                                        <label for="address">City</label>
+                                        <input type="text" id="city" class="form-control" [(ngModel)]="candidate.data.city">
+                                    </div>
+                                  } @else {
+                                      <p>City: {{candidate.data.city}}</p>
+                                  }
+                                </div>
+
+                                <div class="col-md-6">                              
+                                  @if (showTotalExperienceInput) {
+                                    <div class="form-group">
+                                        <label for="experience">Experience</label>
+                                        <input type="number" id="experience" class="form-control" [(ngModel)]="candidate.data.totWorkExp">
+                                    </div>
+                                  } @else {
+                                      <p>Total Work Experience: {{candidate.data.totWorkExp}}</p>
+                                  }
+                                </div>
+
+                                <div class="col-md-6"> 
+                                  @if (showTotalQualificationInput) {
+                                    <div class="form-group">
+                                        <label for="qualification">Qualification On</label>
+                                        <input type="text" id="qualification" class="form-control" [(ngModel)]="candidate.data.highest_qualification">
+                                    </div>
+                                  } @else {
+                                      <p>Qualification: {{candidate.data.highest_qualification}}</p>
+                                  }
+                                </div>
+                                  
+                                <div class="col-md-6"> 
+                                  @if (showTotalqualification_InstituteInput) {
+                                    <div class="form-group">
+                                        <label for="qualification_institute">Institute/University Name</label>
+                                        <input type="text" id="qualification_institute" class="form-control" [(ngModel)]="candidate.data.highest_qualification_institute">
+                                    </div>
+                                  } @else {
+                                      <p>Institute/University Name: {{candidate.data.highest_qualification_institute}}</p>
+                                  }
+                                </div>
+
+                                <div class="col-md-6"> 
+                                  @if (showTotalPassedInput) {
+                                    <div class="form-group">
+                                        <label for="passed">Passed On</label>
+                                        <input type="text" id="passed" class="form-control" [(ngModel)]="candidate.data.highest_qualification_passed_on">
+                                    </div>
+                                  } @else {
+                                      <p>Passed On: {{candidate.data.highest_qualification_passed_on}}</p>
+                                  }
+                                </div>
+
+                                <div class="col-md-6"> 
+                                  @if (showTotalPercentageInput) {
+                                    <div class="form-group">
+                                        <label for="percentage">Percentage</label>
+                                        <input type="text" id="percentage" class="form-control" [(ngModel)]="candidate.data.percentage">
+                                    </div>
+                                  } @else {
+                                      <p>Percentage: {{candidate.data.percentage}}</p>
+                                  }
+                                </div>
+
+                                <div class="col-md-6"> 
+                                  @if (showTotalLatest_CompanyInput) {
+                                    <div class="form-group">
+                                        <label for="latest_company">Company Name</label>
+                                        <input type="text" id="latest_company" class="form-control" [(ngModel)]="candidate.data.latest_company">
+                                    </div>
+                                  } @else {
+                                      <p>Company Name: {{candidate.data.latest_company}}</p>
+                                  }
+                                </div>
+
+                                <div class="col-md-6"> 
+                                  @if (showTotalDesignationInput) {
+                                    <div class="form-group">
+                                        <label for="role_in_latest_company">Designation</label>
+                                        <input type="text" id="role_in_latest_company" class="form-control" [(ngModel)]="candidate.data.role_in_latest_company">
+                                    </div>
+                                  } @else {
+                                      <p>Designation: {{candidate.data.role_in_latest_company}}</p>
+                                  }
+                                </div>
+
+                                <div class="col-md-6"> 
+                                  @if (showTotalStartDateInput) {
+                                    <div class="form-group">
+                                        <label for="joining_date_of_latest_company">Start Date</label>
+                                        <input type="text" id="joining_date_of_latest_company" class="form-control" [(ngModel)]="candidate.data.joining_date_of_latest_company">
+                                    </div>
+                                  } @else {
+                                      <p>Start Date: {{candidate.data.joining_date_of_latest_company}}</p>
+                                  }
+                                </div>
+                                  
+                                <div class="col-md-6"> 
+                                  @if (showTotalWorkingStatusInput) {
+                                    <div class="form-group">
+                                        <label for="last_company_working_status">Working Status</label>
+                                        <input type="text" id="last_company_working_status" class="form-control" [(ngModel)]="candidate.data.last_company_working_status">
+                                    </div>
+                                  } @else {
+                                      <p>Working Status: {{candidate.data.last_company_working_status}}</p>
+                                  }
+                                </div>
+
+                                <div class="col-md-6">                        
+                                  @if (showTotalIndustryInput) {
+                                    <div class="form-group">
+                                        <label for="industry">Industry</label>
+                                        <input type="text" id="industry" class="form-control" [(ngModel)]="candidate.data.industry">
+                                    </div>
+                                  } @else {
+                                      <p>Industry: {{candidate.data.industry}}</p>
+                                  }
+                                </div>
+
+                              </div>
+                            </div>
+                          </div> -->
+
+                          <div class="submit-btn">
+                            <!-- <button *ngIf="!candidate.data.duplicate_db" class="postjob-btn" type="button" (click)="submitCandidate(candidate.data.candidates_bulk)">Submit 1</button> -->
+                            <!-- <button *ngIf="candidate.data.duplicate_db" class="postjob-btn" type="button" (click)="updateCandidate(candidate.data.candidates_bulk)">Update Candidate</button> -->
+                            <!-- <a *ngIf="candidate.data.duplicate_db" class="postjob-btn" type="button"href="candidate_details/{{candidate.data.exits_cand_id}}" target="_blank" >Open Candidate</a> -->
+                            <!-- <small *ngIf="candidate.data.duplicate_db" class="text-danger">This candidate already exists in our records do you want update.</small><br>
+                            <small *ngIf="candidate.data.duplicate_db" class="text-info"> This candidate Last Updated {{ dateconvert(candidate.data.exits_cand_date) }}</small> -->
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+
+
+
+                  </div>
+                </div>
+              </div>
+            <!-- } -->
+          }
+          } @empty {
+            <p>No candidates available.</p>
+          }
+          
+          <!-- Submit 2 -->
+          <div class="sticky-bottom" style="margin-left: 10%;">
+            <div class="submit-btn">
+              <button class="btn postjob-btn" type="button" (click)="submitSelection()"> <i class="fa-regular fa-paper-plane"></i> Submit</button>
+            </div>
+          </div>
+        </div>
+
+        
+
+
+
+
+
+

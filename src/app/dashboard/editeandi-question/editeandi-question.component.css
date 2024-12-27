@@ -1,0 +1,42 @@
+.step-form{
+    background-color: #FFF;
+    padding: 15px;
+}
+.step-form .form-group{
+    margin-bottom: 18px;
+}
+
+.step-form .form-group label.control-label{
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.step-form .form-group .form-control{
+    border-radius: 6px;
+}
+
+
+.form-control {
+    appearance: auto;
+    color: #808385;
+}
+::placeholder {
+    color: #808385;
+}
+
+.error{
+    font-size: 12px;
+    font-style: italic;
+}
+
+.option-group{
+    background-color: #F0f0f0;
+    padding: 15px;
+}
+
+
+.step-boder{
+    height: 600px;
+    overflow: hidden;
+    overflow-y: overlay;
+}

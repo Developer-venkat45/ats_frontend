@@ -1,0 +1,367 @@
+<!-- <app-navbar></app-navbar> -->
+
+
+
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-3 mt-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        @if(loader){
+                        <div class="fb-item py-5" style="height: 265px;">
+                            <div class="first-section-wrapper">
+                                <div class="gravatar-title">
+                                    <div>
+                                        <ngx-skeleton-loader
+                                            [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="second-section-wrapper" style="margin-top: -30px;">
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader count="1" appearance="circle"
+                                        [theme]="{ width: '95%', height: '60px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fb-item py-5" style="height: 265px;">
+                            <div class="first-section-wrapper">
+                                <div class="gravatar-title">
+                                    <div>
+                                        <ngx-skeleton-loader
+                                            [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="second-section-wrapper" style="margin-top: -30px;">
+                                <div class="wrapper">
+                                    <ngx-skeleton-loader count="1" appearance="circle"
+                                        [theme]="{ width: '95%', height: '60px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                        @else{
+                        <div class="filter-heading">
+                            <div class="breadcrumb nav">
+                                <span class="breadcrumb-item">
+                                    <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i>
+                                        Home</a>
+                                </span>
+                                <span class="breadcrumb-item">
+                                    <a class="breadcrumb-link" [routerLink]="['/assessment']">Assessment</a>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="side-bar bg-white p-3 rounded">
+                            <div class="sidebar-elements search-bx">
+                                <div class="form-group mb-4">
+                                    <h4 class="section-head-small mb-2"><i class="fa-solid fa-filter"></i> All Filters
+                                    </h4>
+                                    <h4 class="section-head-small reset-filter mb-2" tooltipPosition="top"
+                                        pTooltip="Reset Filters" (click)="resetFilter()"><i
+                                            class="fa-solid fa-retweet"></i></h4>
+                                    <hr class="hr" />
+                                </div>
+                                <div class="form-group mb-4">
+                                    <h4 class="section-head-small mb-2">Title</h4>
+                                    <div class="input-group">
+                                        <input type="text" name="query" class="form-control"
+                                            placeholder="Assessment Title" [(ngModel)]="searchAssessmentTitle"
+                                            (blur)="searchTitle($event)">
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="hr" />
+                            <div class="sidebar-elements search-bx">
+                                <div class="form-group mb-4">
+                                    <h4 class="section-head-small mb-2">Category</h4>
+                                    <select class="wt-select-bar-large selectpicker"
+                                        [(ngModel)]="searchAssessmentCategory" (change)="searchCategory($event)">
+                                        <option>Select category</option>
+                                        @for(cat of assessmentCatData; track $index){
+                                        <option>{{cat}}</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <hr class="hr" />
+                            <div class="form-group">
+                                <div class="submit-btn mt-2" style="margin-left: 165px;">
+                                    <button class="btn postjob-btn btn2" (click)="onSearchSubmit()"> Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-9">
+                @if(loader2){
+                @for(iteam of getNumberArray(loaderCount); track $index){
+                <div class="fb-item" style="width: 31%; float: left; margin-right: 15px; margin-top: 13px; ">
+                    <div class="first-section-wrapper">
+
+                        <div class="gravatar-title">
+                            <div>
+                                <ngx-skeleton-loader
+                                    [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                            </div>
+                            <div>
+                                <ngx-skeleton-loader
+                                    [theme]="{ width: '170px', 'border-radius': '0', height: '15px' }"></ngx-skeleton-loader>
+                            </div>
+                            <div>
+                                <ngx-skeleton-loader
+                                    [theme]="{ width: '170px', 'border-radius': '0', height: '15px' }"></ngx-skeleton-loader>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="second-section-wrapper">
+
+                        <div class="wrapper">
+                            <ngx-skeleton-loader count="1" appearance="circle"
+                                [theme]="{ width: '95%',  height: '70px', 'border-radius': '10px' }"></ngx-skeleton-loader>
+                        </div>
+                    </div>
+                </div>
+                }
+                }@else{
+                @if(total_record > 0){
+                <div class="row mt-2">
+                    <div
+                        class="product-filter-wrap d-flex justify-content-between position-relative align-items-center ">
+                        <span class="">Showing {{fetchedRecord}} Assessment</span>
+                        <form class="woocommerce-ordering tmi-filter-select" method="get">
+                            <!-- <span class="woocommerce-result-count">Show </span> -->
+                            <select class="wt-select-bar-2 selectpicker">
+                                <option value="10">Show 10</option>
+                                <option value="20">Show 20</option>
+                                <option value="30">Show 30</option>
+                                <option value="40">Show 40</option>
+                                <option value="50">Show 50</option>
+                                <option value="60">Show 60</option>
+                            </select>
+                        </form>
+
+                        <div class="submit-btn position-absolute" style="right: 135px;">
+                            <a class="postjob-btn" (click)="addEandi()" style="color:white; cursor: pointer;"><i
+                                    class="fa-regular fa-plus"></i> Assessment</a>
+                        </div>
+                    </div>
+
+                    @for(item of assessmentList; track $index){
+                    <div class="col-md-6">
+                        <div class="can_stage mt-3 rounded">
+                            <p><b>Title:</b> {{item.title}} </p>
+                            <p><b>Category:</b> {{item.category}}</p>
+                            <p><b>Weightage:</b> {{enadiWeightage[$index]}} Left out of 100</p>
+                            <p><b>Total Questions:</b> {{item.question_count}} <span
+                                    style="float: right; cursor: pointer;"><a (click)="allQuestions(item)"><i
+                                            class="fa-regular fa-eye"></i></a></span></p>
+                            @if(enadiWeightage[$index] != 100){
+                            <span class="recruitBtn pl-3">
+                                <a class="postjob-btn" routerLink="/addassessmentquestion/{{item._id}}"
+                                    style="color:white;"><i class="fa-regular fa-plus"></i> Question</a>
+                            </span>
+                            <p class="text-danger small mb-0 mt-3">Note: *Please ensure to provide questions with a
+                                total weightage of 100. Otherwise, E&I form creation cannot be completed.</p>
+                            }
+                        </div>
+                    </div>
+                    }
+                    <div class="row mt-3">
+                        <div class="col-md-8">
+                            <p>Showing {{startIndex2}} to {{endIndex2}} of {{filterdRecord}} entries</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="cuspagi" style="float: right;">
+                                <nav aria-label="...">
+                                    <ul class="pagination">
+                                        <li class="page-item {{isDisabled}}"><button class="page-link"
+                                                (click)="prevPage()">Previous</button></li>
+                                        <li class="page-item active" aria-current="page"><a
+                                                class="page-link">{{currentPage}}</a></li>
+                                        <li class="page-item {{isDisabled2}}"><button class="page-link text-danger"
+                                                (click)="nextPage()">Next</button></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                }@else{
+                <div class="col-md-12 pt-5">
+                    <div class="empty_state rounded">
+                        <i class="fa-solid fa-face-surprise"></i>
+                        <h3 class="">No records</h3>
+                        <p>There are no records found</p>
+                    </div>
+                </div>
+                }
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+<p-toast />
+<div class="card flex justify-content-center">
+    <p-dialog header="Header" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }"
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+        @for(item of assessmentList; track $index){
+        @for(question of item.questions; track $index){
+        <p>Question: {{question.question}}</p>
+        <p>Weightage: {{question.weightage}}</p>
+        <p>Question Type: {{question.question_type}}</p>
+        @if(question.question_type == "MCQ"){
+        @for(answer of question.answers; track $index){
+        <p>{{'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[$index]}}: {{answer.answer}}</p>
+        }
+        }
+        <hr>
+        }}
+    </p-dialog>
+</div>
+
+
+<p-dialog header="Add New Assessment" [(visible)]="displayModalAdd" [modal]="true" [style]="{width: '50vw'}">
+    <div class="step-form">
+        <form [formGroup]="insertEandiForm">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Enter full name" formControlName="title">
+                        <div class="text-danger pt-2"
+                            *ngIf="insertEandiForm.controls.title.invalid && (insertEandiForm.controls.title.touched || insertEandiForm.controls.title.dirty || isFormSubmited)">
+                            <span *ngIf="insertEandiForm.controls.title.errors?.['required']">* This field is
+                                required</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-11 pt-3">
+                    <div class="form-group">
+                        <label class="control-label">Category <span class="text-danger">*</span></label>
+                        <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="assessmentCatData"
+                            formControlName="category"></ng-multiselect-dropdown>
+                        <div class="text-danger pt-2"
+                            *ngIf="insertEandiForm.controls.category.invalid && (insertEandiForm.controls.category.touched || insertEandiForm.controls.category.dirty || isFormSubmited)">
+                            <span *ngIf="insertEandiForm.controls.category.errors?.['required']">* This field is
+                                required</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-1 pt-3">
+                    <button class="btn btn-primary" (click)="addEnadiCategoryData()"
+                        style="margin-top: 34px;">Add</button>
+                </div>
+            </div>
+
+
+            <p class="text-danger">{{overallFormValid}}</p>
+            <p class="text-danger">{{apiMessage}}</p>
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="message"></p>
+                    <div class="submit-btn">
+                        @if(isBtnLoading){
+                        <button class="btn btn-primary postjob-btn" type="button" disabled><span
+                                class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status">
+                                Loading...</span></button>
+                        }@else{
+                        <button type="button" (click)="insertEandi();" class="btn postjob-btn" type="button"><i
+                                class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</p-dialog>
+
+<p-dialog header="Add E And I Category" [(visible)]="addEnadiCategory" [modal]="true" [style]="{width: '20vw'}">
+    <form [formGroup]="insertEandiCategoryForm">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Category Name<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter full name" formControlName="name">
+                    <div class="text-danger pt-2"
+                        *ngIf="insertEandiCategoryForm.controls.name.invalid && (insertEandiCategoryForm.controls.name.touched || insertEandiCategoryForm.controls.name.dirty || isFormSubmited)">
+                        <span *ngIf="insertEandiCategoryForm.controls.name.errors?.['required']">* This field is
+                            required</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="text-danger">{{overallFormValid2}}</p>
+        <p class="text-danger">{{apiMessage2}}</p>
+        <div class="row">
+            <div class="col-md-12">
+                <p id="message"></p>
+                <div class="submit-btn">
+                    @if(isBtnLoading){
+                    <button class="btn btn-primary postjob-btn" type="button" disabled><span
+                            class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status">
+                            Loading...</span></button>
+                    }@else{
+                    <button type="button" (click)="insertEandiCategory();" class="btn postjob-btn" type="button"><i
+                            class="fa-regular fa-paper-plane"></i> SUBMIT</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </form>
+</p-dialog>
+
+<p-dialog header="Assessment Questions" [(visible)]="questionModalView" [modal]="true" [style]="{width: '50vw'}"
+    [maximizable]="true">
+    <div class="step-form">
+        <div class="step-boder">
+            <div class="row">
+
+                <div class="col-md-12 mb-3">
+                    <div class="form-heading-div">
+                        <h4 class="text-white">{{selectedAssessment?.title}}</h4>
+                        <p><b>Category: </b>
+                            @for(cat of selectedAssessment?.category; track $index){
+                            <span>{{cat}}</span>,
+                            }
+                        </p>
+                    </div>
+                </div>
+
+                <div class="question-div">
+                    <div class="row">
+                        @for(question of selectedAssessment?.questions; track $index){
+                        <div class="col-md-12 mb-3">
+                            <label class="control-label"><b>Q {{$index+1}}</b>. {{question.question}} <span
+                                    class="text-danger">*</span></label>
+                            <p><b>Weightage:</b> {{question.weightage}}</p>
+                            <div class="row">
+                                @for(option of question.options; track $index){
+                                <div class="col-md-6 mb-2">
+                                    <div class="option-group rounded">
+                                        <p class="mb-0">Option: {{option.option}}</p>
+                                        <p class="mb-0">Score: {{option.score}}</p>
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</p-dialog>

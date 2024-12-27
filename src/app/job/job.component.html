@@ -1,0 +1,219 @@
+<!-- OUR BLOG START -->
+<div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+    <div class="container">
+        <div class="row">
+            @if(allIndentDataShow){
+                @if(checkPrtnerProfile){
+                    <div class="col-lg-3 col-md-12 rightSidebar">
+                        @if(loader){
+                            <div class="fb-item py-5" style="height: 600px;">
+                                <div class="first-section-wrapper">
+                                    <div class="gravatar-title">
+                                        <div>
+                                            <ngx-skeleton-loader [theme]="{width: '200px', 'border-radius': '0', height: '15px', 'margin-bottom': '10px'}"></ngx-skeleton-loader>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="second-section-wrapper" style="margin-top: -30px;">
+                                    <div class="wrapper">
+                                        <ngx-skeleton-loader count="1" appearance="circle" [theme]="{ width: '95%', height: '60px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+        
+                                <div class="second-section-wrapper" style="margin-top: 10;">
+                                    <div class="wrapper">
+                                        <ngx-skeleton-loader count="1" appearance="circle" [theme]="{ width: '95%', height: '60px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+        
+                                <div class="second-section-wrapper" style="margin-top: 10px;">
+                                    <div class="wrapper">
+                                        <ngx-skeleton-loader count="1" appearance="circle" [theme]="{ width: '95%', height: '60px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+                                <div class="second-section-wrapper" style="margin-top: 10px;">
+                                    <div class="wrapper">
+                                        <ngx-skeleton-loader count="1" appearance="circle" [theme]="{ width: '95%', height: '60px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+                                <div class="second-section-wrapper" style="margin-top: 10px;">
+                                    <div class="wrapper">
+                                        <ngx-skeleton-loader count="1" appearance="circle" [theme]="{ width: '95%', height: '60px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        }
+                        @else{
+                            
+                            <div class="filter-heading">
+                                <div class="breadcrumb nav">
+                                    <span class="breadcrumb-item">
+                                        <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+                                    </span>
+                                    <span class="breadcrumb-item">
+                                        <a class="breadcrumb-link" [routerLink]="['/job']">Jobs</a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="side-bar bg-white p-3 rounded">
+                                <div class="sidebar-elements search-bx">
+                                            
+                                    <div class="form-group mb-4">
+                                        <h4 class="section-head-small mb-2"><i class="fa-solid fa-filter"></i> All Filters</h4>
+                                        <h4 class="section-head-small reset-filter mb-2" tooltipPosition="top" pTooltip="Reset Filters" (click)="resetFilter()"><i class="fa-solid fa-retweet"></i></h4>
+                                        <hr class="hr"/>
+                                    </div>
+                                    
+                                    <div class="form-group mb-4">
+                                        <h4 class="section-head-small mb-2">Client</h4>
+                                        <select class="wt-select-bar-large selectpicker" [(ngModel)]="searchClient" (change)="getClient($event)">
+                                            <option value="" selected>Select Client</option>
+                                            @for(iteam of clientList; track $index){
+                                                <option value="{{iteam._id}}">{{iteam.name}}</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <h4 class="section-head-small mb-2">Category</h4>
+                                        <select class="wt-select-bar-large selectpicker" [(ngModel)]="searchCategory" (change)="getCategory($event)">
+                                            <option value="">Select Category</option>
+                                            @for(iteam of categoryData; track $index){
+                                                <option>{{iteam.name}}</option>
+                                            }
+                                        </select>
+                                    </div>
+
+
+                                    <hr class="hr"/>
+                                    <div class="form-group mb-4">
+                                        <h4 class="section-head-small mb-2">Job Title</h4>
+                                        <div class="input-group">
+                                            <input type="text" name="query" class="form-control" [(ngModel)]="searchTerm" (blur)="searchQuery()" placeholder="Job Title">
+                                        </div>
+                                    </div>
+
+                                    <hr class="hr"/>
+                                    <div class="form-group mb-4">
+                                        <h4 class="section-head-small mb-2">Location</h4>
+                                        <div class="input-group">
+                                            <input type="text" name="location" class="form-control" [(ngModel)]="searchLocationData" (blur)="searchLocation()" placeholder="Search Location">
+                                        </div>
+                                    </div>
+
+                                    <hr class="hr"/>
+                                    <div class="form-group mb-4">
+                                        <h4 class="section-head-small mb-2">Job Type</h4>
+                                        <select class="wt-select-bar-large selectpicker" [(ngModel)]="searchIndentType" (change)="getIndentTypeJob($event)">
+                                            <option value="">Select Job Type</option>
+                                            @for(job of jobTypeData; track $index){
+                                                <option>{{job}}</option>
+                                            }
+                                        </select>
+                                    </div>
+
+
+                                    <!-- <hr class="hr"/>
+                                    <div class="tmi-sidebar-ele-filter">
+                                        <h4 class="section-head-small mb-2">Job Type</h4>
+                                        <ul>
+                                            @for(job of jobTypeData; track $index){
+                                                <li>
+                                                    <div class=" form-check">
+                                                        <input type="checkbox" class="form-check-input" id="exampleCheck1" value="{{job}}" (change)="onCheckboxChange($event)">
+                                                        <label class="form-check-label" for="exampleCheck1">{{job}}</label>
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div> -->
+
+                                    <hr class="hr"/>
+                                    <div class="tmi-sidebar-ele-filter">
+                                        <div class="form-group mb-4">
+                                        <h4 class="section-head-small mb-2">Date Posted</h4>
+                                        <ul>
+                                            <li>
+                                                <div class="form-check">
+                                                    <input type="radio" class="form-check-input" name="timePeriod" [(ngModel)]="selectedTimePeriod" (change)="onRadioChange('last hour')">
+                                                    <label class="form-check-label" for="exampleradio1">Last hour</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="form-check">
+                                                    <input type="radio" class="form-check-input" name="timePeriod" [(ngModel)]="selectedTimePeriod" (change)="onRadioChange('last 24 hours')">
+                                                    <label class="form-check-label" for="exampleradio2">Last 24 hours</label>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="form-check">
+                                                    <input type="radio" class="form-check-input" name="timePeriod" [(ngModel)]="selectedTimePeriod" (change)="onRadioChange('last 7 days')">
+                                                    <label class="form-check-label" for="exampleradio3">Last 7 days</label>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="form-check">
+                                                    <input type="radio" class="form-check-input" name="timePeriod" [(ngModel)]="selectedTimePeriod" (change)="onRadioChange('last 14 days')">
+                                                    <label class="form-check-label" for="exampleradio4">Last 14 days</label>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="form-check">
+                                                    <input type="radio" class="form-check-input" name="timePeriod" [(ngModel)]="selectedTimePeriod" (change)="onRadioChange('last 30 days')">
+                                                    <label class="form-check-label" for="exampleradio5">Last 30 days</label>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="form-check">
+                                                    <input type="radio" class="form-check-input" name="timePeriod" [(ngModel)]="selectedTimePeriod" (change)="onRadioChange('all')">
+                                                    <label class="form-check-label" for="exampleradio6">All</label>
+                                                </div>
+                                            </li>
+                            
+                                        </ul>
+                                    </div>
+                                        <hr class="hr" />
+                                        <div class="form-group">
+                                            <div class="submit-btn mt-2" style="margin-left: 165px;">
+                                                <button class="btn postjob-btn btn2" (click)="onSearchSubmit()"> Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        }
+                    </div>
+
+                    <div class="col-lg-9 col-md-12">
+                        <app-indent></app-indent>
+                    </div>
+                }@else{
+                    <div class="col-md-12">
+                        <div class="p-5" style="background-color: #FFF;">
+                            <p><b>Welcome to TMI Network Recruitment Partner Portal!</b></p>
+                            <p>We're excited to have you on board as a valued recruitment partner. Your role is crucial in helping us connect with top talent, and we're here to support you every step of the way.</p>
+                            <p>As a next step, please take a moment to complete your profile by submitting the mandatory documents. This ensures that we can start collaborating efficiently and without delay.</p>
+                            <p><b>To get started:</b></p>
+                            <ul style="margin-left: 35px;">
+                                <li>Navigate to the <a class="link-primary" [routerLink]="['/myaccount']">Edit Profile</a> page.</li>
+                                <li>Upload the required documents.</li>
+                                <li>Review your details to ensure everything is accurate.</li>
+                            </ul>
+                        </div>
+                    </div>
+                }
+            }@else{
+                <div class="alert alert-danger" role="alert">
+                    <p class="mb-0"><i class="fa-solid fa-triangle-exclamation"></i> Please complete your <span><a routerLink="/myaccount" class="text-primary">profile</a></span> to apply for the Jobs.</p>
+                </div>
+            }  
+        </div>
+    </div>
+</div>   
+<!-- OUR BLOG END -->

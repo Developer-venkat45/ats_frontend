@@ -1,0 +1,147 @@
+<div class="section-full p-5 mt-5 site-bg-gray">
+    <div class="container">
+        @if(loader){
+        <div class="fb-item py-5" style="height: 600px;">
+            <div class="product-filter-wrap d-flex justify-content-between position-relative align-items-center">
+                <div style="margin-left: 8px;">
+                    <ngx-skeleton-loader
+                        [theme]="{width: '8vw', 'border-radius': '15px', height: '50px', 'margin-bottom': '25px', 'margin-left':'20px', 'margin-right':'40px'}"></ngx-skeleton-loader>
+                </div>
+                <div class="position-absolute" style="right: 165px;">
+                    <ngx-skeleton-loader
+                        [theme]="{width: '18vw', 'border-radius': '5px', height: '50px', 'margin-bottom': '25px'}"></ngx-skeleton-loader>
+                </div>
+                <div>
+                    <ngx-skeleton-loader
+                        [theme]="{width: '8vw', 'border-radius': '15px', height: '50px', 'margin-bottom': '25px', 'margin-right':'35    px'}"></ngx-skeleton-loader>
+                </div>
+
+            </div>
+
+            <div>
+                <ngx-skeleton-loader
+                    [theme]="{width: '84vw', 'border-radius': '0', height: '65px', 'margin-bottom': '25px', 'margin-left':'28px'}"></ngx-skeleton-loader>
+            </div>
+
+            <div class="second-section-wrapper" style="margin-top: -30px;">
+                <div class="wrapper">
+                    <ngx-skeleton-loader count="1" appearance="circle"
+                        [theme]="{ width: '95%', height: '370px', 'border-radius': '10px'}"></ngx-skeleton-loader>
+                </div>
+            </div>
+        </div>
+        }
+        @else{
+        <div class="row">
+            <div class="breadcrumb nav">
+                <span class="breadcrumb-item">
+                    <a class="breadcrumb-link" [routerLink]="['/']"><i class="fa-solid fa-home"></i> Home</a>
+                </span>
+                <span class="breadcrumb-item">
+                    <a class="breadcrumb-link" [routerLink]="['/report/:partner']">Report Partner</a>
+                </span>
+            </div>
+
+
+            <div class="product-filter-wrap d-flex justify-content-between position-relative align-items-center m-b20">
+                <div class="submit-btn" style="margin-left: 8px;">
+                    @if(isLoading){
+                    <button class="btn btn-primary postjob-btn" type="button" disabled><span
+                            class="spinner-border spinner-border-sm" aria-hidden="true"></span> <span role="status">
+                            Loading...</span></button>
+                    }@else{
+                    <button class="btn postjob-btn" (click)="downloadFile($event, 'excel')"><i
+                            class="fa-solid fa-file-export"></i>
+                        Export</button>
+                    }
+
+                </div>
+                <div class="flex mb-2 position-absolute" style="right: 125px;">
+                    <p-iconField iconPosition="left">
+                        <p-inputIcon><i class="pi pi-search fa-solid fa-magnifying-glass"></i></p-inputIcon>
+                        <input pInputText type="text" [(ngModel)]="searchFirmName"
+                            (input)="searchPartnerVendorName($event)" placeholder="Search Name" />
+
+                    </p-iconField>
+                </div>
+                <div class="submit-btn mb-1" style="margin-left: 20px;">
+                    <button class="btn postjob-btn" (click)="searchPartner()"><i></i> Submit</button>
+                </div>
+            </div>
+
+            @if(totalRecord > 0){
+            <div class="col-md-12 ">
+                <div style="overflow-x: auto;">
+                    <table class="table">
+                        <tr class="table-header">
+                            <th class="cell">#</th>
+                            <th class="cell">Firm Name</th>
+                            <th class="cell">Vendor Name</th>
+                            <th class="cell">Contact No.</th>
+                            <th class="cell">Email Id</th>
+                            <th class="cell">Partner Category</th>
+                            <th class="cell">Md. Name</th>
+                            <th class="cell">Designation</th>
+                            <th class="cell">State</th>
+                            <th class="cell">Agreement Expiration</th>
+                            <th class="cell">Partner Status</th>
+                            <th class="cell">Created On</th>
+                            <th class="cell">Status</th>
+                        </tr>
+
+                        @for(item of partnerList; track $index){
+                        <tr class="active">
+                            <td>{{($index +1)+ (currentPage -1)* itemsPerPage }}</td>
+                            <td>
+                                <a class="text-primary"
+                                    [routerLink]="['/partner-details',item._id]">{{item.firmName}}</a>
+                            </td>
+                            <td>{{item.vendorName}}</td>
+                            <td>{{item.primaryContactNumber}}</td>
+                            <td>{{item.primaryEmailId}}</td>
+                            <td>{{item.partnerCategory}}</td>
+                            <td>{{item.mdName}}</td>
+                            <td>{{item.designation}}</td>
+                            <td>{{item.state}}</td>
+                            <td>{{item.aggrementExpirationdate | date: 'dd MMM, yyyy'}}</td>
+                            <td><span class="partnerStatus">{{item.partnerStatus}}</span></td>
+                            <td>{{item.created_on | date: 'dd MMM, yyyy'}}</td>
+                            <td>{{item.status?'Active':'In-active'}}</td>
+                        </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-8">
+                    <p>Showing {{startIndex2}} to {{endIndex2}} of {{filterdRecord}} entries</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="cuspagi" style="float: right;">
+                        <nav aria-label="...">
+                            <ul class="pagination">
+                                <li class="page-item {{isDisabled}}"><button class="page-link"
+                                        (click)="prevPage()">Previous</button></li>
+                                <li class="page-item active" aria-current="page"><a
+                                        class="page-link">{{currentPage}}</a></li>
+                                <li class="page-item {{isDisabled2}}"><button class="page-link text-danger"
+                                        (click)="nextPage()">Next</button></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            }@else{
+            <div class="col-md-12 pt-2">
+                <div class="empty_state rounded">
+                    <i class="fa-solid fa-face-surprise"></i>
+                    <h3 class="">No records</h3>
+                    <p>There are no records found</p>
+                </div>
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>

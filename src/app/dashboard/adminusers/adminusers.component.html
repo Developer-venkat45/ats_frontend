@@ -1,0 +1,148 @@
+
+    <!-- <app-navbar></app-navbar> -->
+
+
+    <!-- OUR BLOG START -->
+    <div class="section-full p-t60 mt-5 p-b60 site-bg-gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-12  ">
+                    <div class="filter-heading ps-3">
+                        <h4 class="m-b20">Sidebar</h4>
+                    </div>
+                    <div class="side-bar bg-white p-3">
+                        <div class="sidebar-elements search-bx">
+                                    
+                            <div class="form-group mb-4">
+                                <h4 class="section-head-small mb-2">Indent</h4>
+                                <div class="tmi-sidebar-ele-filter">
+                                    <ul>
+                                        <li class="indent">
+                                            <div class="form-check section-head-small mb-2">
+                                                <a class="soptions" (click)="selectoption(1)">Add Indent</a>
+                                            </div>
+                                        </li>
+                                        <li class="indent">
+                                            <div class="form-check section-head-small mb-2">
+                                                <a  class="soptions" (click)="selectoption(2)">Indent List</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+
+                            <hr class="hr"/>
+                            
+                            <div class="form-group mb-4">
+                                <h4 class="section-head-small mb-2">Recuiter</h4>
+                                <div class="tmi-sidebar-ele-filter">
+                                    <ul>
+                                        <li class="indent">
+                                            <div class="form-check section-head-small mb-2">
+                                                <a class="soptions" (click)="selectoption(3)">Add Recuiter</a>
+                                            </div>
+                                        </li>
+                                        <li class="indent">
+                                            <div class="form-check section-head-small mb-2">
+                                                <a  class="soptions" (click)="selectoption(4)">Recuiter List</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <hr class="hr"/>
+                            
+                            <div class="form-group mb-4">
+                                <h4 class="section-head-small mb-2">Candidates</h4>
+                                <div class="tmi-sidebar-ele-filter">
+                                    <ul>
+                                        <li class="indent">
+                                            <div class="form-check section-head-small mb-2">
+                                                <a class="soptions" (click)="selectoption(5)">Upload Candidate</a>
+                                            </div>
+                                        </li>
+                                        <li class="indent">
+                                            <div class="form-check section-head-small mb-2">
+                                                <a  class="soptions" (click)="selectoption(6)">Candidate List</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <hr class="hr"/>
+                            
+                            <div class="form-group mb-4">
+                                <h4 class="section-head-small mb-2">Forms</h4>
+                                <div class="tmi-sidebar-ele-filter">
+                                    <ul>
+                                        <li class="indent">
+                                            <div class="form-check section-head-small mb-2">
+                                                <a class="soptions" (click)="selectoption(7)">Generate Forms</a>
+                                            </div>
+                                        </li>
+                                        <li class="indent">
+                                            <div class="form-check section-head-small mb-2">
+                                                <a  class="soptions" (click)="selectoption(8)">Forms List</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-9 col-md-12 scrollable-content" style="margin-top:-58px" *ngIf="selectedoption===1">                        
+                    <app-addindent></app-addindent>
+                </div>
+
+                <div class="col-lg-9 col-md-12 scrollable-content" *ngIf="selectedoption===2">                        
+                    <app-indent></app-indent>
+                </div>
+
+                <div class="col-lg-9 col-md-12 scrollable-content" style="width: 649px;" *ngIf="selectedoption===3">                        
+                    
+                </div>
+                <div class="col-lg-9 col-md-12 scrollable-content" style="width: 649px;" *ngIf="selectedoption===4">                        
+                    
+                </div>
+
+                <div class="col-lg-9 col-md-12 scrollable-content" *ngIf="selectedoption===5">                        
+                    <app-indent></app-indent>
+                </div>
+
+                <div class="col-lg-9 col-md-12 scrollable-content" style="width: 649px;" *ngIf="selectedoption===6">                        
+                    
+                </div>
+
+                <div class="col-lg-9 col-md-12 scrollable-content" style="width: 649px;"  *ngIf="selectedoption===7">                        
+                    <app-addform></app-addform>
+                </div>
+
+                <div class="col-lg-9 col-md-12 scrollable-content" style="width: 649px; margin-top:40px;" *ngIf="selectedoption === 8">
+                    <div class="filter-heading ps-3">
+                        <h4 class="m-b20">All Forms</h4>
+                    </div>
+                    <div class="tmi-jobs-list-wrap">
+                      <ul>
+                        <li *ngFor="let item of formList; let i = index">
+                            <div class="srp-jobtuple-wrapper" data-job-id="141220500637">
+                                <div class="cust-job-tuple layout-wrapper lay-2 sjw__tuple ">
+                                <p>{{ item.form_name }}</p>
+                                <button (click)="viewform(item._id)">View Form</button>
+                                </div>
+                            </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>   
+    <!-- OUR BLOG END -->
+          
+            
